@@ -2,8 +2,11 @@ package ca.on.conestogac.puppypal;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
 
 public class DBHandler
 {
@@ -29,7 +32,36 @@ public class DBHandler
     }
 
     //Read
-
+    public Long[] GetPetIdList()
+    {
+        ArrayList<Long> ids = new ArrayList<Long>(){};
+        Long[] results = new Long[]{};
+        SQLiteDatabase database = databaseHandler.getWritableDatabase();
+        Cursor cursor = database.query("tbl_pet",new String[]{"pet_id"},null,null,null,null,null);
+        while (cursor.moveToNext())
+        {
+            ids.add(cursor.getLong(cursor.getColumnIndex("pet_id")));
+        }
+        results = ids.toArray(results);
+        return (results);
+    }
+    public Pet ReadPetFromTable(long petId)
+    {
+        Pet pet = new Pet();
+        SQLiteDatabase database = databaseHandler.getWritableDatabase();
+        String[] columns = new String[]{"*"};
+        Cursor cursor = database.query("tbl_pet",columns,null,null,null,null,null);
+        while (cursor.moveToNext())
+        {
+            pet.setName(cursor.getString(cursor.getColumnIndex("name")));
+            pet.setAge(cursor.getInt(cursor.getColumnIndex("age")));
+            pet.setWeight(cursor.getInt(cursor.getColumnIndex("weight")));
+            pet.setBreed(cursor.getString(cursor.getColumnIndex("breed")));
+            pet.setGender(cursor.getInt(cursor.getColumnIndex("gender")));
+            pet.setSpayedNeutered(cursor.getInt(cursor.getColumnIndex("spayed_neutered")));
+        }
+        return pet;
+    }
 
     //Update
 
