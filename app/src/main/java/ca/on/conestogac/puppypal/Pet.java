@@ -12,6 +12,7 @@ public class Pet {
     //Basic Constructor
     public Pet()
     {
+        this.petId = 0;
         this.name = "";
         this.age = 0;
         this.weight = 0;
@@ -19,6 +20,9 @@ public class Pet {
         this.gender = 0;
         this.spayedNeutered = 0;
     }
+
+    public long getPetId() {return this.petId;}
+    public void setPetId(long petId) {this.petId = petId;}
 
     public String getName() {return this.name;}
     public void setName(String name) {this.name = name;}
@@ -42,4 +46,6 @@ public class Pet {
     {
         this.weight = weightRecord.GetWeight();
     }
+
+    public void UpdatePet(String columnName, String value) {}
 }

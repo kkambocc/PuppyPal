@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class DBHandler
 {
+
     PuppyPalApplication databaseHandler;
 
     public DBHandler(Context context)
@@ -45,14 +46,16 @@ public class DBHandler
         results = ids.toArray(results);
         return (results);
     }
+
     public Pet ReadPetFromTable(long petId)
     {
         Pet pet = new Pet();
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
         String[] columns = new String[]{"*"};
-        Cursor cursor = database.query("tbl_pet",columns,null,null,null,null,null);
+        Cursor cursor = database.query("tbl_pet",columns,"pet_id = ?",new String[]{"" + petId},null,null,null);
         while (cursor.moveToNext())
         {
+            pet.setPetId(cursor.getLong(cursor.getColumnIndex("pet_id")));
             pet.setName(cursor.getString(cursor.getColumnIndex("name")));
             pet.setAge(cursor.getInt(cursor.getColumnIndex("age")));
             pet.setWeight(cursor.getInt(cursor.getColumnIndex("weight")));
@@ -64,10 +67,18 @@ public class DBHandler
     }
 
     //Update
-
+    public void ChangePetTable(Pet pet)
+    {
+        DeletePetFromTable(pet);
+        AddToPetTable(pet);
+    }
 
     //Delete
-
+    public void DeletePetFromTable(Pet pet)
+    {
+        SQLiteDatabase database = databaseHandler.getWritableDatabase();
+        database.delete("tbl_pet","pet_id = ?",new String[]{"" + pet.getPetId()});
+    }
 
     //Code to implement database
     static class PuppyPalApplication extends SQLiteOpenHelper {
