@@ -142,13 +142,6 @@ public class DBHandler
             super(context, DB_NAME, null, DB_VERSION);
             this.context = context;
         }
-        /*
-        public void DeleteTable(String tableName)
-        {
-
-        }
-
-         */
 
         public void onCreate(SQLiteDatabase db) {
             // No boolean or date/time variable type?

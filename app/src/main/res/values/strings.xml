@@ -11,5 +11,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="spayed_neutered">Spayed/Neutered</string>
+    <string name="name_error">Please enter the valid name</string>
+    <string name="age_error">Please enter the valid age</string>
+    <string name="weight_error">Please enter the valid weight</string>
+    <string name="breed_error">Please enter the valid breed</string>
 
 </resources>

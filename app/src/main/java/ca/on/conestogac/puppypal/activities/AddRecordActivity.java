@@ -49,6 +49,7 @@ public class AddRecordActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_record);
         database = new DBHandler(this);
