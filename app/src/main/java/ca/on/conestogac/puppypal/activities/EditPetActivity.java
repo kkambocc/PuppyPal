@@ -1,4 +1,5 @@
-package ca.on.conestogac.puppypal;
+package ca.on.conestogac.puppypal.activities;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,9 +10,15 @@ import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
+import ca.on.conestogac.puppypal.DBHandler;
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.tables.Pet;
+
 public class EditPetActivity extends AppCompatActivity
 {
-    private long petId;
+    private Long petId;
     private Pet pet;
     DBHandler database;
     @Override
@@ -20,12 +27,12 @@ public class EditPetActivity extends AppCompatActivity
         setContentView(R.layout.edit_pet);
         database = new DBHandler(this);
 
-        Long[] ids = database.GetPetIdList();
+        ArrayList<String> ids = (database.ReadSingleColumn("pet_id",Pet.TABLE_NAME));
         LinearLayout list = findViewById(R.id.petList);
 
-        for (Long id : ids)
+        for (String id : ids)
         {
-            pet = database.ReadPetFromTable(id);
+            pet = new Pet(database.ReadSingleEntry(id,Pet.TABLE_NAME));
             Button b = new Button(this);
             b.setText(pet.getName());
             SetOnClick(b,pet.getPetId());
@@ -44,10 +51,13 @@ public class EditPetActivity extends AppCompatActivity
         });
     }
 
+    /*  This method changes the page to the add_record page and fills in the form and fills in the form with the selected pets information.
+     *
+     */
     public void ShowPet()
     {
         setContentView(R.layout.add_pet);
-        pet = database.ReadPetFromTable(petId);
+        pet = new Pet(database.ReadSingleEntry(petId.toString(),Pet.TABLE_NAME));
 
         //name
         ((EditText) findViewById(R.id.textName)).setText(pet.getName());
@@ -95,12 +105,17 @@ public class EditPetActivity extends AppCompatActivity
     public void UpdatePet(View v)
     {
         database.DeletePetFromTable(pet);
+        database.AddToTable(Pet.TABLE_NAME,pet.toArray());
         finish();
+        Intent intent = new Intent(this, EditPetActivity.class);
+        startActivity(intent);
     }
 
     public void DeletePet(View v)
     {
         database.DeletePetFromTable(pet);
         finish();
+        Intent intent = new Intent(this, EditPetActivity.class);
+        startActivity(intent);
     }
 }

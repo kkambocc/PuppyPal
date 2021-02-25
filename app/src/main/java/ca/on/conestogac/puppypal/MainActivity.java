@@ -6,6 +6,10 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import ca.on.conestogac.puppypal.activities.AddPetActivity;
+import ca.on.conestogac.puppypal.activities.AddRecordActivity;
+import ca.on.conestogac.puppypal.activities.EditPetActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -17,12 +21,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void AddPetButton(View v)
     {
-        Intent intent = new Intent(this,AddPetActivity.class);
+        Intent intent = new Intent(this, AddPetActivity.class);
         startActivity(intent);
     }
     public void EditPetButton(View v)
     {
-        Intent intent = new Intent(this,EditPetActivity.class);
+        Intent intent = new Intent(this, EditPetActivity.class);
+        startActivity(intent);
+    }
+    public void AddRecordButton(View v)
+    {
+        Intent intent = new Intent(this, AddRecordActivity.class);
         startActivity(intent);
     }
 }

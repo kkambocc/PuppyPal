@@ -1,4 +1,4 @@
-package ca.on.conestogac.puppypal;
+package ca.on.conestogac.puppypal.activities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -6,6 +6,10 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import ca.on.conestogac.puppypal.DBHandler;
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.tables.Pet;
 
 import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
@@ -68,7 +72,7 @@ public class AddPetActivity extends AppCompatActivity
         }
 
         //Add to database
-        database.AddToPetTable(pet);
+        database.AddToTable(Pet.TABLE_NAME,pet.toArray());
 
         //Reset screen
         finish();
