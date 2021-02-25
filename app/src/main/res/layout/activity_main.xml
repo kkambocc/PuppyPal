@@ -4,7 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4E4D0"
     tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageViewMainPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="86dp"
+        android:background="#80D1C1ED"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_mainpageimage" />
+
+    <TextView
+        android:id="@+id/textViewPuppyPal"
+        android:layout_width="307dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="52dp"
+        android:fontFamily="cursive"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="393dp"
+        tools:text="@string/app_name" />
 
     <Button
         android:id="@+id/goToAddRecord"
@@ -13,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Add Record"
+        android:text="@string/add_record"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -26,7 +52,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
         android:onClick="AddPetButton"
-        android:text="Add a Pet"
+        android:text="@string/add_a_pet"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toTopOf="@+id/goToAddRecord"
         app:layout_constraintStart_toStartOf="parent" />
@@ -39,7 +65,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
         android:onClick="EditPetButton"
-        android:text="Edit A Pet"
+        android:text="@string/edit_a_pet"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toTopOf="@+id/goToAddPet"
         app:layout_constraintStart_toStartOf="parent" />
