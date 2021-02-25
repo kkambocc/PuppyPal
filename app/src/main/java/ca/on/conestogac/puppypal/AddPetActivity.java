@@ -22,6 +22,7 @@ public class AddPetActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_pet);
         database = new DBHandler(this);
