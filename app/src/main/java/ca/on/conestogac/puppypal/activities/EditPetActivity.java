@@ -16,6 +16,8 @@ import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
 import ca.on.conestogac.puppypal.tables.Pet;
 
+import static java.lang.Integer.parseInt;
+
 public class EditPetActivity extends AppCompatActivity
 {
     private Long petId;
@@ -41,7 +43,7 @@ public class EditPetActivity extends AppCompatActivity
         }
     }
 
-    public void SetOnClick(Button btn, long id)
+    private void SetOnClick(Button btn, long id)
     {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +57,7 @@ public class EditPetActivity extends AppCompatActivity
     /*  This method changes the page to the add_record page and fills in the form and fills in the form with the selected pets information.
      *
      */
-    public void ShowPet()
+    private void ShowPet()
     {
         setContentView(R.layout.add_pet);
         pet = new Pet(database.ReadSingleEntry(petId.toString(),Pet.TABLE_NAME));
@@ -103,13 +105,34 @@ public class EditPetActivity extends AppCompatActivity
         findViewById(R.id.deletePetFromDatabase).setOnClickListener(this::DeletePet);
     }
 
+    private boolean Validate()
+    {
+        String age = ((EditText) findViewById(R.id.textAge)).getText().toString();
+        boolean spayedNeutered = ((Switch) findViewById(R.id.switchSpayedNeutered)).isChecked();
+
+        pet.setAge(parseInt(age));
+        if (spayedNeutered)
+        {
+            pet.setSpayedNeutered(1);
+        } else
+        {
+            pet.setSpayedNeutered(0);
+        }
+        return true;//for now
+    }
+
+
     public void UpdatePet(View v)
     {
-        database.DeletePetFromTable(pet);
-        database.AddToTable(Pet.TABLE_NAME,pet.toArray());
-        finish();
-        Intent intent = new Intent(this, EditPetActivity.class);
-        startActivity(intent);
+        if (Validate())
+        {
+
+            database.DeletePetFromTable(pet);
+            database.AddToTable(Pet.TABLE_NAME, pet.toArray());
+            finish();
+            Intent intent = new Intent(this, EditPetActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void DeletePet(View v)

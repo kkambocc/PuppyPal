@@ -21,22 +21,6 @@ public class DBHandler
         databaseHandler = new PuppyPalApplication(context);
     }
 
-    //Create
-    /*
-    public long AddToPetTable(Pet pet) {
-        SQLiteDatabase dbb = databaseHandler.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", pet.getName());
-        contentValues.put("age", pet.getAge());
-        contentValues.put("weight", pet.getWeight());
-        contentValues.put("breed", pet.getBreed());
-        contentValues.put("gender", pet.getGender());
-        contentValues.put("spayed_neutered", pet.getSpayedNeutered());
-        long id = dbb.insert("tbl_pet", null, contentValues);
-        return id;
-    }
-     */
-
     public long AddToTable(String tableName, ArrayList<String> values)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
