@@ -1,30 +1,29 @@
 package ca.on.conestogac.puppypal.activities;
-import android.app.AlertDialog;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
 import ca.on.conestogac.puppypal.tables.Pet;
 
-import static java.lang.Float.parseFloat;
-import static java.lang.Integer.parseInt;
-
 public class AddPetActivity extends AppCompatActivity
 {
     DBHandler database;
-    String name;
-    int age;
-    int weight;
-    String breed;
-    int gender;
-    boolean spayedNeutered;
+    public String name;
+    public String age ;
+    public String weight;
+    public String breed;
+    public int gender;
+    public boolean spayedNeutered;
+    Pet pet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,154 +31,28 @@ public class AddPetActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_pet);
         database = new DBHandler(this);
+        pet = new Pet(this);
 
     }
-
-    public void Validate(View v) {
-        name = ((EditText)findViewById(R.id.textName)).getText().toString();
-        if (!nameValidation(name))
-        {
-            return;
-        }
-
-        age = Integer.parseInt(((EditText)findViewById(R.id.textAge)).getText().toString());
-        if (!ageValidation(age))
-        {
-            return;
-        }
-        weight = Integer.parseInt(((EditText)findViewById(R.id.textWeight)).getText().toString());
-        if (!weightValidation(weight))
-        {
-            return;
-        }
-        breed = ((EditText)findViewById(R.id.textBreed)).getText().toString();
-        if (!breedValidation(breed))
-        {
-            return;
-        }
+    public void Validate(View v)
+    {
+        name = ((EditText) findViewById(R.id.textName)).getText().toString();
+        age = ((EditText) findViewById(R.id.textAge)).getText().toString();
+        weight = ((EditText) findViewById(R.id.textWeight)).getText().toString();
+        breed = ((EditText) findViewById(R.id.textBreed)).getText().toString();
         gender = ((RadioGroup) findViewById(R.id.genderGroup)).getCheckedRadioButtonId();
         spayedNeutered = ((Switch) findViewById(R.id.switchSpayedNeutered)).isChecked();
-        //Do validation here then pass to add a pet if successful
-                AddAPet();
-    }
-    public boolean breedValidation(String breed) {
-        boolean breedBoolean;
-        if (breed.isEmpty())
-        {
-            Toast.makeText(this, "Breed field is empty !", Toast.LENGTH_SHORT).show();
-            breedBoolean = false;
-        }
-        else
-        {
-            breedBoolean = true;
-        }
-        if (!breed.matches("^[a-zA-Z]*$"))
-        {
-            Toast.makeText(this, "Breed should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
-            breedBoolean = false;
-        }
-        else
-        {
-            breedBoolean = true;
-        }
-        if (breed.length() >50)
-        {
-            Toast.makeText(this, "Breed should be no more than 50 characters long", Toast.LENGTH_SHORT).show();
-            breedBoolean = false;
-        }
-        else
-        {
-            breedBoolean = true;
-        }
-        return breedBoolean;
+
+        pet.validateAndAdd(name,age,weight,breed,gender,spayedNeutered);
     }
 
-    public boolean weightValidation(int weight) {
-        boolean weightBoolean;
-        if (String.valueOf(weight).isEmpty())
-        {
-            Toast.makeText(this, "Weight field is empty !", Toast.LENGTH_SHORT).show();
-            weightBoolean = false;
-        }
-        else
-        {
-            weightBoolean = true;
-        }
-        if (weight > 999)
-        {
-            Toast.makeText(this, "Weight in lbs should be in the range of 3 digits", Toast.LENGTH_SHORT).show();
-            weightBoolean = false;
-        }
-        else
-        {
-            weightBoolean = true;
-        }
-        return weightBoolean;
-    }
-
-    public boolean ageValidation(int age) {
-        boolean ageBoolean;
-        if (String.valueOf(age).isEmpty())
-        {
-            Toast.makeText(this, "Age field is empty !", Toast.LENGTH_SHORT).show();
-            ageBoolean = false;
-        }
-        else
-        {
-            ageBoolean = true;
-        }
-        if (age > 100)
-        {
-            Toast.makeText(this, "Age should be in the range of 3 digits", Toast.LENGTH_SHORT).show();
-            ageBoolean = false;
-        }
-        else
-        {
-            ageBoolean = true;
-        }
-        return ageBoolean;
-    }
-
-    public boolean nameValidation(String name) {
-        boolean nameBoolean;
-        if (name.isEmpty())
-        {
-            Toast.makeText(this, "Name field is empty !", Toast.LENGTH_SHORT).show();
-            nameBoolean = false;
-        }
-        else
-        {
-            nameBoolean= true;
-        }
-        if (!name.matches("^[a-zA-Z]*$"))
-        {
-            Toast.makeText(this, "Name should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
-            nameBoolean =false;
-        }
-        else
-        {
-            nameBoolean = true;
-        }
-        if (name.length() >50)
-        {
-            Toast.makeText(this, "Name should be no more than 50 characters long", Toast.LENGTH_SHORT).show();
-            nameBoolean = false;
-        }
-        else
-        {
-            nameBoolean = true;
-        }
-        return nameBoolean;
-    }
-
-    public void AddAPet()
+    public void AddAPet(String name,String age,String weight,String breed,int gender,boolean spayedNeutered, Context dbContext)
     {
-        Pet pet = new Pet();
-
         //Get values for pet
+        Pet pet= new Pet();
         pet.setName(name);
-        pet.setAge(age);
-        pet.setWeight(weight);
+        pet.setAge(Integer.parseInt(age));
+        pet.setWeight(Float.parseFloat(weight));
         pet.setBreed(breed);
         if (gender == R.id.radioFemale)
         {
@@ -200,9 +73,10 @@ public class AddPetActivity extends AppCompatActivity
         }
 
         //Add to database
+        DBHandler database = new DBHandler(dbContext);
         database.AddToTable(Pet.TABLE_NAME,pet.toArray());
 
         //Reset screen
-        finish();
+        ((Activity)dbContext).finish();
     }
 }
