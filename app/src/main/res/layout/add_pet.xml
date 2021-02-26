@@ -9,174 +9,208 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/AddAPetCLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#D7DEFAE0">
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="118dp"
-            android:layout_height="76dp"
-            android:layout_marginStart="298dp"
-            android:layout_marginTop="34dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="19dp"
-            app:layout_constraintBottom_toTopOf="@+id/textName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.977"
+            app:layout_constraintHorizontal_bias="0.83"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
-        <EditText
-            android:id="@+id/textName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="116dp"
-            android:background="#FFFFFF"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:maxLength="20"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.547"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/labelAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:text="@string/age"
-            android:textColor="#2C2626"
-            app:layout_constraintBottom_toBottomOf="@+id/textAge"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/labelWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:text="@string/weight"
-            android:textColor="#1C1A1A"
-            app:layout_constraintBottom_toBottomOf="@+id/textWeight"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/textAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="#FFFFFF"
-            android:ems="10"
-            android:inputType="number"
-            android:maxLength="2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.547"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textName" />
-
-        <TextView
-            android:id="@+id/labelGender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:text="@string/gender"
-            android:textColor="#221F1F"
-            app:layout_constraintBottom_toBottomOf="@+id/genderGroup"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <RadioGroup
-            android:id="@+id/genderGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+        <LinearLayout
+            android:id="@+id/nameRow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.437"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textBreed">
+            app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
-            <RadioButton
-                android:id="@+id/radioMale"
-                android:layout_width="74dp"
+            <TextView
+                android:id="@+id/labelName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textColor="#040303" />
+
+            <EditText
+                android:id="@+id/textName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="#FFFFFF"
+                android:inputType="textPersonName"
+                android:maxLength="20" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ageRow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameRow">
+
+            <TextView
+                android:id="@+id/labelAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/age"
+                android:textColor="#2C2626"/>
+
+            <EditText
+                android:id="@+id/textAge"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
-                android:checked="true"
-                android:text="@string/male" />
+                android:inputType="number"
+                android:layout_marginStart="16dp"
+                android:maxLength="2" />
+        </LinearLayout>
 
-            <RadioButton
-                android:id="@+id/radioFemale"
-                android:layout_width="90dp"
+        <LinearLayout
+            android:id="@+id/weightRow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ageRow">
+
+            <TextView
+                android:id="@+id/labelWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/weight"
+                android:textColor="#1C1A1A" />
+
+            <EditText
+                android:id="@+id/textWeight"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
-                android:text="@string/female" />
-        </RadioGroup>
+                android:inputType="number"
+                android:layout_marginStart="16dp"
+                android:maxLength="3" />
 
-        <TextView
-            android:id="@+id/labelName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="50dp"
-            android:text="@string/name"
-            android:textColor="#040303"
-            app:layout_constraintBottom_toBottomOf="@+id/textName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/textWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="#FFFFFF"
-            android:ems="10"
-            android:inputType="number"
-            android:maxLength="3"
+        <LinearLayout
+            android:id="@+id/breedRow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.547"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textAge" />
+            app:layout_constraintTop_toBottomOf="@+id/weightRow">
 
-        <TextView
-            android:id="@+id/labelBreed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:text="@string/breed"
-            android:textColor="#292626"
-            app:layout_constraintBottom_toBottomOf="@+id/textBreed"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/labelBreed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/breed"
+                android:textColor="#1C1A1A" />
 
-        <EditText
-            android:id="@+id/textBreed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="#FFFFFF"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:maxLength="20"
+            <EditText
+                android:id="@+id/textBreed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:layout_marginStart="16dp"
+                android:inputType="textPersonName"
+                android:maxLength="20" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/genderRow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.547"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textWeight" />
+            app:layout_constraintTop_toBottomOf="@+id/breedRow">
+
+            <TextView
+                android:id="@+id/labelGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender"
+                android:textColor="#221F1F"/>
+
+            <RadioGroup
+                android:id="@+id/genderGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:checked="true"
+                    android:text="@string/male" />
+
+                <RadioButton
+                    android:id="@+id/radioFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:text="@string/female" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
 
         <Switch
             android:id="@+id/switchSpayedNeutered"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="24dp"
             android:background="#FFFFFF"
             android:scaleX="1.5"
             android:scaleY="1.5"
             android:text="@string/spayed_neutered"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.578"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/genderGroup" />
+            app:layout_constraintTop_toBottomOf="@+id/genderRow" />
 
         <Button
             android:id="@+id/addPetToDatabase"
