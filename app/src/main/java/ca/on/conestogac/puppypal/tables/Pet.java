@@ -97,18 +97,19 @@ public class Pet  {
             return breedBoolean;
         }
 
-        if (!breed.matches("^[a-zA-Z]*$"))
+        else if (!breed.matches("^[a-zA-Z]*$"))
         {
             Toast.makeText(addPetActivityContext, "Breed should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
             return breedBoolean;
         }
 
-        if (breed.length() >50)
+        else if (breed.length() >20)
         {
-            Toast.makeText(addPetActivityContext, "Breed should be no more than 50 characters long", Toast.LENGTH_SHORT).show();
+            Toast.makeText(addPetActivityContext, "Breed should be no more than 20 characters long", Toast.LENGTH_SHORT).show();
             return breedBoolean;
-        }
+        }else{
         breedBoolean = true;
+        }
         return breedBoolean;
     }
 
@@ -140,8 +141,8 @@ public class Pet  {
 
         if (!age.isEmpty())
         {
-            if (Integer.parseInt(age) > 999) {
-                Toast.makeText(addPetActivityContext, "Age should be in the range of 3 digits", Toast.LENGTH_SHORT).show();
+            if (Integer.parseInt(age) > 99) {
+                Toast.makeText(addPetActivityContext, "Age should be in the range of 2 digits", Toast.LENGTH_SHORT).show();
                 return ageBoolean;
             }
         }
@@ -156,20 +157,18 @@ public class Pet  {
             Toast.makeText(addPetActivityContext, "Name field is empty !", Toast.LENGTH_SHORT).show();
             return nameBoolean;
         }
-
-        if (!name.matches("^[a-zA-Z]*$"))
+        else if (!name.matches("^[a-zA-Z]*$"))
         {
             Toast.makeText(addPetActivityContext, "Name should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
             return nameBoolean;
         }
-
-        if (name.length() >50)
+        else if (name.length() >20)
         {
-            Toast.makeText(addPetActivityContext, "Name should be no more than 50 characters long", Toast.LENGTH_SHORT).show();
+            Toast.makeText(addPetActivityContext, "Name should be no more than 20 characters long", Toast.LENGTH_SHORT).show();
             return nameBoolean;
+        }else{
+            nameBoolean = true;
         }
-
-        nameBoolean = true;
         return nameBoolean;
     }
 

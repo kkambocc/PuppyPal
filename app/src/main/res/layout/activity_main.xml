@@ -12,7 +12,7 @@
         android:layout_width="325dp"
         android:layout_height="254dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="124dp"
         android:background="#80D1C1ED"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -50,20 +50,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/goToAddPet"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="AddPetButton"
-        android:text="@string/add_a_pet"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:cornerRadius="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/goToAddRecord"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/goToAddPet2"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
@@ -74,7 +60,21 @@
         android:text="@string/edit_a_pet"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:cornerRadius="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/goToAddPet"
+        app:layout_constraintBottom_toTopOf="@+id/goToAddRecord"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/goToAddPet"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="AddPetButton"
+        android:text="@string/add_a_pet"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/goToAddPet2"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
