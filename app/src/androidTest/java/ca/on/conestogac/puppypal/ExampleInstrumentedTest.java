@@ -23,4 +23,5 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("ca.on.conestogac.puppypal", appContext.getPackageName());
     }
+
 }

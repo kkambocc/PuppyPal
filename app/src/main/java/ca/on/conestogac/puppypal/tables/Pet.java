@@ -97,7 +97,7 @@ public class Pet  {
             return breedBoolean;
         }
 
-        else if (!breed.matches("^[a-zA-Z]*$"))
+        else if (!breed.matches("^[a-zA-Z ]*$"))
         {
             Toast.makeText(addPetActivityContext, "Breed should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
             return breedBoolean;
