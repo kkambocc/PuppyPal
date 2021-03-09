@@ -44,23 +44,8 @@
         android:layout_marginBottom="16dp"
         android:onClick="AddRecordButton"
         android:text="@string/add_record"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/goToAddPet2"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="EditPetButton"
-        android:text="@string/edit_a_pet"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:cornerRadius="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/goToAddRecord"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -72,9 +57,48 @@
         android:layout_marginBottom="8dp"
         android:onClick="AddPetButton"
         android:text="@string/add_a_pet"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:cornerRadius="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/goToAddPet2"
+        app:layout_constraintBottom_toTopOf="@+id/goToAddRecord"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/addAnAssistant"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="AddAssistantButton"
+        android:text="@string/add_an_assistant"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/editAnAssistant"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/goToAddPet4"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="EditPetButton"
+        android:text="@string/edit_a_pet"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/goToAddPet"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/editAnAssistant"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="72dp"
+        android:onClick="EditAssistantButton"
+        android:text="@string/edit_an_assistant"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

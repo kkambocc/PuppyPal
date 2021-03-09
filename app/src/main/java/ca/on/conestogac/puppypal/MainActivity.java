@@ -6,8 +6,10 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import ca.on.conestogac.puppypal.activities.AddAssistantActivity;
 import ca.on.conestogac.puppypal.activities.AddPetActivity;
 import ca.on.conestogac.puppypal.activities.AddRecordActivity;
+import ca.on.conestogac.puppypal.activities.EditAssistantActivity;
 import ca.on.conestogac.puppypal.activities.EditPetActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,5 +36,15 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, AddRecordActivity.class);
         startActivity(intent);
+    }
+    public void AddAssistantButton(View v)
+    {
+        Intent intent = new Intent(this, AddAssistantActivity.class);
+        startActivity(intent);
+    }
+    public void EditAssistantButton(View v)
+    {
+        Intent intent = new Intent(this, EditAssistantActivity.class);
+        startActivityForResult(intent,0);
     }
 }

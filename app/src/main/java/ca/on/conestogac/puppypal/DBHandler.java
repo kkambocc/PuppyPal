@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.ArrayMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,25 +95,42 @@ public class DBHandler
         AddToTable(Pet.TABLE_NAME,pet.toArray());
     }
 
-
-    //Delete
+    //Delete Pet
     public void DeletePetFromTable(Pet pet)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
         database.delete("tbl_pet","pet_id = ?",new String[]{"" + pet.getPetId()});
     }
 
-    /*
-    public void DeleteDatabase()
-    {;
-        databaseHandler.DeleteTable(Pet.TABLE_NAME);
-        databaseHandler.DeleteTable(MealRecord.TABLE_NAME);
-        databaseHandler.DeleteTable("tbl_excrement");
-        databaseHandler.DeleteTable("tbl_exercise");
-        databaseHandler.DeleteTable("tbl_energy");
-        databaseHandler.DeleteTable("tbl_weight");
+    public void addAssistantToDB(String name,String phoneNumber,String address,String title,String generalDescription,boolean isUpdate,int updateID)
+    {
+        SQLiteDatabase database = databaseHandler.getWritableDatabase();
+        ContentValues assistantContentValues = new ContentValues();
+        assistantContentValues.put("name",name);
+        assistantContentValues.put("phone_number",phoneNumber);
+        assistantContentValues.put("address",address);
+        assistantContentValues.put("title",title);
+        assistantContentValues.put("general_description",generalDescription);
+        if (!isUpdate) {
+            database.insertOrThrow("tbl_assistant", null, assistantContentValues);
+        }
+        else {
+            database.update("tbl_assistant",assistantContentValues,"assistant_id = "+ updateID,null);
+        }
     }
-     */
+    public void deleteAssistant(int deleteID)
+    {
+        SQLiteDatabase database = databaseHandler.getWritableDatabase();
+        database.delete("tbl_assistant","assistant_id = "+deleteID,null);
+    }
+    public Cursor getAssistantData()
+    {
+        SQLiteDatabase database = databaseHandler.getWritableDatabase();
+        ArrayMap<Integer,String> arrayMap =new ArrayMap<>();
+        Cursor cursor = database.rawQuery("SELECT * FROM tbl_assistant",null);
+        return cursor;
+    }
+
 
     //Code to implement database
     static class PuppyPalApplication extends SQLiteOpenHelper {
@@ -174,6 +192,15 @@ public class DBHandler
                     "date TEXT, " +
                     "weight REAL, " +
                     "FOREIGN KEY (pet_id) REFERENCES tbl_pet (pet_id))");
+
+            db.execSQL("CREATE TABLE IF NOT EXISTS tbl_assistant(" +
+                    "assistant_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "name TEXT, " +
+                    "phone_number TEXT, " +
+                    "address TEXT, " +
+                    "title TEXT, " +
+                    "general_description TEXT)");
+
         }
 
         @Override
