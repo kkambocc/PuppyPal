@@ -1,11 +1,13 @@
 package ca.on.conestogac.puppypal.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -160,9 +162,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return nameBoolean;
         }
 
-        if (name.length() >50)
+        if (name.length() >20)
         {
-            alertDialogBuilder("Text limit exceeds !","Name should be no more than 50 characters long");
+            alertDialogBuilder("Text limit exceeds !","Name should be no more than 20 characters long");
             return nameBoolean;
         }
 
@@ -182,10 +184,15 @@ public class AddAssistantActivity extends AppCompatActivity {
             alertDialogBuilder("Wrong Pattern","Phone Number should only contain whole numbers, '*', '+' or '#'");
             return numberBoolean;
         }
-
-        if (number.length() >30)
+        if (number.length() <10)
         {
-            alertDialogBuilder("Text limit exceeds !","Phone Number should be no more than 30 characters long");
+            alertDialogBuilder("Number is too short !","Phone Number should be minimum of 10 characters long");
+            return numberBoolean;
+        }
+
+        if (number.length() >10)
+        {
+            alertDialogBuilder("Text limit exceeds !","Phone Number should be no more than 10 characters long");
             return numberBoolean;
         }
 
@@ -200,15 +207,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return addressBoolean;
         }
 
-        /*if (!address.matches("^([a-zA-Z0-9]+[ ])*[a-zA-Z0-9]+$"))
+        if (address.length() >50)
         {
-            alertDialogBuilder("Wrong Pattern","Address should only contains alphanumeric characters");
-            return addressBoolean;
-        }*/
-
-        if (address.length() >150)
-        {
-            alertDialogBuilder("Text limit exceeds !","Address should be no more than 150 characters long");
+            alertDialogBuilder("Text limit exceeds !","Address should be no more than 50 characters long");
             return addressBoolean;
         }
 
@@ -229,9 +230,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return titleBoolean;
         }
 
-        if (title.length() >50)
+        if (title.length() >5)
         {
-            alertDialogBuilder("Text limit exceeds !","Title should be no more than 50 characters long");
+            alertDialogBuilder("Text limit exceeds !","Title should be no more than 5 characters long");
             return titleBoolean;
         }
 
@@ -252,9 +253,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return generalDescriptionBoolean;
         }
 
-        if (generalDescription.length() >1500)
+        if (generalDescription.length() >50)
         {
-            alertDialogBuilder("Text limit exceeds !","General Description should be no more than 1500 characters long");
+            alertDialogBuilder("Text limit exceeds !","General Description should be no more than 50 characters long");
             return generalDescriptionBoolean;
         }
 
