@@ -178,12 +178,7 @@ public class AddAssistantActivity extends AppCompatActivity {
             alertDialogBuilder("Phone number field is empty !","Phone Number can't be empty");
             return numberBoolean;
         }
-
-        if (!number.matches("^[0-9*+#]+$"))
-        {
-            alertDialogBuilder("Wrong Pattern","Phone Number should only contain whole numbers, '*', '+' or '#'");
-            return numberBoolean;
-        }
+        
         if (number.length() <10)
         {
             alertDialogBuilder("Number is too short !","Phone Number should be minimum of 10 characters long");
