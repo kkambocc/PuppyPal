@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static java.lang.Float.parseFloat;
+import static java.lang.Long.parseLong;
+
 public class WeightRecord
 {
     public static final String TABLE_NAME = "tbl_weight";
+    public static final String PRIMARY_KEY = "weight_id";
     private long weightId;
     private long petId;
     private final Date date;
@@ -28,6 +32,15 @@ public class WeightRecord
         this.weight = weight;
         this.date = date;
     }
+
+    public WeightRecord(ArrayList<String> array)
+    {
+        this.weightId = parseLong(array.get(0));
+        this.petId = parseLong(array.get(1));
+        this.date = new Date(parseLong(array.get(2)));
+        this.weight = parseFloat(array.get(3));
+    }
+
     public ArrayList<String> toArray()
     {
         ArrayList<String> array = new ArrayList<>();
@@ -38,8 +51,7 @@ public class WeightRecord
         return array;
     }
 
-    public float GetWeight()
-    {
-        return this.weight;
-    }
+    public float GetWeight() {return this.weight;}
+    public Date GetDate() {return this.date;}
+    public long GetPetId() {return this.petId;}
 }

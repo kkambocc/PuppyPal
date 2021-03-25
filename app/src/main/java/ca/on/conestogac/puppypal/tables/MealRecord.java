@@ -8,6 +8,7 @@ import static java.lang.Long.parseLong;
 
 public class MealRecord {
     public static final String TABLE_NAME = "tbl_meal";
+    public static final String PRIMARY_KEY = "meal_id";
 
     private long mealId;
     private long petId;
@@ -47,4 +48,8 @@ public class MealRecord {
         array.add(3,((Float) this.amount).toString());
         return array;
     }
+
+    public float GetAmount() {return this.amount;}
+    public Date GetDate() {return this.date;}
+    public long GetPetId() {return this.petId;}
 }

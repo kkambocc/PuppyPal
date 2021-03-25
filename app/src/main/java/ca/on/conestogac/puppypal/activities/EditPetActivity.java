@@ -22,7 +22,7 @@ public class EditPetActivity extends AppCompatActivity
 {
     private Long petId;
     private Pet pet;
-    DBHandler database;
+    private DBHandler database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_PuppyPal);

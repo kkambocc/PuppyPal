@@ -3,8 +3,11 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static java.lang.Long.parseLong;
+
 public class ExerciseRecord {
     public static final String TABLE_NAME = "tbl_exercise";
+    public static final String PRIMARY_KEY = "exercise_id";
     private long exerciseId;
     private long petId;
     private Date date;
@@ -24,6 +27,14 @@ public class ExerciseRecord {
         this.duration = duration;
         this.date = date;
     }
+    public ExerciseRecord(ArrayList<String> array)
+    {
+        this.exerciseId = parseLong(array.get(0));
+        this.petId = parseLong(array.get(1));
+        this.date = new Date(parseLong(array.get(2)));
+        this.type = array.get(3);
+        this.duration = new Time(parseLong(array.get(4)));
+    }
     public ArrayList<String> toArray()
     {
         ArrayList<String> array = new ArrayList<>();
@@ -34,4 +45,8 @@ public class ExerciseRecord {
         array.add(4,this.duration.toString());
         return array;
     }
+
+    public Time GetDuration() {return this.duration;}
+    public Date GetDate() {return this.date;}
+    public long GetPetId() {return this.petId;}
 }
