@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ca.on.conestogac.puppypal.activities.AddAssistantActivity;
+import ca.on.conestogac.puppypal.activities.AddFitnessGoalActivity;
 import ca.on.conestogac.puppypal.activities.AddPetActivity;
 import ca.on.conestogac.puppypal.activities.AddRecordActivity;
 import ca.on.conestogac.puppypal.activities.EditAssistantActivity;
@@ -46,5 +47,10 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, EditAssistantActivity.class);
         startActivityForResult(intent,0);
+    }
+    public void AddFitnessGoalButton(View v)
+    {
+        Intent intent = new Intent(this, AddFitnessGoalActivity.class);
+        startActivity(intent);
     }
 }

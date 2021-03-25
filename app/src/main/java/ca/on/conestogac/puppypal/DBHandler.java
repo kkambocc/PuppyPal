@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.ArrayMap;
+import android.util.Log;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -131,6 +133,32 @@ public class DBHandler
         return cursor;
     }
 
+    //Add Weight Fitness Goal
+    public void addWeightFitnessGoal(double weight) {
+        SQLiteDatabase db = databaseHandler.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("target_weight", weight);
+        Log.d("addFitnessGoal", "addData: " + weight);
+    }
+    //Add Energy Fitness Goal
+    public void addEnergyFitnessGoal(int energy) {
+        SQLiteDatabase db = databaseHandler.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("target_energy_level", energy);
+        Log.d("addFitnessGoal", "addData: " + energy);
+    }
+    //Add Exercise Fitness Goal
+    public void addExerciseFitnessGoal(String exerciseType, String exerciseDuration) {
+        SQLiteDatabase db = databaseHandler.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("target_exercise_type", exerciseType);
+        Log.d("addFitnessGoal", "addData: " + exerciseType);
+        contentValues.put("target_exercise_duration", exerciseDuration);
+        Log.d("addFitnessGoal", "addData: " + exerciseDuration);
+    }
 
     //Code to implement database
     static class PuppyPalApplication extends SQLiteOpenHelper {
@@ -200,6 +228,13 @@ public class DBHandler
                     "address TEXT, " +
                     "title TEXT, " +
                     "general_description TEXT)");
+
+            db.execSQL("CREATE TABLE IF NOT EXISTS tbl_fitness_goal(" +
+                    "fitness_goal_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "target_weight REAL, " +
+                    "target_energy_level INTEGER, " +
+                    "target_exercise_type TEXT, " +
+                    "target_exercise_duration TEXT)");
 
         }
 
