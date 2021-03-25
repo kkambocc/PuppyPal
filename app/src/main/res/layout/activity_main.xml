@@ -140,24 +140,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
+            android:onClick="ChangeGraph"
             android:text="@string/weight" />
 
         <RadioButton
             android:id="@+id/exerciseGraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="ChangeGraph"
             android:text="Exercise" />
 
         <RadioButton
             android:id="@+id/mealGraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="ChangeGraph"
             android:text="Meals" />
 
         <RadioButton
             android:id="@+id/energyGraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="ChangeGraph"
             android:text="Energy" />
     </RadioGroup>
 

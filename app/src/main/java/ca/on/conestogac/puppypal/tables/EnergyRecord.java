@@ -7,7 +7,7 @@ import static java.lang.Long.parseLong;
 public class EnergyRecord
 {
     public static final String TABLE_NAME = "tbl_energy";
-    public static final String PRIMARY_KEY = "energy_id";
+    public static final String PRIMARY_KEY = "energy_level_id";
     private long energyId;
     private long petId;
     private Date date;
