@@ -1,11 +1,14 @@
 package ca.on.conestogac.puppypal.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,8 +52,24 @@ public class AddAssistantActivity extends AppCompatActivity {
             deleteAssistantButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("Delete method Called");
-                    deleteAssistant(intent.getIntExtra("id",-1));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddAssistantActivity.this);
+                    builder.setTitle("Delete Alert");
+                    builder.setMessage("Would You like to delete assistant info");
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            System.out.println("Delete method Called");
+                            deleteAssistant(intent.getIntExtra("id", -1));
+                        }
+                    });
+                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+builder.show();
+
                 }
             });
             System.out.println("Success: Clicked Id is "+intent.getIntExtra("id",-1));
@@ -137,6 +156,33 @@ public class AddAssistantActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    private AlertDialog AskOption()
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                // set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Do you want to Delete")
+                .setIcon(R.drawable.ic_warning_outline)
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
     public void alertDialogBuilder(String title, String message)
     {
         new AlertDialog.Builder(this)
@@ -160,9 +206,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return nameBoolean;
         }
 
-        if (name.length() >50)
+        if (name.length() >20)
         {
-            alertDialogBuilder("Text limit exceeds !","Name should be no more than 50 characters long");
+            alertDialogBuilder("Text limit exceeds !","Name should be no more than 20 characters long");
             return nameBoolean;
         }
 
@@ -176,16 +222,16 @@ public class AddAssistantActivity extends AppCompatActivity {
             alertDialogBuilder("Phone number field is empty !","Phone Number can't be empty");
             return numberBoolean;
         }
-
-        if (!number.matches("^[0-9*+#]+$"))
+        
+        if (number.length() <10)
         {
-            alertDialogBuilder("Wrong Pattern","Phone Number should only contain whole numbers, '*', '+' or '#'");
+            alertDialogBuilder("Number is too short !","Phone Number should be minimum of 10 characters long");
             return numberBoolean;
         }
 
-        if (number.length() >30)
+        if (number.length() >10)
         {
-            alertDialogBuilder("Text limit exceeds !","Phone Number should be no more than 30 characters long");
+            alertDialogBuilder("Number is too long !","Phone Number should not be more than 10 characters long");
             return numberBoolean;
         }
 
@@ -200,15 +246,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return addressBoolean;
         }
 
-        /*if (!address.matches("^([a-zA-Z0-9]+[ ])*[a-zA-Z0-9]+$"))
+        if (address.length() >50)
         {
-            alertDialogBuilder("Wrong Pattern","Address should only contains alphanumeric characters");
-            return addressBoolean;
-        }*/
-
-        if (address.length() >150)
-        {
-            alertDialogBuilder("Text limit exceeds !","Address should be no more than 150 characters long");
+            alertDialogBuilder("Text limit exceeds !","Address should be no more than 50 characters long");
             return addressBoolean;
         }
 
@@ -229,9 +269,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return titleBoolean;
         }
 
-        if (title.length() >50)
+        if (title.length() >10)
         {
-            alertDialogBuilder("Text limit exceeds !","Title should be no more than 50 characters long");
+            alertDialogBuilder("Text limit exceeds !","Title should be no more than 10 characters long");
             return titleBoolean;
         }
 
@@ -252,9 +292,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return generalDescriptionBoolean;
         }
 
-        if (generalDescription.length() >1500)
+        if (generalDescription.length() >50)
         {
-            alertDialogBuilder("Text limit exceeds !","General Description should be no more than 1500 characters long");
+            alertDialogBuilder("Text limit exceeds !","General Description should be no more than 50 characters long");
             return generalDescriptionBoolean;
         }
 
