@@ -43,9 +43,14 @@ public class DBHandler
     //return a single column
     public ArrayList ReadSingleColumn(String returnColumn, String tableName)
     {
+        return ReadSingleColumn(returnColumn,tableName,null);
+    }
+
+    public ArrayList ReadSingleColumn(String returnColumn, String tableName,String orderBy)
+    {
         ArrayList<String> values = new ArrayList<String>(){};
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        Cursor cursor = database.query(tableName,new String[]{returnColumn},null,null,null,null,null);
+        Cursor cursor = database.query(tableName,new String[]{returnColumn},null,null,null,null,orderBy + " ASC");
         while (cursor.moveToNext())
         {
             values.add(cursor.getString(cursor.getColumnIndex(returnColumn)));
@@ -87,13 +92,6 @@ public class DBHandler
     /*Update
      *
      */
-
-    //tbl_pet
-    public void ChangePetTable(Pet pet)
-    {
-        DeletePetFromTable(pet);
-        AddToTable(Pet.TABLE_NAME,pet.toArray());
-    }
 
     //Delete Pet
     public void DeletePetFromTable(Pet pet)

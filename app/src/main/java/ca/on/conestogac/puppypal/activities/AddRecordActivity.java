@@ -53,7 +53,7 @@ public class AddRecordActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_record);
         database = new DBHandler(this);
-        String[] recordTypes = new String[]{"Meal", "Weight", "Exercise", "Energy Level", "Excrement"};
+        String[] recordTypes = new String[]{"Weight", "Meal", "Exercise", "Energy Level", "Excrement"};
         Spinner recordType = findViewById(R.id.spinRecordType);
         form = findViewById(R.id.layoutRecordForm);
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, recordTypes);
@@ -101,7 +101,7 @@ public class AddRecordActivity extends AppCompatActivity
         }
         calendar.set(Calendar.ZONE_OFFSET,0);
         calendar.set(Calendar.DST_OFFSET,0);
-        record.add(calendar.getTime().toString());
+        record.add(calendar.getTimeInMillis() + "");
 
 
         for (int i = 3; i < form.getChildCount(); i++)
@@ -177,15 +177,15 @@ public class AddRecordActivity extends AppCompatActivity
                         TextView labelTime = new TextView(this);
                         labelTime.setText("TIME");
                         viewTime.setOnClickListener(this::ChangeTime);
-                        ((Button) viewTime).setId(R.id.viewTime);
-                        ((Button) viewTime).setText(time.format(calendar.getTime()));
-                        ((Button) viewTime).setTextAppearance(R.style.TextAppearance_AppCompat_Large);
+                        viewTime.setId(R.id.viewTime);
+                        viewTime.setText(time.format(calendar.getTime()));
+                        viewTime.setTextAppearance(R.style.TextAppearance_AppCompat_Large);
                         AddRow(labelTime,viewTime);
 
                         view = new Button(this);
                         view.setOnClickListener(this::ChangeDate);
 
-                        ((Button) view).setId(R.id.viewDate);
+                        view.setId(R.id.viewDate);
                         ((Button) view).setText(date.format(calendar.getTime()));
                         ((Button) view).setTextAppearance(R.style.TextAppearance_AppCompat_Large);
                         break;

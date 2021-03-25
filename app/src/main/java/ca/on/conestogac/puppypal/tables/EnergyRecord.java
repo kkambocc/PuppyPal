@@ -2,9 +2,12 @@ package ca.on.conestogac.puppypal.tables;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static java.lang.Long.parseLong;
+
 public class EnergyRecord
 {
     public static final String TABLE_NAME = "tbl_energy";
+    public static final String PRIMARY_KEY = "energy_id";
     private long energyId;
     private long petId;
     private Date date;
@@ -14,6 +17,14 @@ public class EnergyRecord
     public EnergyRecord()
     {
 
+    }
+
+    public EnergyRecord(ArrayList<String> array)
+    {
+        this.energyId = parseLong(array.get(0));
+        this.petId = parseLong(array.get(1));
+        this.date = new Date(parseLong(array.get(2)));
+        this.energyLevel = Integer.parseInt(array.get(3));
     }
 
     //Constructor for adding a new meal record to database
@@ -31,4 +42,8 @@ public class EnergyRecord
         array.add(3,((Integer) this.energyLevel).toString());
         return array;
     }
+
+    public float GetEnergyLevel() {return this.energyLevel;}
+    public Date GetDate() {return this.date;}
+    public long GetPetId() {return this.petId;}
 }

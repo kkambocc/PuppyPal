@@ -13,6 +13,7 @@ import static java.lang.Long.parseLong;
 
 public class Pet  {
     public static final String TABLE_NAME = "tbl_pet";
+    public static final String PRIMARY_KEY = "pet_id";
 
     private long petId;
     private String name;
@@ -26,7 +27,7 @@ public class Pet  {
     //Basic Constructor
     public Pet(Context addPetActivityContext)
     {
-        this.petId = 10000;
+        this.petId = 0;
         this.name = "";
         this.age = 0;
         this.weight = 0;
