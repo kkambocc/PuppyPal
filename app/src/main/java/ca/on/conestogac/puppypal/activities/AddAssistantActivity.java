@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -51,8 +52,24 @@ public class AddAssistantActivity extends AppCompatActivity {
             deleteAssistantButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("Delete method Called");
-                    deleteAssistant(intent.getIntExtra("id",-1));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddAssistantActivity.this);
+                    builder.setTitle("Delete Alert");
+                    builder.setMessage("Would You like to delete assistant info");
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            System.out.println("Delete method Called");
+                            deleteAssistant(intent.getIntExtra("id", -1));
+                        }
+                    });
+                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+builder.show();
+
                 }
             });
             System.out.println("Success: Clicked Id is "+intent.getIntExtra("id",-1));
@@ -139,6 +156,33 @@ public class AddAssistantActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    private AlertDialog AskOption()
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                // set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Do you want to Delete")
+                .setIcon(R.drawable.ic_warning_outline)
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
     public void alertDialogBuilder(String title, String message)
     {
         new AlertDialog.Builder(this)
@@ -187,7 +231,7 @@ public class AddAssistantActivity extends AppCompatActivity {
 
         if (number.length() >10)
         {
-            alertDialogBuilder("Text limit exceeds !","Phone Number should be no more than 10 characters long");
+            alertDialogBuilder("Number is too long !","Phone Number should not be more than 10 characters long");
             return numberBoolean;
         }
 
@@ -225,9 +269,9 @@ public class AddAssistantActivity extends AppCompatActivity {
             return titleBoolean;
         }
 
-        if (title.length() >5)
+        if (title.length() >10)
         {
-            alertDialogBuilder("Text limit exceeds !","Title should be no more than 5 characters long");
+            alertDialogBuilder("Text limit exceeds !","Title should be no more than 10 characters long");
             return titleBoolean;
         }
 
