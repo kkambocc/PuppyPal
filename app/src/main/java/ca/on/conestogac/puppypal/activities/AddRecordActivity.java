@@ -87,7 +87,7 @@ public class AddRecordActivity extends AppCompatActivity
         View petIdView = ((LinearLayout) form.getChildAt(0)).getChildAt(1);
         View timeView = ((LinearLayout) form.getChildAt(1)).getChildAt(1);
         View dateView = ((LinearLayout) form.getChildAt(2)).getChildAt(1);
-        ArrayList ids = database.ReadSingleColumn("pet_id", Pet.TABLE_NAME);
+        ArrayList ids = database.ReadSingleColumn(Pet.PRIMARY_KEY, Pet.TABLE_NAME);
 
 
         record.add(ids.get(((Spinner) petIdView).getSelectedItemPosition()).toString());
@@ -164,7 +164,7 @@ public class AddRecordActivity extends AppCompatActivity
 
                 switch (column)
                 {
-                    case "pet_id":
+                    case Pet.PRIMARY_KEY:
                         label.setText("PET");
                         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, database.ReadSingleColumn("name", Pet.TABLE_NAME));
                         view = new Spinner(this);

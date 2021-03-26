@@ -1,9 +1,6 @@
 package ca.on.conestogac.puppypal.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,11 +8,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
 
 public class AddFitnessGoalActivity extends AppCompatActivity {
-    DBHandler dbHandler;
+    DBHandler dbHandler = new DBHandler(this);
 
     RadioButton radioButtonWeight;
     RadioButton radioButtonEnergy;
@@ -59,21 +58,21 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
 
         radiobutton = SELECT_RADIO_BUTTON_EXERCISE;
 
-        radioButtonWeight = (RadioButton) findViewById(R.id.radioButtonWeight);
-        radioButtonEnergy = (RadioButton) findViewById(R.id.radioButtonEnergy);
-        radioButtonExercise = (RadioButton) findViewById(R.id.radioButtonExercise);
+        radioButtonWeight = findViewById(R.id.radioButtonWeight);
+        radioButtonEnergy = findViewById(R.id.radioButtonEnergy);
+        radioButtonExercise = findViewById(R.id.radioButtonExercise);
 
-        textViewTargetWeightLabel = (TextView) findViewById(R.id.textViewTargetWeightLabel);
-        textViewTargetEnergyLabel = (TextView) findViewById(R.id.textViewTargetEnergyLabel);
-        textViewTargetExerciseTypeLabel = (TextView) findViewById(R.id.textViewTargetExerciseTypeLabel);
-        textViewTargetExerciseDurationLabel = (TextView) findViewById(R.id.textViewTargetExerciseDurationLabel);
+        textViewTargetWeightLabel = findViewById(R.id.textViewTargetWeightLabel);
+        textViewTargetEnergyLabel = findViewById(R.id.textViewTargetEnergyLabel);
+        textViewTargetExerciseTypeLabel = findViewById(R.id.textViewTargetExerciseTypeLabel);
+        textViewTargetExerciseDurationLabel = findViewById(R.id.textViewTargetExerciseDurationLabel);
 
-        editTextTargetWeight = (EditText) findViewById(R.id.editTextTargetWeight);
-        editTextTargetEnergy = (EditText) findViewById(R.id.editTextTargetEnergy);
-        editTextTargetExerciseType = (EditText) findViewById(R.id.editTextTargetExerciseType);
-        editTextTargetExerciseDuration = (EditText) findViewById(R.id.editTextTargetExerciseDuration);
+        editTextTargetWeight = findViewById(R.id.editTextTargetWeight);
+        editTextTargetEnergy = findViewById(R.id.editTextTargetEnergy);
+        editTextTargetExerciseType = findViewById(R.id.editTextTargetExerciseType);
+        editTextTargetExerciseDuration = findViewById(R.id.editTextTargetExerciseDuration);
 
-        buttonAddFitnessGoal = (Button) findViewById(R.id.buttonAddFitnessGoal);
+        buttonAddFitnessGoal = findViewById(R.id.buttonAddFitnessGoal);
 
         buttonAddFitnessGoal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +143,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
                 validEnergy = EnergyValidation();
 
                 if (validEnergy == true) {
+                    // needs to be int not string
                     dbHandler.addEnergyFitnessGoal(Integer.parseInt(editTextTargetEnergy.getText().toString()));
                 }
 

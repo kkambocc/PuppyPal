@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.ArrayMap;
 import android.util.Log;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import ca.on.conestogac.puppypal.tables.EnergyRecord;
 import ca.on.conestogac.puppypal.tables.Pet;
 
 public class DBHandler
@@ -138,6 +138,8 @@ public class DBHandler
 
         contentValues.put("target_weight", weight);
         Log.d("addFitnessGoal", "addData: " + weight);
+
+        long id = db.insert("tbl_fitness_goal",null,contentValues);
     }
     //Add Energy Fitness Goal
     public void addEnergyFitnessGoal(int energy) {
@@ -145,6 +147,7 @@ public class DBHandler
         ContentValues contentValues = new ContentValues();
 
         contentValues.put("target_energy_level", energy);
+        long id = db.insert("tbl_fitness_goal",null,contentValues);
         Log.d("addFitnessGoal", "addData: " + energy);
     }
     //Add Exercise Fitness Goal
@@ -156,6 +159,9 @@ public class DBHandler
         Log.d("addFitnessGoal", "addData: " + exerciseType);
         contentValues.put("target_exercise_duration", exerciseDuration);
         Log.d("addFitnessGoal", "addData: " + exerciseDuration);
+
+        long id = db.insert("tbl_fitness_goal", null,contentValues);
+
     }
 
     //Code to implement database
@@ -183,7 +189,7 @@ public class DBHandler
                     "gender INTEGER, " +
                     "spayed_neutered INTEGER)");
 
-            db.execSQL("CREATE TABLE IF NOT EXISTS tbl_energy(" +
+            db.execSQL("CREATE TABLE IF NOT EXISTS "+ EnergyRecord.TABLE_NAME + "(" +
                     "energy_level_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "pet_id INTEGER, " +
                     "date TEXT, " +
