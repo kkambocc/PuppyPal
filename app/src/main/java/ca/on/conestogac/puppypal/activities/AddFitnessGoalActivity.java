@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
-import ca.on.conestogac.puppypal.tables.Pet;
 
 public class AddFitnessGoalActivity extends AppCompatActivity {
     DBHandler dbHandler;
