@@ -13,7 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
 
-public class AddFitnessGoalActivity extends AppCompatActivity {
+public class AddFitnessGoalActivity extends AppCompatActivity
+{
     DBHandler dbHandler = new DBHandler(this);
 
     RadioButton radioButtonWeight;
@@ -51,7 +52,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
     public boolean validExercise;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fitness_goal);
@@ -74,9 +76,11 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
 
         buttonAddFitnessGoal = findViewById(R.id.buttonAddFitnessGoal);
 
-        buttonAddFitnessGoal.setOnClickListener(new View.OnClickListener() {
+        buttonAddFitnessGoal.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 weight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
                 energy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
                 exerciseType = ((EditText) findViewById(R.id.editTextTargetExerciseType)).getText().toString();
@@ -87,7 +91,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         });
     }
 
-    public void onClickRadioButtonWeight(View v) {
+    public void onClickRadioButtonWeight(View v)
+    {
         radiobutton = SELECT_RADIO_BUTTON_WEIGHT;
 
         textViewTargetWeightLabel.setVisibility(View.VISIBLE);
@@ -101,7 +106,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         editTextTargetExerciseDuration.setVisibility(View.GONE);
     }
 
-    public void onClickRadioButtonEnergy(View v) {
+    public void onClickRadioButtonEnergy(View v)
+    {
         radiobutton = SELECT_RADIO_BUTTON_ENERGY;
 
         textViewTargetEnergyLabel.setVisibility(View.VISIBLE);
@@ -115,7 +121,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         editTextTargetExerciseDuration.setVisibility(View.GONE);
     }
 
-    public void onClickRadioButtonExercise(View v) {
+    public void onClickRadioButtonExercise(View v)
+    {
         radiobutton = SELECT_RADIO_BUTTON_EXERCISE;
 
         textViewTargetExerciseTypeLabel.setVisibility(View.VISIBLE);
@@ -129,12 +136,15 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         editTextTargetEnergy.setVisibility(View.GONE);
     }
 
-    public void addFitnessGoal() {
-        switch (radiobutton) {
+    public void addFitnessGoal()
+    {
+        switch (radiobutton)
+        {
             case "WEIGHT":
                 validEnergy = WeightValidation();
 
-                if (validWeight == true) {
+                if (validWeight == true)
+                {
                     dbHandler.addWeightFitnessGoal(Double.parseDouble(editTextTargetWeight.getText().toString()));
                 }
 
@@ -142,7 +152,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
             case "ENERGY":
                 validEnergy = EnergyValidation();
 
-                if (validEnergy == true) {
+                if (validEnergy == true)
+                {
                     // needs to be int not string
                     dbHandler.addEnergyFitnessGoal(Integer.parseInt(editTextTargetEnergy.getText().toString()));
                 }
@@ -151,7 +162,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
             case "EXERCISE":
                 validEnergy = ExerciseValidation();
 
-                if (validExercise == true) {
+                if (validExercise == true)
+                {
                     dbHandler.addExerciseFitnessGoal(exerciseType, exerciseDuration);
                 }
 
@@ -168,7 +180,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         //Toast.makeText(this, "Fitness goal has been created", Toast.LENGTH_SHORT).show();
     }
 
-    public boolean WeightValidation() {
+    public boolean WeightValidation()
+    {
         validWeight = true;
         validateWeight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
 
@@ -178,8 +191,10 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
             validWeight = false;
         }
 
-        if (!validateWeight.isEmpty()) {
-            if (Integer.parseInt(validateWeight) > 999) {
+        if (!validateWeight.isEmpty())
+        {
+            if (Integer.parseInt(validateWeight) > 999)
+            {
                 Toast.makeText(this, "Weight in lbs should be in the range of 3 digits", Toast.LENGTH_SHORT).show();
                 validWeight = false;
             }
@@ -188,7 +203,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         return validWeight;
     }
 
-    public boolean EnergyValidation() {
+    public boolean EnergyValidation()
+    {
         validEnergy = true;
         validateEnergy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
 
@@ -201,7 +217,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         return validEnergy;
     }
 
-    public boolean ExerciseValidation() {
+    public boolean ExerciseValidation()
+    {
         validExercise = true;
         validateExerciseType = ((EditText) findViewById(R.id.editTextTargetExerciseType)).getText().toString();
         validateExerciseDuration = ((EditText) findViewById(R.id.editTextTargetExerciseDuration)).getText().toString();

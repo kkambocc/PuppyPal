@@ -23,31 +23,35 @@ public class EditPetActivity extends AppCompatActivity
     private Long petId;
     private Pet pet;
     private DBHandler database;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_pet);
         database = new DBHandler(this);
 
-        ArrayList<String> ids = (database.ReadSingleColumn("pet_id",Pet.TABLE_NAME));
+        ArrayList<String> ids = (database.ReadSingleColumn(Pet.PRIMARY_KEY, Pet.TABLE_NAME));
         LinearLayout list = findViewById(R.id.petList);
 
         for (String id : ids)
         {
-            pet = new Pet(database.ReadSingleEntry(id,Pet.TABLE_NAME));
+            pet = new Pet(database.ReadSingleEntry(id, Pet.TABLE_NAME));
             Button b = new Button(this);
             b.setText(pet.getName());
-            SetOnClick(b,pet.getPetId());
+            SetOnClick(b, pet.getPetId());
             list.addView(b);
         }
     }
 
     private void SetOnClick(Button btn, long id)
     {
-        btn.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 petId = id;
                 ShowPet();
             }
@@ -60,7 +64,7 @@ public class EditPetActivity extends AppCompatActivity
     private void ShowPet()
     {
         setContentView(R.layout.add_pet);
-        pet = new Pet(database.ReadSingleEntry(petId.toString(),Pet.TABLE_NAME));
+        pet = new Pet(database.ReadSingleEntry(petId.toString(), Pet.TABLE_NAME));
 
         //name
         ((EditText) findViewById(R.id.textName)).setText(pet.getName());
@@ -70,7 +74,7 @@ public class EditPetActivity extends AppCompatActivity
         ((EditText) findViewById(R.id.textAge)).setText("" + pet.getAge());
 
         //Weight
-        ((EditText) findViewById(R.id.textWeight)).setText("" + pet.getWeight());
+        ((EditText) findViewById(R.id.textWeight)).setText("" + database.MostRecentWeight(pet.getPetId()));
         findViewById(R.id.textWeight).setEnabled(false);
 
         //breed
@@ -81,8 +85,7 @@ public class EditPetActivity extends AppCompatActivity
         if (pet.getGender() == 0)
         {
             ((RadioButton) findViewById(R.id.radioFemale)).setChecked(true);
-        }
-        else
+        } else
         {
             ((RadioButton) findViewById(R.id.radioMale)).setChecked(true);
         }
@@ -127,7 +130,7 @@ public class EditPetActivity extends AppCompatActivity
         if (Validate())
         {
 
-            database.DeletePetFromTable(pet);
+            database.DeleteFromTable(Pet.TABLE_NAME, pet.getPetId());
             database.AddToTable(Pet.TABLE_NAME, pet.toArray());
             finish();
             Intent intent = new Intent(this, EditPetActivity.class);
@@ -137,7 +140,7 @@ public class EditPetActivity extends AppCompatActivity
 
     public void DeletePet(View v)
     {
-        database.DeletePetFromTable(pet);
+        database.DeleteFromTable(Pet.TABLE_NAME, pet.getPetId());
         finish();
         Intent intent = new Intent(this, EditPetActivity.class);
         startActivity(intent);

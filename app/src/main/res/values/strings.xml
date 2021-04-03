@@ -30,5 +30,7 @@
     <string name="rb_exercise">Exercise</string>
 
     <string name="hintForWeight">Enter in Pounds (lbs)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
