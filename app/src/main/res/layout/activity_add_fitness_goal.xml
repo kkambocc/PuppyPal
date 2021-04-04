@@ -137,8 +137,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="HH:MM"
-                    android:inputType="time" />
+                    android:hint="Enter number of minutes"
+                    android:inputType="number" />
 
             </LinearLayout>
 

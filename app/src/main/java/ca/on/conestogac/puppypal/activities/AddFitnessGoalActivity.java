@@ -36,7 +36,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
     public static final String SELECT_RADIO_BUTTON_ENERGY = "ENERGY";
     public static final String SELECT_RADIO_BUTTON_EXERCISE = "EXERCISE";
 
-    public String radiobutton;
+    public String radiobuttonSelection;
     public String weight;
     public String energy;
     public String exerciseType;
@@ -56,7 +56,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fitness_goal);
 
-        radiobutton = SELECT_RADIO_BUTTON_EXERCISE;
+        radiobuttonSelection = SELECT_RADIO_BUTTON_EXERCISE;
 
         radioButtonWeight = findViewById(R.id.radioButtonWeight);
         radioButtonEnergy = findViewById(R.id.radioButtonEnergy);
@@ -87,8 +87,9 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         });
     }
 
+    //modify activity for weight goal
     public void onClickRadioButtonWeight(View v) {
-        radiobutton = SELECT_RADIO_BUTTON_WEIGHT;
+        radiobuttonSelection = SELECT_RADIO_BUTTON_WEIGHT;
 
         textViewTargetWeightLabel.setVisibility(View.VISIBLE);
         editTextTargetWeight.setVisibility(View.VISIBLE);
@@ -101,8 +102,9 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         editTextTargetExerciseDuration.setVisibility(View.GONE);
     }
 
+    //modify activity for energy goal
     public void onClickRadioButtonEnergy(View v) {
-        radiobutton = SELECT_RADIO_BUTTON_ENERGY;
+        radiobuttonSelection = SELECT_RADIO_BUTTON_ENERGY;
 
         textViewTargetEnergyLabel.setVisibility(View.VISIBLE);
         editTextTargetEnergy.setVisibility(View.VISIBLE);
@@ -115,8 +117,9 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         editTextTargetExerciseDuration.setVisibility(View.GONE);
     }
 
+    //modify activity for exercise goal
     public void onClickRadioButtonExercise(View v) {
-        radiobutton = SELECT_RADIO_BUTTON_EXERCISE;
+        radiobuttonSelection = SELECT_RADIO_BUTTON_EXERCISE;
 
         textViewTargetExerciseTypeLabel.setVisibility(View.VISIBLE);
         editTextTargetExerciseType.setVisibility(View.VISIBLE);
@@ -130,29 +133,35 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
     }
 
     public void addFitnessGoal() {
-        switch (radiobutton) {
+        switch (radiobuttonSelection) {
             case "WEIGHT":
-                validEnergy = WeightValidation();
+                //String thisWeight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
+                validEnergy = WeightValidation(weight);
 
                 if (validWeight == true) {
-                    dbHandler.addWeightFitnessGoal(Double.parseDouble(editTextTargetWeight.getText().toString()));
+                    //dbHandler.addWeightFitnessGoal(Double.parseDouble(editTextTargetWeight.getText().toString()));
+                    dbHandler.addWeightFitnessGoal(Double.parseDouble(weight));
                 }
 
                 break;
             case "ENERGY":
-                validEnergy = EnergyValidation();
+                //String thisEnergy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
+                validEnergy = EnergyValidation(energy);
 
                 if (validEnergy == true) {
                     // needs to be int not string
-                    dbHandler.addEnergyFitnessGoal(Integer.parseInt(editTextTargetEnergy.getText().toString()));
+                    //dbHandler.addEnergyFitnessGoal(Integer.parseInt(editTextTargetEnergy.getText().toString()));
+                    dbHandler.addEnergyFitnessGoal(Integer.parseInt(energy));
                 }
 
                 break;
             case "EXERCISE":
-                validEnergy = ExerciseValidation();
+                //String thisExerciseType = ((EditText) findViewById(R.id.editTextTargetExerciseType)).getText().toString();
+                //String thisExerciseDuration = ((EditText) findViewById(R.id.editTextTargetExerciseDuration)).getText().toString();
+                validEnergy = ExerciseValidation(exerciseType, exerciseDuration);
 
                 if (validExercise == true) {
-                    dbHandler.addExerciseFitnessGoal(exerciseType, exerciseDuration);
+                    dbHandler.addExerciseFitnessGoal(exerciseType, Long.parseLong(exerciseDuration));
                 }
 
                 break;
@@ -160,17 +169,17 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
                 // no-op
         }
 
-        editTextTargetWeight.setText(null);
-        editTextTargetEnergy.setText(null);
-        editTextTargetExerciseType.setText(null);
-        editTextTargetExerciseDuration.setText(null);
+        //editTextTargetWeight.setText(null);
+        //editTextTargetEnergy.setText(null);
+        //editTextTargetExerciseType.setText(null);
+        //editTextTargetExerciseDuration.setText(null);
 
         //Toast.makeText(this, "Fitness goal has been created", Toast.LENGTH_SHORT).show();
     }
 
-    public boolean WeightValidation() {
+    public boolean WeightValidation(String _weight) {
         validWeight = true;
-        validateWeight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
+        validateWeight = _weight;
 
         if (validateWeight.isEmpty())
         {
@@ -188,9 +197,9 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         return validWeight;
     }
 
-    public boolean EnergyValidation() {
+    public boolean EnergyValidation(String _energy) {
         validEnergy = true;
-        validateEnergy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
+        validateEnergy = _energy;
 
         if (validateEnergy.isEmpty())
         {
@@ -201,10 +210,11 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         return validEnergy;
     }
 
-    public boolean ExerciseValidation() {
+    public boolean ExerciseValidation(String _exerciseType, String _exerciseDuration) {
         validExercise = true;
-        validateExerciseType = ((EditText) findViewById(R.id.editTextTargetExerciseType)).getText().toString();
-        validateExerciseDuration = ((EditText) findViewById(R.id.editTextTargetExerciseDuration)).getText().toString();
+
+        validateExerciseType = _exerciseType;
+        validateExerciseDuration = _exerciseDuration;
 
         if (validateExerciseType.isEmpty())
         {
@@ -218,11 +228,22 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
             validExercise = false;
         }
 
+        /*
         if (!validateExerciseDuration.matches("^\\d\\d:\\d\\d$"))
         {
-            Toast.makeText(this, "Incorrect format of target duration! Use HH:MM", Toast.LENGTH_SHORT).show();
-            validExercise = false;
+            if (validateExerciseDuration.matches("^\\d:\\d\\d$"))
+            {
+                exerciseDuration = "0" + exerciseDuration;
+
+                //editTextTargetExerciseDuration.setText(exerciseDuration);
+            }
+            else
+            {
+                Toast.makeText(this, "Incorrect format of target duration! Use HH:MM", Toast.LENGTH_SHORT).show();
+                validExercise = false;
+            }
         }
+        */
 
         return validExercise;
     }

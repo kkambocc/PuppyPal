@@ -147,11 +147,12 @@ public class DBHandler
         ContentValues contentValues = new ContentValues();
 
         contentValues.put("target_energy_level", energy);
-        long id = db.insert("tbl_fitness_goal",null,contentValues);
         Log.d("addFitnessGoal", "addData: " + energy);
+
+        long id = db.insert("tbl_fitness_goal",null,contentValues);
     }
     //Add Exercise Fitness Goal
-    public void addExerciseFitnessGoal(String exerciseType, String exerciseDuration) {
+    public void addExerciseFitnessGoal(String exerciseType, long exerciseDuration) {
         SQLiteDatabase db = databaseHandler.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -161,7 +162,6 @@ public class DBHandler
         Log.d("addFitnessGoal", "addData: " + exerciseDuration);
 
         long id = db.insert("tbl_fitness_goal", null,contentValues);
-
     }
 
     //Code to implement database
@@ -238,7 +238,7 @@ public class DBHandler
                     "target_weight REAL, " +
                     "target_energy_level INTEGER, " +
                     "target_exercise_type TEXT, " +
-                    "target_exercise_duration TEXT)");
+                    "target_exercise_duration REAL)");
 
         }
 
