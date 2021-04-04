@@ -1,11 +1,19 @@
 package ca.on.conestogac.puppypal;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -16,6 +24,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Random;
 
 import ca.on.conestogac.puppypal.activities.AddAssistantActivity;
 import ca.on.conestogac.puppypal.activities.AddFitnessGoalActivity;
@@ -38,7 +47,8 @@ public class MainActivity extends AppCompatActivity
     private RadioGroup graphSelector;
     private GridLabelRenderer renderer;
     private Viewport viewport;
-
+    private Random random;
+    public static CountDownTimer countDownTimer;
 
 
     @Override
@@ -59,6 +69,22 @@ public class MainActivity extends AppCompatActivity
         renderer.setLabelFormatter(new DateAsXAxisLabelFormatter(this,dateFormat));
         renderer.setHumanRounding(false, true);
         renderer.setNumVerticalLabels(10);
+        random =new Random();
+
+        countDownTimer = new CountDownTimer(1800000,1000) {
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                MainActivity.notifyUser(getApplicationContext());
+                countDownTimer.start();
+            }
+        };
+        countDownTimer.start();
     }
 
     @Override
@@ -129,6 +155,7 @@ public class MainActivity extends AppCompatActivity
                 if (parseLong(petId) == recordPetId)
                 {
                     series.appendData(dataPoint, true, ids.size());
+                    series.setColor(Color.argb(255,random.nextInt(256),random.nextInt(256),random.nextInt(256)));
                 }
 
             }
@@ -198,5 +225,27 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, AddFitnessGoalActivity.class);
         startActivity(intent);
+    }
+    public static void notifyUser(Context context)
+    {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+        {
+            NotificationChannel notificationChannel=new NotificationChannel("test","Remember to Insert data", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("When a 30 minutes have passed since the data was inserted");
+            NotificationManager notificationManager= context.getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+        }
+        NotificationCompat.Builder builder;
+        NotificationManagerCompat managerCompat;
+        builder=new NotificationCompat.Builder(context,"test")
+                .setSmallIcon(android.R.drawable.stat_notify_chat)
+                .setContentTitle("Enter the input")
+                .setContentText("You haven't been enter the input for 30 minutes.")
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        managerCompat=NotificationManagerCompat.from(context);
+        managerCompat.notify(1,builder.build());
     }
 }

@@ -2,7 +2,9 @@ package ca.on.conestogac.puppypal.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,8 @@ public class AddRecordActivity extends AppCompatActivity
     private DateFormat time;
     private DateFormat date;
     private String tableName;
+    Intent notificationIntent;
+    CountDownTimer countDownTimer;
 
 
     @Override
