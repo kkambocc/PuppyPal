@@ -47,7 +47,7 @@ public class WeightRecord
         ArrayList<String> array = new ArrayList<>();
         array.add(0, ((Long) this.weightId).toString());
         array.add(1, ((Long) this.petId).toString());
-        array.add(2, this.date.toString());
+        array.add(2, this.date.getTime() + "");
         array.add(3, ((Float) this.weight).toString());
         return array;
     }

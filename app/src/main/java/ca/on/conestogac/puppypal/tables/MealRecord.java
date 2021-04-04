@@ -32,7 +32,7 @@ public class MealRecord
     {
         this.mealId = parseLong(array.get(0));
         this.petId = parseLong(array.get(1));
-        this.date = new Date(array.get(2));
+        this.date = new Date(parseLong(array.get(2)));
         this.amount = parseFloat(array.get(3));
     }
 

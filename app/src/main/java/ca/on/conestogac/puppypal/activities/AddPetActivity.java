@@ -10,6 +10,7 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import ca.on.conestogac.puppypal.DBHandler;
@@ -83,7 +84,8 @@ public class AddPetActivity extends AppCompatActivity
         calendar.set(Calendar.ZONE_OFFSET, 0);
         calendar.set(Calendar.DST_OFFSET, 0);
 
-        WeightRecord weightRecord = new WeightRecord(Float.parseFloat(weight),calendar.getTime(),pet.getPetId());
+        ArrayList<String> petId = database.ReadSingleColumn(Pet.PRIMARY_KEY,Pet.TABLE_NAME,Pet.PRIMARY_KEY + " DESC","1");
+        WeightRecord weightRecord = new WeightRecord(Float.parseFloat(weight),calendar.getTime(), Long.parseLong(petId.get(0)));
         database.AddToTable(WeightRecord.TABLE_NAME,weightRecord.toArray());
 
         //Reset screen

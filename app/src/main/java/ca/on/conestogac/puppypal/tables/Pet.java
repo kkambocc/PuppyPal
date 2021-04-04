@@ -66,47 +66,55 @@ public class Pet
         return array;
     }
 
-    public long getPetId(){return this.petId;}
+    public Long getPetId() {return this.petId;}
 
-    public String getName(){return this.name;}
-    public void setName(String name){this.name = name;}
+    public String getName() {return this.name;}
 
-    public int getAge(){return this.age;}
-    public void setAge(int age){this.age = age;}
+    public void setName(String name) {this.name = name;}
 
-    public String getBreed(){return this.breed;}
-    public void setBreed(String breed){this.breed = breed;}
+    public Integer getAge() {return this.age;}
 
-    public int getGender(){return this.gender;}
-    public void setGender(int gender){this.gender = gender;}
+    public void setAge(int age) {this.age = age;}
 
-    public int getSpayedNeutered(){return this.spayedNeutered;}
-    public void setSpayedNeutered(int spayedNeutered){this.spayedNeutered = spayedNeutered;}
+    public String getBreed() {return this.breed;}
+
+    public void setBreed(String breed) {this.breed = breed;}
+
+    public Integer getGender() {return this.gender;}
+
+    public void setGender(int gender) {this.gender = gender;}
+
+    public Integer getSpayedNeutered() {return this.spayedNeutered;}
+
+    public void setSpayedNeutered(int spayedNeutered) {this.spayedNeutered = spayedNeutered;}
 
 
-    public boolean breedValidation(String breed)
+    public Boolean breedValidation(String breed)
     {
         boolean breedBoolean = false;
         if (breed.isEmpty())
         {
             Toast.makeText(addPetActivityContext, "Breed field is empty !", Toast.LENGTH_SHORT).show();
             return breedBoolean;
-        } else if (!breed.matches("^[a-zA-Z ]*$"))
+        }
+        else if (!breed.matches("^[a-zA-Z ]*$"))
         {
             Toast.makeText(addPetActivityContext, "Breed should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
             return breedBoolean;
-        } else if (breed.length() > 20)
+        }
+        else if (breed.length() > 20)
         {
             Toast.makeText(addPetActivityContext, "Breed should be no more than 20 characters long", Toast.LENGTH_SHORT).show();
             return breedBoolean;
-        } else
+        }
+        else
         {
             breedBoolean = true;
         }
         return breedBoolean;
     }
 
-    public boolean weightValidation(String weight)
+    public Boolean weightValidation(String weight)
     {
         boolean weightBoolean = false;
         if (weight.isEmpty())
@@ -127,7 +135,7 @@ public class Pet
         return weightBoolean;
     }
 
-    public boolean ageValidation(String age)
+    public Boolean ageValidation(String age)
     {
         boolean ageBoolean = false;
         if (age.isEmpty())
@@ -155,15 +163,18 @@ public class Pet
         {
             Toast.makeText(addPetActivityContext, "Name field is empty !", Toast.LENGTH_SHORT).show();
             return nameBoolean;
-        } else if (!name.matches("^[a-zA-Z]*$"))
+        }
+        else if (!name.matches("^[a-zA-Z]*$"))
         {
             Toast.makeText(addPetActivityContext, "Name should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
             return nameBoolean;
-        } else if (name.length() > 20)
+        }
+        else if (name.length() > 20)
         {
             Toast.makeText(addPetActivityContext, "Name should be no more than 20 characters long", Toast.LENGTH_SHORT).show();
             return nameBoolean;
-        } else
+        }
+        else
         {
             nameBoolean = true;
         }

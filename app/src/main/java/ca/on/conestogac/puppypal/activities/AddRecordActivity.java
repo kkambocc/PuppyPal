@@ -7,24 +7,19 @@ import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
@@ -35,8 +30,7 @@ import ca.on.conestogac.puppypal.tables.MealRecord;
 import ca.on.conestogac.puppypal.tables.Pet;
 import ca.on.conestogac.puppypal.tables.WeightRecord;
 
-public class AddRecordActivity extends AppCompatActivity
-{
+public class AddRecordActivity extends AppCompatActivity {
 
     private DBHandler database;
     private LinearLayout form;
@@ -44,75 +38,70 @@ public class AddRecordActivity extends AppCompatActivity
     private DateFormat time;
     private DateFormat date;
     private String tableName;
+    private String petId;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_record);
+
         database = new DBHandler(this);
-        String[] recordTypes = new String[]{"Weight", "Meal", "Exercise", "Energy Level", "Excrement"};
-        Spinner recordType = findViewById(R.id.spinRecordType);
         form = findViewById(R.id.layoutRecordForm);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, recordTypes);
-        recordType.setAdapter(adapter);
         time = android.text.format.DateFormat.getTimeFormat(getApplicationContext());
         date = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-        recordType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                CreateForm(parent.getItemAtPosition(position).toString());
-            }
+        petId = getIntent().getStringExtra(Pet.PRIMARY_KEY);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                //do nothing
-            }
-        });
+        tableName = getIntent().getStringExtra("tableName");
+        GenerateForm(database.GetColumnNames(tableName));
+
+        String pageTitle = "Add ";
+        switch (tableName) {
+            case ExerciseRecord.TABLE_NAME:
+                pageTitle += "Exercise";
+                break;
+            case EnergyRecord.TABLE_NAME:
+                pageTitle += "Energy";
+                break;
+            case ExcrementRecord.TABLE_NAME:
+                pageTitle += "Excrement";
+                break;
+            case MealRecord.TABLE_NAME:
+                pageTitle += "Meal";
+                break;
+            case WeightRecord.TABLE_NAME:
+            default:
+                pageTitle += "Weight";
+                break;
+        }
+        TextView title = findViewById(R.id.labelRecordType);
+        title.setText(pageTitle);
 
     }
 
-    public void SaveRecordButton(View v)
-    {
+    public void SaveRecordButton(View v) {
         ArrayList<String> record = new ArrayList<>();
         //emptyId
         record.add("0");
-        //
-        Calendar calendar = Calendar.getInstance();
-        View petIdView = ((LinearLayout) form.getChildAt(0)).getChildAt(1);
-        View timeView = ((LinearLayout) form.getChildAt(1)).getChildAt(1);
-        View dateView = ((LinearLayout) form.getChildAt(2)).getChildAt(1);
-        ArrayList<String> ids = database.ReadSingleColumn(Pet.PRIMARY_KEY, Pet.TABLE_NAME);
+        record.add(petId);
+        View timeView = ((LinearLayout) form.getChildAt(0)).getChildAt(1);
+        View dateView = ((LinearLayout) form.getChildAt(1)).getChildAt(1);
 
-
-        record.add(ids.get(((Spinner) petIdView).getSelectedItemPosition()));
-        try
-        {
+        try {
             long selectedDate = date.parse(((Button) dateView).getText().toString()).getTime();
             long selectedTime = time.parse(((Button) timeView).getText().toString()).getTime();
-            calendar.setTime(new Date(selectedDate + selectedTime));
-        } catch (Exception ex)
-        {
+            record.add((selectedDate + selectedTime) + "");
+        } catch (Exception ex) {
             //do nothing for now
         }
-        calendar.set(Calendar.ZONE_OFFSET, 0);
-        calendar.set(Calendar.DST_OFFSET, 0);
-        record.add(calendar.getTimeInMillis() + "");
 
 
-        for (int i = 3; i < form.getChildCount(); i++)
-        {
+        for (int i = 2; i < form.getChildCount(); i++) {
             View view = ((LinearLayout) form.getChildAt(i)).getChildAt(1);
-            if (view instanceof SeekBar)
-            {
+            if (view instanceof SeekBar) {
                 record.add("" + ((SeekBar) view).getProgress());
-            } else
-            {
+            } else {
                 record.add(((EditText) view).getText().toString());
             }
         }
@@ -120,51 +109,16 @@ public class AddRecordActivity extends AppCompatActivity
         finish();
     }
 
-    private void CreateForm(String selectedType)
-    {
-        switch (selectedType.toLowerCase())
-        {
-            case "exercise":
-                tableName = ExerciseRecord.TABLE_NAME;
-                break;
-            case "energy level":
-                tableName = EnergyRecord.TABLE_NAME;
-                break;
-            case "weight":
-                tableName = WeightRecord.TABLE_NAME;
-                break;
-            case "excrement":
-                tableName = ExcrementRecord.TABLE_NAME;
-                break;
-            case "meal":
-            default:
-                tableName = MealRecord.TABLE_NAME;
-                break;
-        }
-        GenerateForm(database.GetColumnNames(tableName));
-    }
-
-    private void GenerateForm(ArrayList<String> columnNames)
-    {
+    private void GenerateForm(ArrayList<String> columnNames) {
         form.removeAllViews();
 
-        for (String column : columnNames)
-        {
+        for (String column : columnNames) {
             //ignore primary keys
-            if (!column.equals(columnNames.get(0)))
-            {
+            if (!column.equals(columnNames.get(0)) && !column.equals((columnNames.get(1)))) {
                 TextView label = new TextView(this);
                 View view = new EditText(this);
                 label.setText(column.toUpperCase());
-
-                if (column.equals(Pet.PRIMARY_KEY))
-                {
-                    label.setText("PET");
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, database.ReadSingleColumn(Pet.COLUMN_NAMES[0], Pet.TABLE_NAME));
-                    view = new Spinner(this);
-                    ((Spinner) view).setAdapter(adapter);
-
-                } else if (column.equals(WeightRecord.COLUMN_NAMES[0])) //date
+                if (column.equals(WeightRecord.COLUMN_NAMES[0])) //date
                 {
                     calendar = Calendar.getInstance();
 
@@ -197,8 +151,7 @@ public class AddRecordActivity extends AppCompatActivity
         }
     }
 
-    private void AddRow(TextView label, View view)
-    {
+    private void AddRow(TextView label, View view) {
         ViewGroup.LayoutParams params = new LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
@@ -221,13 +174,10 @@ public class AddRecordActivity extends AppCompatActivity
 
     }
 
-    private void ChangeDate(View view)
-    {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener()
-        {
+    private void ChangeDate(View view) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
-            {
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 Button dateButton = findViewById(R.id.viewDate);
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
@@ -238,13 +188,10 @@ public class AddRecordActivity extends AppCompatActivity
         datePickerDialog.show();
     }
 
-    private void ChangeTime(View view)
-    {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener()
-        {
+    private void ChangeTime(View view) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-            {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 Button timeButton = findViewById(R.id.viewTime);
                 calendar.set(Calendar.HOUR, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);

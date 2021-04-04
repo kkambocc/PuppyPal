@@ -27,6 +27,9 @@ public class DBHandler
         databaseHandler = new PuppyPalApplication(context);
     }
 
+    /*
+    Create
+     */
     public void AddToTable(String tableName, ArrayList<String> values)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
@@ -40,23 +43,28 @@ public class DBHandler
         database.insert(tableName, null, contentValues);
     }
 
-    /*Read
-     *
+    /*
+    Read
      */
 
     //return a single column
     public ArrayList<String> ReadSingleColumn(String returnColumn, String tableName)
     {
-        return ReadSingleColumn(returnColumn, tableName, null);
+        return ReadSingleColumn(returnColumn, tableName, null,null);
     }
 
     public ArrayList<String> ReadSingleColumn(String returnColumn, String tableName, String orderBy)
+    {
+        return ReadSingleColumn(returnColumn, tableName, orderBy,null);
+    }
+
+    public ArrayList<String> ReadSingleColumn(String returnColumn, String tableName, String orderBy, String limit)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
         ArrayList<String> values = new ArrayList<String>()
         {
         };
-        Cursor cursor = database.query(tableName, new String[]{returnColumn}, null, null, null, null, orderBy + " ASC");
+        Cursor cursor = database.query(tableName, new String[]{returnColumn}, null, null, null, null, orderBy,limit);
         while (cursor.moveToNext())
         {
             values.add(cursor.getString(cursor.getColumnIndex(returnColumn)));
@@ -65,21 +73,6 @@ public class DBHandler
         return (values);
     }
 
-    public ArrayList<String> MostRecentWeight(long petId)
-    {
-        SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        ArrayList<String> queryResults = new ArrayList<>();
-        Cursor cursor = database.query(WeightRecord.TABLE_NAME, new String[]{WeightRecord.COLUMN_NAMES[1]}, Pet.PRIMARY_KEY + " = ?", new String[]{"" + petId}, null, null, WeightRecord.COLUMN_NAMES[0], "1");
-        while (cursor.moveToNext())
-        {
-            for (int i = 0; i < cursor.getColumnCount(); i++)
-            {
-                queryResults.add(cursor.getString(i));
-            }
-        }
-        cursor.close();
-        return queryResults;
-    }
 
     //return single entry
     public ArrayList<String> ReadSingleEntry(String id, String tableName)
@@ -88,14 +81,14 @@ public class DBHandler
         Cursor cursor = database.query(tableName, new String[]{"*"}, null, null, null, null, null, "1");
         String columnName = cursor.getColumnName(0);
         cursor.close();
-        return ReadSingleEntry(id,tableName,columnName,null);
+        return ReadSingleEntry(columnName, id, tableName, null);
     }
 
-    public ArrayList<String> ReadSingleEntry( String selection, String selectionValue, String tableName,String orderBy)
+    public ArrayList<String> ReadSingleEntry(String selection, String selectionValue, String tableName, String orderBy)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
         ArrayList<String> queryResults = new ArrayList<>();
-        Cursor cursor = database.query(tableName, new String[]{"*"}, selection + " = ?", new String[]{selectionValue}, null, null, orderBy,"1");
+        Cursor cursor = database.query(tableName, new String[]{"*"}, selection + " = ?", new String[]{selectionValue}, null, null, orderBy, "1");
         while (cursor.moveToNext())
         {
             for (int i = 0; i < cursor.getColumnCount(); i++)
@@ -120,40 +113,43 @@ public class DBHandler
     }
 
 
-    /*Update
-     *
+    /*
+    Update
      */
-
-    public void DeleteFromTable(String tableName, Long id)
+    public void UpdateTable(String tableName, ArrayList<String> values, String primaryKey, String id)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        String whereClause;
-        switch (tableName)
+        ArrayList<String> columnNames = GetColumnNames(tableName);
+        ContentValues contentValues = new ContentValues();
+        for (int i = 1; i < columnNames.size(); i++)
         {
-            case Pet.TABLE_NAME:
-                whereClause = Pet.PRIMARY_KEY;
-                break;
-            case WeightRecord.TABLE_NAME:
-                whereClause = WeightRecord.PRIMARY_KEY;
-                break;
-            case EnergyRecord.TABLE_NAME:
-                whereClause = EnergyRecord.PRIMARY_KEY;
-                break;
-            case ExcrementRecord.TABLE_NAME:
-                whereClause = ExcrementRecord.PRIMARY_KEY;
-                break;
-            case ExerciseRecord.TABLE_NAME:
-                whereClause = ExerciseRecord.PRIMARY_KEY;
-                break;
-            //case MealRecord.TABLE_NAME:
-            default:
-                whereClause = MealRecord.PRIMARY_KEY;
-                break;
+            contentValues.put(columnNames.get(i), values.get(i));
         }
+        database.update(tableName,contentValues,primaryKey + " = " + id,null);
+    }
+
+    /*
+    Delete
+     */
+
+    public void DeleteFromTable(String tableName, String whereClause, Long id)
+    {
+        SQLiteDatabase database = databaseHandler.getWritableDatabase();
         whereClause = whereClause + " = ?";
         database.delete(tableName, whereClause, new String[]{id.toString()});
     }
 
+    /**
+     * Will be removed when assistant class is created.
+     * To be replaced by {@link #AddToTable(String, ArrayList)}
+     * @param name
+     * @param phoneNumber
+     * @param address
+     * @param title
+     * @param generalDescription
+     * @param isUpdate
+     * @param updateID
+     */
     public void addAssistantToDB(String name, String phoneNumber, String address, String title, String generalDescription, boolean isUpdate, int updateID)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
@@ -166,27 +162,31 @@ public class DBHandler
         if (!isUpdate)
         {
             database.insertOrThrow("tbl_assistant", null, assistantContentValues);
-        } else
+        }
+        else
         {
             database.update("tbl_assistant", assistantContentValues, "assistant_id = " + updateID, null);
         }
     }
 
+    /**
+     * Will be removed when assistant class is created.
+     * To be replaced by {@link #DeleteFromTable(String, String, Long)}
+     * @param deleteID
+     */
     public void deleteAssistant(int deleteID)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
         database.delete("tbl_assistant", "assistant_id = " + deleteID, null);
     }
 
-    public Cursor getAssistantData()
-    {
-        SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM tbl_assistant", null);
-        cursor.close();
-        return cursor;
-    }
-
     //Add Weight Fitness Goal
+
+    /**
+     * Will be removed when fitness goal class is created.
+     * To be replaced by {@link #AddToTable(String, ArrayList)}
+     * @param weight
+     */
     public void addWeightFitnessGoal(double weight)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
@@ -199,6 +199,12 @@ public class DBHandler
     }
 
     //Add Energy Fitness Goal
+
+    /**
+     * Will be removed when fitness goal class is created.
+     * To be replaced by {@link #AddToTable(String, ArrayList)}
+     * @param energy
+     */
     public void addEnergyFitnessGoal(int energy)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
@@ -210,6 +216,13 @@ public class DBHandler
     }
 
     //Add Exercise Fitness Goal
+
+    /**
+     * Will be removed when fitness goal class is created.
+     * To be replaced by {@link #AddToTable(String, ArrayList)}
+     * @param exerciseType
+     * @param exerciseDuration
+     */
     public void addExerciseFitnessGoal(String exerciseType, String exerciseDuration)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
@@ -249,37 +262,37 @@ public class DBHandler
                     EnergyRecord.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Pet.PRIMARY_KEY + " INTEGER, " +
                     EnergyRecord.COLUMN_NAMES[0] + " TEXT, " +
-                    EnergyRecord.COLUMN_NAMES[1] + "energy_level INTEGER, " +
+                    EnergyRecord.COLUMN_NAMES[1] + " INTEGER, " +
                     "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + ExcrementRecord.TABLE_NAME + "(" +
                     ExcrementRecord.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    Pet.TABLE_NAME + " INTEGER, " +
+                    Pet.PRIMARY_KEY + " INTEGER, " +
                     ExcrementRecord.COLUMN_NAMES[0] + "date TEXT, " +
                     ExcrementRecord.COLUMN_NAMES[1] + " TEXT, " +
-                    "FOREIGN KEY (" + Pet.TABLE_NAME + ") REFERENCES " + Pet.PRIMARY_KEY + " (" + Pet.TABLE_NAME + "))");
+                    "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + ExerciseRecord.TABLE_NAME + "(" +
                     ExerciseRecord.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    Pet.TABLE_NAME + " INTEGER, " +
+                    Pet.PRIMARY_KEY + " INTEGER, " +
                     ExerciseRecord.COLUMN_NAMES[0] + " TEXT, " +
                     ExerciseRecord.COLUMN_NAMES[1] + " TEXT, " +
                     ExerciseRecord.COLUMN_NAMES[2] + " REAL, " +
-                    "FOREIGN KEY (" + Pet.TABLE_NAME + ") REFERENCES " + Pet.PRIMARY_KEY + " (" + Pet.TABLE_NAME + "))");
+                    "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + MealRecord.TABLE_NAME + "(" +
                     MealRecord.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    Pet.TABLE_NAME + " INTEGER, " +
+                    Pet.PRIMARY_KEY + " INTEGER, " +
                     MealRecord.COLUMN_NAMES[0] + " TEXT, " +
                     MealRecord.COLUMN_NAMES[1] + " REAL, " +
-                    "FOREIGN KEY (" + Pet.TABLE_NAME + ") REFERENCES " + Pet.PRIMARY_KEY + " (" + Pet.TABLE_NAME + "))");
+                    "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + WeightRecord.TABLE_NAME + "(" +
                     WeightRecord.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    Pet.TABLE_NAME + " INTEGER, " +
+                    Pet.PRIMARY_KEY + " INTEGER, " +
                     WeightRecord.COLUMN_NAMES[0] + " TEXT, " +
                     WeightRecord.COLUMN_NAMES[1] + " REAL, " +
-                    "FOREIGN KEY (" + Pet.TABLE_NAME + ") REFERENCES " + Pet.PRIMARY_KEY + " (" + Pet.TABLE_NAME + "))");
+                    "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS tbl_assistant(" +
                     "assistant_id INTEGER PRIMARY KEY AUTOINCREMENT, " +

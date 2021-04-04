@@ -3,7 +3,6 @@ package ca.on.conestogac.puppypal.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +11,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import ca.on.conestogac.puppypal.DBHandler;
+import ca.on.conestogac.puppypal.MainActivity;
 import ca.on.conestogac.puppypal.R;
 
 public class AddAssistantActivity extends AppCompatActivity
@@ -41,44 +43,55 @@ public class AddAssistantActivity extends AppCompatActivity
         titleEditText = findViewById(R.id.textTitle);
         generalDescriptionEditText = findViewById(R.id.textGeneralDescription);
         addAssistantButton = findViewById(R.id.addAssistantToDatabase);
+        //this is unnecessary, text is already set to be this string
+        //addAssistantButton.setText(R.string.add_an_assistant);
         deleteAssistantButton = findViewById(R.id.deleteAssistantFromDatabase);
-        addAssistantButton.setText(R.string.add_assistant);
-        deleteAssistantButton.setVisibility(View.INVISIBLE);
-        if (intent.getIntExtra("id", -1) != -1)
+        //also unnecessary
+        //deleteAssistantButton.setVisibility(View.INVISIBLE);
+
+
+        //added this
+        Integer assistantId = intent.getIntExtra("id",-1);
+
+
+        //changed intent.getIntExtra("id", -1) to assistantId
+        if (assistantId != -1)
         {
             addAssistantButton.setText(R.string.update_assistant);
             deleteAssistantButton.setVisibility(View.VISIBLE);
             deleteAssistantButton.setEnabled(true);
-            deleteAssistantButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AddAssistantActivity.this);
-                    builder.setTitle("Delete Alert");
-                    builder.setMessage("Would You like to delete assistant info");
-                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            System.out.println("Delete method Called");
-                            deleteAssistant(intent.getIntExtra("id", -1));
-                        }
-                    });
-                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
+            deleteAssistantButton.setOnClickListener(view -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddAssistantActivity.this);
+                builder.setTitle("Delete Alert");
+                builder.setMessage("Would You like to delete assistant info");
+                builder.setPositiveButton("YES", (dialog, which) -> {
+                    System.out.println("Delete method Called");
+                    deleteAssistant(intent.getIntExtra("id", -1));
+                });
+                builder.setNegativeButton("NO", (dialog, which) -> {
 
-                        }
-                    });
-                    builder.show();
+                });
+                builder.show();
 
-                }
             });
             System.out.println("Success: Clicked Id is " + intent.getIntExtra("id", -1));
+
+
+            //added this
+            ArrayList<String> assistant = dbHandler.ReadSingleEntry(assistantId.toString(),"tbl_assistant");
+            System.out.println("Received name is: " + assistant.get(1));
+            nameEditText.setText(assistant.get(1));
+            phoneNumberEditText.setText(assistant.get(2));
+            addressEditText.setText(assistant.get(3));
+            titleEditText.setText(assistant.get(4));
+            generalDescriptionEditText.setText(assistant.get(5));
+
+            /**
+             * everything seen below can be done with the block of code above.
+             *
+             * We should never be using a cursor to access the database outside of the DBHandler class
+             */
+            /*
             Cursor cursor = EditAssistantActivity.cursor;
             cursor.moveToFirst();
             if (cursor.getInt(cursor.getColumnIndex("assistant_id")) == intent.getIntExtra("id", -1))
@@ -103,22 +116,19 @@ public class AddAssistantActivity extends AppCompatActivity
                 }
             }
 
+             */
+
             //nameEditText.setText(EditAssistantActivity.assistantArrayMap.get(intent.getIntExtra("id",-1)));
         }
-        addAssistantButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        addAssistantButton.setOnClickListener(view -> {
+            if (intent.getIntExtra("id", -1) != -1)
             {
-                if (intent.getIntExtra("id", -1) != -1)
-                {
-                    System.out.println("Update Method Called");
-                    Add_the_Assistant(true, intent.getIntExtra("id", -1));
-                } else
-                {
-                    System.out.println("Add Method Called");
-                    Add_the_Assistant(false, -1);
-                }
+                System.out.println("Update Method Called");
+                Add_the_Assistant(true, intent.getIntExtra("id", -1));
+            } else
+            {
+                System.out.println("Add Method Called");
+                Add_the_Assistant(false, -1);
             }
         });
     }
@@ -152,9 +162,8 @@ public class AddAssistantActivity extends AppCompatActivity
         {
             dbHandler.addAssistantToDB(nameEditText.getText().toString(), phoneNumberEditText.getText().toString(), addressEditText.getText().toString(), titleEditText.getText().toString(), generalDescriptionEditText.getText().toString(), isUpdate, updateID);
         }
-        Intent intent = new Intent(this, EditAssistantActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish();
         Toast.makeText(this, "Assistant has added to the Database", Toast.LENGTH_SHORT).show();
     }
 
@@ -162,11 +171,14 @@ public class AddAssistantActivity extends AppCompatActivity
     {
         dbHandler.deleteAssistant(deleteID);
         Toast.makeText(this, "Assistant has deleted from the database", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, EditAssistantActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /*
+    This class is never used, is it necessary?
+     */
     private AlertDialog AskOption()
     {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
