@@ -78,11 +78,6 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void AddFitnessGoalButton(View v)
-    {
-        Intent intent = new Intent(this, AddFitnessGoalActivity.class);
-        startActivity(intent);
-    }
 
     public static void notifyUser(Context context)
     {
