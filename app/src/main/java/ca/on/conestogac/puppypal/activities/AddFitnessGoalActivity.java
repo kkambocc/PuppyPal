@@ -13,7 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
 
-public class AddFitnessGoalActivity extends AppCompatActivity {
+public class AddFitnessGoalActivity extends AppCompatActivity
+{
     DBHandler dbHandler = new DBHandler(this);
 
     RadioButton radioButtonWeight;
@@ -51,7 +52,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
     public boolean validExercise;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fitness_goal);
@@ -74,9 +76,11 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
 
         buttonAddFitnessGoal = findViewById(R.id.buttonAddFitnessGoal);
 
-        buttonAddFitnessGoal.setOnClickListener(new View.OnClickListener() {
+        buttonAddFitnessGoal.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 weight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
                 energy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
                 exerciseType = ((EditText) findViewById(R.id.editTextTargetExerciseType)).getText().toString();
@@ -88,7 +92,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
     }
 
     //modify activity for weight goal
-    public void onClickRadioButtonWeight(View v) {
+    public void onClickRadioButtonWeight(View v)
+    {
         radiobuttonSelection = SELECT_RADIO_BUTTON_WEIGHT;
 
         textViewTargetWeightLabel.setVisibility(View.VISIBLE);
@@ -103,7 +108,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
     }
 
     //modify activity for energy goal
-    public void onClickRadioButtonEnergy(View v) {
+    public void onClickRadioButtonEnergy(View v)
+    {
         radiobuttonSelection = SELECT_RADIO_BUTTON_ENERGY;
 
         textViewTargetEnergyLabel.setVisibility(View.VISIBLE);
@@ -118,7 +124,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
     }
 
     //modify activity for exercise goal
-    public void onClickRadioButtonExercise(View v) {
+    public void onClickRadioButtonExercise(View v)
+    {
         radiobuttonSelection = SELECT_RADIO_BUTTON_EXERCISE;
 
         textViewTargetExerciseTypeLabel.setVisibility(View.VISIBLE);
@@ -132,13 +139,16 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         editTextTargetEnergy.setVisibility(View.GONE);
     }
 
-    public void addFitnessGoal() {
-        switch (radiobuttonSelection) {
+    public void addFitnessGoal()
+    {
+        switch (radiobuttonSelection)
+        {
             case "WEIGHT":
                 //String thisWeight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
                 validEnergy = WeightValidation(weight);
 
-                if (validWeight == true) {
+                if (validWeight == true)
+                {
                     //dbHandler.addWeightFitnessGoal(Double.parseDouble(editTextTargetWeight.getText().toString()));
                     dbHandler.addWeightFitnessGoal(Double.parseDouble(weight));
                 }
@@ -148,7 +158,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
                 //String thisEnergy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
                 validEnergy = EnergyValidation(energy);
 
-                if (validEnergy == true) {
+                if (validEnergy == true)
+                {
                     // needs to be int not string
                     //dbHandler.addEnergyFitnessGoal(Integer.parseInt(editTextTargetEnergy.getText().toString()));
                     dbHandler.addEnergyFitnessGoal(Integer.parseInt(energy));
@@ -160,7 +171,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
                 //String thisExerciseDuration = ((EditText) findViewById(R.id.editTextTargetExerciseDuration)).getText().toString();
                 validEnergy = ExerciseValidation(exerciseType, exerciseDuration);
 
-                if (validExercise == true) {
+                if (validExercise == true)
+                {
                     dbHandler.addExerciseFitnessGoal(exerciseType, Long.parseLong(exerciseDuration));
                 }
 
@@ -177,7 +189,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         //Toast.makeText(this, "Fitness goal has been created", Toast.LENGTH_SHORT).show();
     }
 
-    public boolean WeightValidation(String _weight) {
+    public boolean WeightValidation(String _weight)
+    {
         validWeight = true;
         validateWeight = _weight;
 
@@ -187,8 +200,10 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
             validWeight = false;
         }
 
-        if (!validateWeight.isEmpty()) {
-            if (Integer.parseInt(validateWeight) > 999) {
+        if (!validateWeight.isEmpty())
+        {
+            if (Integer.parseInt(validateWeight) > 999)
+            {
                 Toast.makeText(this, "Weight in lbs should be in the range of 3 digits", Toast.LENGTH_SHORT).show();
                 validWeight = false;
             }
@@ -197,7 +212,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         return validWeight;
     }
 
-    public boolean EnergyValidation(String _energy) {
+    public boolean EnergyValidation(String _energy)
+    {
         validEnergy = true;
         validateEnergy = _energy;
 
@@ -210,7 +226,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity {
         return validEnergy;
     }
 
-    public boolean ExerciseValidation(String _exerciseType, String _exerciseDuration) {
+    public boolean ExerciseValidation(String _exerciseType, String _exerciseDuration)
+    {
         validExercise = true;
 
         validateExerciseType = _exerciseType;

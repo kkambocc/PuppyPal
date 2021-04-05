@@ -9,9 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/SplashScreenTheme">
-        <activity android:name=".activities.AddFitnessGoalActivity"></activity>
-        <activity android:name=".activities.EditAssistantActivity" />
-        <activity android:name=".activities.AddAssistantActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,9 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.AddFitnessGoalActivity" />
+        <activity android:name=".activities.AddAssistantActivity" />
         <activity android:name=".activities.AddPetActivity" />
         <activity android:name=".activities.EditPetActivity" />
         <activity android:name=".activities.AddRecordActivity" />
+        <activity android:name=".activities.PetHomepageActivity" />
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ public class WeightRecord
 {
     public static final String TABLE_NAME = "tbl_weight";
     public static final String PRIMARY_KEY = "weight_id";
+    public static final String[] COLUMN_NAMES = {"date", "weight"};
     private long weightId;
     private long petId;
     private final Date date;
@@ -44,14 +45,25 @@ public class WeightRecord
     public ArrayList<String> toArray()
     {
         ArrayList<String> array = new ArrayList<>();
-        array.add(0,((Long) this.weightId).toString());
-        array.add(1,((Long) this.petId).toString());
-        array.add(2,this.date.toString());
-        array.add(3,((Float) this.weight).toString());
+        array.add(0, ((Long) this.weightId).toString());
+        array.add(1, ((Long) this.petId).toString());
+        array.add(2, this.date.getTime() + "");
+        array.add(3, ((Float) this.weight).toString());
         return array;
     }
 
-    public float GetWeight() {return this.weight;}
-    public Date GetDate() {return this.date;}
-    public long GetPetId() {return this.petId;}
+    public float GetWeight()
+    {
+        return this.weight;
+    }
+
+    public Date GetDate()
+    {
+        return this.date;
+    }
+
+    public long GetPetId()
+    {
+        return this.petId;
+    }
 }

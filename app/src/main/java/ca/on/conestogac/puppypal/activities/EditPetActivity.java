@@ -4,63 +4,45 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-
 import ca.on.conestogac.puppypal.DBHandler;
+import ca.on.conestogac.puppypal.MainActivity;
 import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.tables.EnergyRecord;
+import ca.on.conestogac.puppypal.tables.ExcrementRecord;
+import ca.on.conestogac.puppypal.tables.ExerciseRecord;
+import ca.on.conestogac.puppypal.tables.MealRecord;
 import ca.on.conestogac.puppypal.tables.Pet;
+import ca.on.conestogac.puppypal.tables.WeightRecord;
 
 import static java.lang.Integer.parseInt;
 
 public class EditPetActivity extends AppCompatActivity
 {
-    private Long petId;
     private Pet pet;
     private DBHandler database;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_pet);
+        setContentView(R.layout.add_pet);
         database = new DBHandler(this);
 
-        ArrayList<String> ids = (database.ReadSingleColumn("pet_id",Pet.TABLE_NAME));
-        LinearLayout list = findViewById(R.id.petList);
-
-        for (String id : ids)
-        {
-            pet = new Pet(database.ReadSingleEntry(id,Pet.TABLE_NAME));
-            Button b = new Button(this);
-            b.setText(pet.getName());
-            SetOnClick(b,pet.getPetId());
-            list.addView(b);
-        }
-    }
-
-    private void SetOnClick(Button btn, long id)
-    {
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                petId = id;
-                ShowPet();
-            }
-        });
+        ShowPet(Long.parseLong(getIntent().getStringExtra(Pet.PRIMARY_KEY)));
     }
 
     /*  This method changes the page to the add_record page and fills in the form and fills in the form with the selected pets information.
      *
      */
-    private void ShowPet()
+    private void ShowPet(Long petId)
     {
-        setContentView(R.layout.add_pet);
-        pet = new Pet(database.ReadSingleEntry(petId.toString(),Pet.TABLE_NAME));
+        pet = new Pet(database.ReadSingleEntry(petId.toString(), Pet.TABLE_NAME));
 
         //name
         ((EditText) findViewById(R.id.textName)).setText(pet.getName());
@@ -70,7 +52,9 @@ public class EditPetActivity extends AppCompatActivity
         ((EditText) findViewById(R.id.textAge)).setText("" + pet.getAge());
 
         //Weight
-        ((EditText) findViewById(R.id.textWeight)).setText("" + pet.getWeight());
+        String mostRecentWeight = database.ReadSingleEntry(Pet.PRIMARY_KEY,pet.getPetId().toString(),WeightRecord.TABLE_NAME,
+                WeightRecord.COLUMN_NAMES[0] + " DESC").get(3);
+        ((EditText) findViewById(R.id.textWeight)).setText(mostRecentWeight);
         findViewById(R.id.textWeight).setEnabled(false);
 
         //breed
@@ -81,8 +65,7 @@ public class EditPetActivity extends AppCompatActivity
         if (pet.getGender() == 0)
         {
             ((RadioButton) findViewById(R.id.radioFemale)).setChecked(true);
-        }
-        else
+        } else
         {
             ((RadioButton) findViewById(R.id.radioMale)).setChecked(true);
         }
@@ -126,20 +109,21 @@ public class EditPetActivity extends AppCompatActivity
     {
         if (Validate())
         {
-
-            database.DeletePetFromTable(pet);
-            database.AddToTable(Pet.TABLE_NAME, pet.toArray());
+            database.UpdateTable(Pet.TABLE_NAME,pet.toArray(),Pet.PRIMARY_KEY,pet.getPetId().toString());
             finish();
-            Intent intent = new Intent(this, EditPetActivity.class);
-            startActivity(intent);
         }
     }
 
     public void DeletePet(View v)
     {
-        database.DeletePetFromTable(pet);
+        database.DeleteFromTable(Pet.TABLE_NAME, Pet.PRIMARY_KEY, pet.getPetId());
+        database.DeleteFromTable(WeightRecord.TABLE_NAME, Pet.PRIMARY_KEY, pet.getPetId());
+        database.DeleteFromTable(EnergyRecord.TABLE_NAME, Pet.PRIMARY_KEY, pet.getPetId());
+        database.DeleteFromTable(ExcrementRecord.TABLE_NAME, Pet.PRIMARY_KEY, pet.getPetId());
+        database.DeleteFromTable(MealRecord.TABLE_NAME, Pet.PRIMARY_KEY, pet.getPetId());
+        database.DeleteFromTable(ExerciseRecord.TABLE_NAME, Pet.PRIMARY_KEY, pet.getPetId());
         finish();
-        Intent intent = new Intent(this, EditPetActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
