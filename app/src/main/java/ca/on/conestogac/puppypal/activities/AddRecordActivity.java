@@ -10,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -103,7 +101,7 @@ public class AddRecordActivity extends AppCompatActivity
             record.add((selectedDate + selectedTime) + "");
         } catch (Exception ex)
         {
-            //do nothing for now
+            //this can't ever happen
         }
 
 
@@ -141,7 +139,7 @@ public class AddRecordActivity extends AppCompatActivity
 
                     Button viewTime = new Button(this);
                     TextView labelTime = new TextView(this);
-                    labelTime.setText("TIME");
+                    labelTime.setText(R.string.time);
                     viewTime.setOnClickListener(this::ChangeTime);
                     viewTime.setId(R.id.viewTime);
                     viewTime.setText(time.format(calendar.getTime()));
@@ -161,7 +159,7 @@ public class AddRecordActivity extends AppCompatActivity
                 }
                 else if (column.equals(EnergyRecord.COLUMN_NAMES[1])) //energy_level
                 {
-                    label.setText("ENERGY LEVEL");
+                    label.setText(R.string.energy_level);
                     view = new SeekBar(this, null, 0, R.style.Widget_AppCompat_SeekBar_Discrete);
                     ((SeekBar) view).setMax(10);
                 }
@@ -196,33 +194,23 @@ public class AddRecordActivity extends AppCompatActivity
 
     private void ChangeDate(View view)
     {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
-            {
-                Button dateButton = findViewById(R.id.viewDate);
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                dateButton.setText(date.format(calendar.getTime()));
-            }
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view1, year, month, dayOfMonth) -> {
+            Button dateButton = findViewById(R.id.viewDate);
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            dateButton.setText(date.format(calendar.getTime()));
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
 
     private void ChangeTime(View view)
     {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener()
-        {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-            {
-                Button timeButton = findViewById(R.id.viewTime);
-                calendar.set(Calendar.HOUR, hourOfDay);
-                calendar.set(Calendar.MINUTE, minute);
-                timeButton.setText(time.format(calendar.getTime()));
-            }
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view1, hourOfDay, minute) -> {
+            Button timeButton = findViewById(R.id.viewTime);
+            calendar.set(Calendar.HOUR, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+            timeButton.setText(time.format(calendar.getTime()));
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
         timePickerDialog.show();
     }

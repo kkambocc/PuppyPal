@@ -1,7 +1,6 @@
 package ca.on.conestogac.puppypal.activities;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -51,7 +50,7 @@ public class AddAssistantActivity extends AppCompatActivity
 
 
         //added this
-        Integer assistantId = intent.getIntExtra("id", -1);
+        int assistantId = intent.getIntExtra("id", -1);
 
 
         //changed intent.getIntExtra("id", -1) to assistantId
@@ -78,7 +77,7 @@ public class AddAssistantActivity extends AppCompatActivity
 
 
             //added this
-            ArrayList<String> assistant = dbHandler.ReadSingleEntry(assistantId.toString(), "tbl_assistant");
+            ArrayList<String> assistant = dbHandler.ReadSingleEntry(Integer.toString(assistantId), "tbl_assistant");
             System.out.println("Received name is: " + assistant.get(1));
             nameEditText.setText(assistant.get(1));
             phoneNumberEditText.setText(assistant.get(2));
@@ -156,14 +155,19 @@ public class AddAssistantActivity extends AppCompatActivity
         {
             return;
         }
+
+        /*no need to check isUpdate, just pass it
         if (!isUpdate)
         {
+         */
             dbHandler.addAssistantToDB(nameEditText.getText().toString(), phoneNumberEditText.getText().toString(), addressEditText.getText().toString(), titleEditText.getText().toString(), generalDescriptionEditText.getText().toString(), isUpdate, updateID);
+        /*
         }
         else
         {
             dbHandler.addAssistantToDB(nameEditText.getText().toString(), phoneNumberEditText.getText().toString(), addressEditText.getText().toString(), titleEditText.getText().toString(), generalDescriptionEditText.getText().toString(), isUpdate, updateID);
         }
+         */
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         Toast.makeText(this, "Assistant has added to the Database", Toast.LENGTH_SHORT).show();
@@ -183,34 +187,18 @@ public class AddAssistantActivity extends AppCompatActivity
      */
     private AlertDialog AskOption()
     {
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+        return new AlertDialog.Builder(this)
                 // set message, title, and icon
                 .setTitle("Delete")
                 .setMessage("Do you want to Delete")
                 .setIcon(R.drawable.ic_warning_outline)
 
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener()
-                {
-
-                    public void onClick(DialogInterface dialog, int whichButton)
-                    {
-                        //your deleting code
-                        dialog.dismiss();
-                    }
-
+                .setPositiveButton("Delete", (dialog, whichButton) -> {
+                    //your deleting code
+                    dialog.dismiss();
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-
-                        dialog.dismiss();
-
-                    }
-                })
+                .setNegativeButton("cancel", (dialog, which) -> dialog.dismiss())
                 .create();
-
-        return myQuittingDialogBox;
     }
 
     public void alertDialogBuilder(String title, String message)

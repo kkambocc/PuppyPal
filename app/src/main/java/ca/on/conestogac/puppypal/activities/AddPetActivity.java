@@ -1,6 +1,4 @@
 package ca.on.conestogac.puppypal.activities;
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -8,7 +6,6 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,10 +49,10 @@ public class AddPetActivity extends AppCompatActivity
         pet.validateAndAdd(name, age, weight, breed, gender, spayedNeutered);
     }
 
-    public void AddAPet(String name, String age, String weight, String breed, int gender, boolean spayedNeutered, Context dbContext)
+    public void AddAPet(String name, String age, String weight, String breed, int gender, boolean spayedNeutered)
     {
         //Get values for pet
-        Pet pet = new Pet();
+        Pet pet = new Pet(this);
         pet.setName(name);
         pet.setAge(Integer.parseInt(age));
         pet.setBreed(breed);
@@ -78,7 +75,7 @@ public class AddPetActivity extends AppCompatActivity
         }
 
         //Add to database
-        DBHandler database = new DBHandler(dbContext);
+        DBHandler database = new DBHandler(this);
         database.AddToTable(Pet.TABLE_NAME, pet.toArray());
 
         //Add weight to tbl_weight
@@ -91,6 +88,6 @@ public class AddPetActivity extends AppCompatActivity
         database.AddToTable(WeightRecord.TABLE_NAME, weightRecord.toArray());
 
         //Reset screen
-        ((Activity) dbContext).finish();
+        finish();
     }
 }

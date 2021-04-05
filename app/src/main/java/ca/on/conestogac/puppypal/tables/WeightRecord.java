@@ -61,9 +61,4 @@ public class WeightRecord
     {
         return this.date;
     }
-
-    public long GetPetId()
-    {
-        return this.petId;
-    }
 }

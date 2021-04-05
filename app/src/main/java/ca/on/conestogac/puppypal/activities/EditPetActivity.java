@@ -1,4 +1,5 @@
 package ca.on.conestogac.puppypal.activities;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -40,6 +41,7 @@ public class EditPetActivity extends AppCompatActivity
     /*  This method changes the page to the add_record page and fills in the form and fills in the form with the selected pets information.
      *
      */
+    @SuppressLint("SetTextI18n")
     private void ShowPet(Long petId)
     {
         pet = new Pet(database.ReadSingleEntry(petId.toString(), Pet.TABLE_NAME));
@@ -49,7 +51,7 @@ public class EditPetActivity extends AppCompatActivity
         findViewById(R.id.textName).setEnabled(false);
 
         //age
-        ((EditText) findViewById(R.id.textAge)).setText("" + pet.getAge());
+        ((EditText) findViewById(R.id.textAge)).setText(pet.getAge().toString());
 
         //Weight
         String mostRecentWeight = database.ReadSingleEntry(Pet.PRIMARY_KEY, pet.getPetId().toString(), WeightRecord.TABLE_NAME,
@@ -80,7 +82,7 @@ public class EditPetActivity extends AppCompatActivity
         }
 
         //add pet button
-        ((Button) findViewById(R.id.addPetToDatabase)).setText("Change Pet Details");
+        ((Button) findViewById(R.id.addPetToDatabase)).setText(R.string.change_pet_details);
         findViewById(R.id.addPetToDatabase).setOnClickListener(this::UpdatePet);
 
         //delete button

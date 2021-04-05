@@ -31,8 +31,6 @@ public class AddFitnessGoalActivity extends AppCompatActivity
     EditText editTextTargetExerciseType;
     EditText editTextTargetExerciseDuration;
 
-    private Button buttonAddFitnessGoal;
-
     public static final String SELECT_RADIO_BUTTON_WEIGHT = "WEIGHT";
     public static final String SELECT_RADIO_BUTTON_ENERGY = "ENERGY";
     public static final String SELECT_RADIO_BUTTON_EXERCISE = "EXERCISE";
@@ -74,20 +72,15 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         editTextTargetExerciseType = findViewById(R.id.editTextTargetExerciseType);
         editTextTargetExerciseDuration = findViewById(R.id.editTextTargetExerciseDuration);
 
-        buttonAddFitnessGoal = findViewById(R.id.buttonAddFitnessGoal);
+        Button buttonAddFitnessGoal = findViewById(R.id.buttonAddFitnessGoal);
 
-        buttonAddFitnessGoal.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                weight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
-                energy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
-                exerciseType = ((EditText) findViewById(R.id.editTextTargetExerciseType)).getText().toString();
-                exerciseDuration = ((EditText) findViewById(R.id.editTextTargetExerciseDuration)).getText().toString();
+        buttonAddFitnessGoal.setOnClickListener(v -> {
+            weight = editTextTargetWeight.getText().toString();
+            energy = editTextTargetEnergy.getText().toString();
+            exerciseType = editTextTargetExerciseType.getText().toString();
+            exerciseDuration = editTextTargetExerciseDuration.getText().toString();
 
-                addFitnessGoal();
-            }
+            addFitnessGoal();
         });
     }
 
@@ -147,7 +140,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                 //String thisWeight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
                 validEnergy = WeightValidation(weight);
 
-                if (validWeight == true)
+                if (validWeight)
                 {
                     //dbHandler.addWeightFitnessGoal(Double.parseDouble(editTextTargetWeight.getText().toString()));
                     dbHandler.addWeightFitnessGoal(Double.parseDouble(weight));
@@ -158,7 +151,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                 //String thisEnergy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
                 validEnergy = EnergyValidation(energy);
 
-                if (validEnergy == true)
+                if (validEnergy)
                 {
                     // needs to be int not string
                     //dbHandler.addEnergyFitnessGoal(Integer.parseInt(editTextTargetEnergy.getText().toString()));
@@ -171,7 +164,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                 //String thisExerciseDuration = ((EditText) findViewById(R.id.editTextTargetExerciseDuration)).getText().toString();
                 validEnergy = ExerciseValidation(exerciseType, exerciseDuration);
 
-                if (validExercise == true)
+                if (validExercise)
                 {
                     dbHandler.addExerciseFitnessGoal(exerciseType, Long.parseLong(exerciseDuration));
                 }

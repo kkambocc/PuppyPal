@@ -33,6 +33,13 @@ public class AssistantListFragment extends Fragment
     {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.activity_edit_assistant, container, false);
+
+        //set on click for add assistant button
+        view.findViewById(R.id.addAnAssistant).setOnClickListener(v -> {
+            Intent intent = new Intent(container.getContext(), AddAssistantActivity.class);
+            startActivity(intent);
+        });
+
         updateTheList();
         return view;
     }
@@ -42,12 +49,11 @@ public class AssistantListFragment extends Fragment
         assistantList = view.findViewById(R.id.assistantList);
         dbHandler = new DBHandler(view.getContext());
 
-        ArrayList<String> assistant = new ArrayList<>();
         ArrayList<String> ids = dbHandler.ReadSingleColumn("assistant_id", "tbl_assistant");
 
         for (String id : ids)
         {
-            assistant = dbHandler.ReadSingleEntry(id, "tbl_assistant");
+            ArrayList<String> assistant = dbHandler.ReadSingleEntry(id, "tbl_assistant");
             viewCreator(Integer.parseInt(assistant.get(0)), assistant.get(1));
         }
     }

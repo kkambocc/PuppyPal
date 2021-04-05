@@ -3,11 +3,9 @@ package ca.on.conestogac.puppypal;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -16,8 +14,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import ca.on.conestogac.puppypal.activities.AddAssistantActivity;
-import ca.on.conestogac.puppypal.activities.AddFitnessGoalActivity;
 import ca.on.conestogac.puppypal.fragments.AssistantListFragment;
 import ca.on.conestogac.puppypal.fragments.PetListFragment;
 import ca.on.conestogac.puppypal.fragments.ViewPagerAdapter;
@@ -71,13 +67,6 @@ public class MainActivity extends AppCompatActivity
         viewPagerAdapter.addFragment(assistantListFragment, "Assistants");
         viewPager.setAdapter(viewPagerAdapter);
     }
-
-    public void AddAssistantButton(View v)
-    {
-        Intent intent = new Intent(this, AddAssistantActivity.class);
-        startActivity(intent);
-    }
-
 
     public static void notifyUser(Context context)
     {

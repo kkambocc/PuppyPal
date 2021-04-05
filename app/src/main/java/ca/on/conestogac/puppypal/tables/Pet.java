@@ -16,7 +16,7 @@ public class Pet
     public static final String PRIMARY_KEY = "pet_id";
     public static final String[] COLUMN_NAMES = {"name", "age", "breed", "gender", "spayed_neutered"};
 
-    private long petId;
+    private final long petId;
     private String name;
     private int age;
     private String breed;
@@ -47,11 +47,6 @@ public class Pet
         this.breed = array.get(3);
         this.gender = parseInt(array.get(4));
         this.spayedNeutered = parseInt(array.get(5));
-    }
-
-    public Pet()
-    {
-
     }
 
     public ArrayList<String> toArray()
@@ -122,8 +117,7 @@ public class Pet
             Toast.makeText(addPetActivityContext, "Weight field is empty !", Toast.LENGTH_SHORT).show();
             return weightBoolean;
         }
-
-        if (!weight.isEmpty())
+        else
         {
             if (Integer.parseInt(weight) > 999)
             {
@@ -143,8 +137,7 @@ public class Pet
             Toast.makeText(addPetActivityContext, "Age field is empty !", Toast.LENGTH_SHORT).show();
             return ageBoolean;
         }
-
-        if (!age.isEmpty())
+        else
         {
             if (Integer.parseInt(age) > 99)
             {
@@ -205,6 +198,6 @@ public class Pet
         {
             return;
         }
-        addPetActivity.AddAPet(name, age, weight, breed, gender, spayedNeutered, addPetActivityContext);
+        addPetActivity.AddAPet(name, age, weight, breed, gender, spayedNeutered);
     }
 }

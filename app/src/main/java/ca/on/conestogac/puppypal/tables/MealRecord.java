@@ -12,8 +12,8 @@ public class MealRecord
     public static final String PRIMARY_KEY = "meal_id";
     public static final String[] COLUMN_NAMES = {"date", "amount"};
 
-    private long mealId;
-    private long petId;
+    private final long mealId;
+    private final long petId;
     private final Date date;
     private final float amount;
 
@@ -24,7 +24,6 @@ public class MealRecord
         this.petId = 0;
         this.date = new Date();
         this.amount = 0;
-
     }
 
     //constructing from database provided arraylist
@@ -34,13 +33,6 @@ public class MealRecord
         this.petId = parseLong(array.get(1));
         this.date = new Date(parseLong(array.get(2)));
         this.amount = parseFloat(array.get(3));
-    }
-
-    //Constructor for adding a new meal record to database
-    public MealRecord(float amount, Date date)
-    {
-        this.amount = amount;
-        this.date = date;
     }
 
     public ArrayList<String> toArray()
@@ -61,10 +53,5 @@ public class MealRecord
     public Date GetDate()
     {
         return this.date;
-    }
-
-    public long GetPetId()
-    {
-        return this.petId;
     }
 }

@@ -50,9 +50,4 @@ public class EnergyRecord
     {
         return this.date;
     }
-
-    public long GetPetId()
-    {
-        return this.petId;
-    }
 }

@@ -22,14 +22,6 @@ public class ExerciseRecord
 
     }
 
-    //Constructor for adding a new meal record to database
-    public ExerciseRecord(String type, Time duration, Date date)
-    {
-        this.type = type;
-        this.duration = duration;
-        this.date = date;
-    }
-
     public ExerciseRecord(ArrayList<String> array)
     {
         this.exerciseId = parseLong(array.get(0));
@@ -58,10 +50,5 @@ public class ExerciseRecord
     public Date GetDate()
     {
         return this.date;
-    }
-
-    public long GetPetId()
-    {
-        return this.petId;
     }
 }
