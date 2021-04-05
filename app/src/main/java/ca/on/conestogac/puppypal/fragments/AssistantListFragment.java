@@ -43,12 +43,12 @@ public class AssistantListFragment extends Fragment
         dbHandler = new DBHandler(view.getContext());
 
         ArrayList<String> assistant = new ArrayList<>();
-        ArrayList<String> ids = dbHandler.ReadSingleColumn("assistant_id","tbl_assistant");
+        ArrayList<String> ids = dbHandler.ReadSingleColumn("assistant_id", "tbl_assistant");
 
-        for ( String id : ids)
+        for (String id : ids)
         {
-            assistant = dbHandler.ReadSingleEntry(id,"tbl_assistant");
-            viewCreator(Integer.parseInt(assistant.get(0)),assistant.get(1));
+            assistant = dbHandler.ReadSingleEntry(id, "tbl_assistant");
+            viewCreator(Integer.parseInt(assistant.get(0)), assistant.get(1));
         }
     }
 

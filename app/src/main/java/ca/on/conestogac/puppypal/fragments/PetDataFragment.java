@@ -58,8 +58,8 @@ public class PetDataFragment extends Fragment
         FloatingActionButton button = view.findViewById(R.id.goToAddRecord);
         button.setOnClickListener(v -> {
             Intent intent = new Intent(view.getContext(), AddRecordActivity.class);
-            intent.putExtra(Pet.PRIMARY_KEY,petId);
-            intent.putExtra("tableName",graphTableName);
+            intent.putExtra(Pet.PRIMARY_KEY, petId);
+            intent.putExtra("tableName", graphTableName);
             startActivity(intent);
         });
 
@@ -70,7 +70,8 @@ public class PetDataFragment extends Fragment
         GridLabelRenderer renderer = graph.getGridLabelRenderer();
 
         renderer.setGridStyle(GridLabelRenderer.GridStyle.BOTH);
-        renderer.setLabelFormatter(new DateAsXAxisLabelFormatter(view.getContext(), dateFormat) {
+        renderer.setLabelFormatter(new DateAsXAxisLabelFormatter(view.getContext(), dateFormat)
+        {
             @Override
             public String formatLabel(double value, boolean isValueX)
             {

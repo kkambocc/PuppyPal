@@ -51,7 +51,7 @@ public class AddAssistantActivity extends AppCompatActivity
 
 
         //added this
-        Integer assistantId = intent.getIntExtra("id",-1);
+        Integer assistantId = intent.getIntExtra("id", -1);
 
 
         //changed intent.getIntExtra("id", -1) to assistantId
@@ -78,7 +78,7 @@ public class AddAssistantActivity extends AppCompatActivity
 
 
             //added this
-            ArrayList<String> assistant = dbHandler.ReadSingleEntry(assistantId.toString(),"tbl_assistant");
+            ArrayList<String> assistant = dbHandler.ReadSingleEntry(assistantId.toString(), "tbl_assistant");
             System.out.println("Received name is: " + assistant.get(1));
             nameEditText.setText(assistant.get(1));
             phoneNumberEditText.setText(assistant.get(2));
@@ -125,7 +125,8 @@ public class AddAssistantActivity extends AppCompatActivity
             {
                 System.out.println("Update Method Called");
                 Add_the_Assistant(true, intent.getIntExtra("id", -1));
-            } else
+            }
+            else
             {
                 System.out.println("Add Method Called");
                 Add_the_Assistant(false, -1);
@@ -158,7 +159,8 @@ public class AddAssistantActivity extends AppCompatActivity
         if (!isUpdate)
         {
             dbHandler.addAssistantToDB(nameEditText.getText().toString(), phoneNumberEditText.getText().toString(), addressEditText.getText().toString(), titleEditText.getText().toString(), generalDescriptionEditText.getText().toString(), isUpdate, updateID);
-        } else
+        }
+        else
         {
             dbHandler.addAssistantToDB(nameEditText.getText().toString(), phoneNumberEditText.getText().toString(), addressEditText.getText().toString(), titleEditText.getText().toString(), generalDescriptionEditText.getText().toString(), isUpdate, updateID);
         }

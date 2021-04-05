@@ -18,8 +18,6 @@ import com.google.android.material.tabs.TabLayout;
 
 import ca.on.conestogac.puppypal.activities.AddAssistantActivity;
 import ca.on.conestogac.puppypal.activities.AddFitnessGoalActivity;
-import ca.on.conestogac.puppypal.activities.AddPetActivity;
-import ca.on.conestogac.puppypal.activities.EditPetActivity;
 import ca.on.conestogac.puppypal.fragments.AssistantListFragment;
 import ca.on.conestogac.puppypal.fragments.PetListFragment;
 import ca.on.conestogac.puppypal.fragments.ViewPagerAdapter;
@@ -33,14 +31,17 @@ public class MainActivity extends AppCompatActivity
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        countDownTimer = new CountDownTimer(1800000,1000) {
+        countDownTimer = new CountDownTimer(1800000, 1000)
+        {
             @Override
-            public void onTick(long l) {
+            public void onTick(long l)
+            {
 
             }
 
             @Override
-            public void onFinish() {
+            public void onFinish()
+            {
 
                 MainActivity.notifyUser(getApplicationContext());
                 countDownTimer.start();
@@ -66,23 +67,9 @@ public class MainActivity extends AppCompatActivity
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
 
-        viewPagerAdapter.addFragment(petListFragment,"Pets");
-        viewPagerAdapter.addFragment(assistantListFragment,"Assistants");
+        viewPagerAdapter.addFragment(petListFragment, "Pets");
+        viewPagerAdapter.addFragment(assistantListFragment, "Assistants");
         viewPager.setAdapter(viewPagerAdapter);
-    }
-
-
-    public void AddPetButton(View v)
-    {
-        Intent intent = new Intent(this, AddPetActivity.class);
-        startActivity(intent);
-    }
-
-    //move
-    public void EditPetButton(View v)
-    {
-        Intent intent = new Intent(this, EditPetActivity.class);
-        startActivity(intent);
     }
 
     public void AddAssistantButton(View v)
@@ -96,26 +83,28 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, AddFitnessGoalActivity.class);
         startActivity(intent);
     }
+
     public static void notifyUser(Context context)
     {
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            NotificationChannel notificationChannel=new NotificationChannel("test","Remember to Insert data", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel("test", "Remember to Insert data", NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setDescription("When a 30 minutes have passed since the data was inserted");
-            NotificationManager notificationManager= context.getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            if (notificationManager != null)
+            {
                 notificationManager.createNotificationChannel(notificationChannel);
             }
         }
         NotificationCompat.Builder builder;
         NotificationManagerCompat managerCompat;
-        builder=new NotificationCompat.Builder(context,"test")
+        builder = new NotificationCompat.Builder(context, "test")
                 .setSmallIcon(android.R.drawable.stat_notify_chat)
                 .setContentTitle("Enter the input")
                 .setContentText("You haven't been enter the input for 30 minutes.")
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        managerCompat=NotificationManagerCompat.from(context);
-        managerCompat.notify(1,builder.build());
+        managerCompat = NotificationManagerCompat.from(context);
+        managerCompat.notify(1, builder.build());
     }
 }

@@ -32,7 +32,8 @@ import ca.on.conestogac.puppypal.tables.MealRecord;
 import ca.on.conestogac.puppypal.tables.Pet;
 import ca.on.conestogac.puppypal.tables.WeightRecord;
 
-public class AddRecordActivity extends AppCompatActivity {
+public class AddRecordActivity extends AppCompatActivity
+{
 
     private DBHandler database;
     private LinearLayout form;
@@ -62,7 +63,8 @@ public class AddRecordActivity extends AppCompatActivity {
         GenerateForm(database.GetColumnNames(tableName));
 
         String pageTitle = "Add ";
-        switch (tableName) {
+        switch (tableName)
+        {
             case ExerciseRecord.TABLE_NAME:
                 pageTitle += "Exercise";
                 break;
@@ -85,7 +87,8 @@ public class AddRecordActivity extends AppCompatActivity {
 
     }
 
-    public void SaveRecordButton(View v) {
+    public void SaveRecordButton(View v)
+    {
         ArrayList<String> record = new ArrayList<>();
         //emptyId
         record.add("0");
@@ -93,20 +96,26 @@ public class AddRecordActivity extends AppCompatActivity {
         View timeView = ((LinearLayout) form.getChildAt(0)).getChildAt(1);
         View dateView = ((LinearLayout) form.getChildAt(1)).getChildAt(1);
 
-        try {
+        try
+        {
             long selectedDate = date.parse(((Button) dateView).getText().toString()).getTime();
             long selectedTime = time.parse(((Button) timeView).getText().toString()).getTime();
             record.add((selectedDate + selectedTime) + "");
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             //do nothing for now
         }
 
 
-        for (int i = 2; i < form.getChildCount(); i++) {
+        for (int i = 2; i < form.getChildCount(); i++)
+        {
             View view = ((LinearLayout) form.getChildAt(i)).getChildAt(1);
-            if (view instanceof SeekBar) {
+            if (view instanceof SeekBar)
+            {
                 record.add("" + ((SeekBar) view).getProgress());
-            } else {
+            }
+            else
+            {
                 record.add(((EditText) view).getText().toString());
             }
         }
@@ -114,12 +123,15 @@ public class AddRecordActivity extends AppCompatActivity {
         finish();
     }
 
-    private void GenerateForm(ArrayList<String> columnNames) {
+    private void GenerateForm(ArrayList<String> columnNames)
+    {
         form.removeAllViews();
 
-        for (String column : columnNames) {
+        for (String column : columnNames)
+        {
             //ignore primary keys
-            if (!column.equals(columnNames.get(0)) && !column.equals((columnNames.get(1)))) {
+            if (!column.equals(columnNames.get(0)) && !column.equals((columnNames.get(1))))
+            {
                 TextView label = new TextView(this);
                 View view = new EditText(this);
                 label.setText(column.toUpperCase());
@@ -142,10 +154,12 @@ public class AddRecordActivity extends AppCompatActivity {
                     view.setId(R.id.viewDate);
                     ((Button) view).setText(date.format(calendar.getTime()));
                     ((Button) view).setTextAppearance(R.style.TextAppearance_AppCompat_Large);
-                } else if (column.equals(ExcrementRecord.COLUMN_NAMES[1])) //abnormalities
+                }
+                else if (column.equals(ExcrementRecord.COLUMN_NAMES[1])) //abnormalities
                 {
                     ((EditText) view).setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                } else if (column.equals(EnergyRecord.COLUMN_NAMES[1])) //energy_level
+                }
+                else if (column.equals(EnergyRecord.COLUMN_NAMES[1])) //energy_level
                 {
                     label.setText("ENERGY LEVEL");
                     view = new SeekBar(this, null, 0, R.style.Widget_AppCompat_SeekBar_Discrete);
@@ -156,7 +170,8 @@ public class AddRecordActivity extends AppCompatActivity {
         }
     }
 
-    private void AddRow(TextView label, View view) {
+    private void AddRow(TextView label, View view)
+    {
         ViewGroup.LayoutParams params = new LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
@@ -179,10 +194,13 @@ public class AddRecordActivity extends AppCompatActivity {
 
     }
 
-    private void ChangeDate(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+    private void ChangeDate(View view)
+    {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener()
+        {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+            {
                 Button dateButton = findViewById(R.id.viewDate);
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
@@ -193,10 +211,13 @@ public class AddRecordActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void ChangeTime(View view) {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+    private void ChangeTime(View view)
+    {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener()
+        {
             @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+            {
                 Button timeButton = findViewById(R.id.viewTime);
                 calendar.set(Calendar.HOUR, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);

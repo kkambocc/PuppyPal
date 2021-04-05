@@ -52,7 +52,7 @@ public class EditPetActivity extends AppCompatActivity
         ((EditText) findViewById(R.id.textAge)).setText("" + pet.getAge());
 
         //Weight
-        String mostRecentWeight = database.ReadSingleEntry(Pet.PRIMARY_KEY,pet.getPetId().toString(),WeightRecord.TABLE_NAME,
+        String mostRecentWeight = database.ReadSingleEntry(Pet.PRIMARY_KEY, pet.getPetId().toString(), WeightRecord.TABLE_NAME,
                 WeightRecord.COLUMN_NAMES[0] + " DESC").get(3);
         ((EditText) findViewById(R.id.textWeight)).setText(mostRecentWeight);
         findViewById(R.id.textWeight).setEnabled(false);
@@ -65,7 +65,8 @@ public class EditPetActivity extends AppCompatActivity
         if (pet.getGender() == 0)
         {
             ((RadioButton) findViewById(R.id.radioFemale)).setChecked(true);
-        } else
+        }
+        else
         {
             ((RadioButton) findViewById(R.id.radioMale)).setChecked(true);
         }
@@ -97,7 +98,8 @@ public class EditPetActivity extends AppCompatActivity
         if (spayedNeutered)
         {
             pet.setSpayedNeutered(1);
-        } else
+        }
+        else
         {
             pet.setSpayedNeutered(0);
         }
@@ -109,7 +111,7 @@ public class EditPetActivity extends AppCompatActivity
     {
         if (Validate())
         {
-            database.UpdateTable(Pet.TABLE_NAME,pet.toArray(),Pet.PRIMARY_KEY,pet.getPetId().toString());
+            database.UpdateTable(Pet.TABLE_NAME, pet.toArray(), Pet.PRIMARY_KEY, pet.getPetId().toString());
             finish();
         }
     }

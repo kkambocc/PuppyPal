@@ -62,7 +62,8 @@ public class AddPetActivity extends AppCompatActivity
         if (gender == R.id.radioFemale)
         {
             pet.setGender(0);
-        } else
+        }
+        else
         {
             pet.setGender(1);
         }
@@ -70,7 +71,8 @@ public class AddPetActivity extends AppCompatActivity
         if (spayedNeutered)
         {
             pet.setSpayedNeutered(1);
-        } else
+        }
+        else
         {
             pet.setSpayedNeutered(0);
         }
@@ -84,9 +86,9 @@ public class AddPetActivity extends AppCompatActivity
         calendar.set(Calendar.ZONE_OFFSET, 0);
         calendar.set(Calendar.DST_OFFSET, 0);
 
-        ArrayList<String> petId = database.ReadSingleColumn(Pet.PRIMARY_KEY,Pet.TABLE_NAME,Pet.PRIMARY_KEY + " DESC","1");
-        WeightRecord weightRecord = new WeightRecord(Float.parseFloat(weight),calendar.getTime(), Long.parseLong(petId.get(0)));
-        database.AddToTable(WeightRecord.TABLE_NAME,weightRecord.toArray());
+        ArrayList<String> petId = database.ReadSingleColumn(Pet.PRIMARY_KEY, Pet.TABLE_NAME, Pet.PRIMARY_KEY + " DESC", "1");
+        WeightRecord weightRecord = new WeightRecord(Float.parseFloat(weight), calendar.getTime(), Long.parseLong(petId.get(0)));
+        database.AddToTable(WeightRecord.TABLE_NAME, weightRecord.toArray());
 
         //Reset screen
         ((Activity) dbContext).finish();

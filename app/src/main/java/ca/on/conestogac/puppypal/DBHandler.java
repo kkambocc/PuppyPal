@@ -50,12 +50,12 @@ public class DBHandler
     //return a single column
     public ArrayList<String> ReadSingleColumn(String returnColumn, String tableName)
     {
-        return ReadSingleColumn(returnColumn, tableName, null,null);
+        return ReadSingleColumn(returnColumn, tableName, null, null);
     }
 
     public ArrayList<String> ReadSingleColumn(String returnColumn, String tableName, String orderBy)
     {
-        return ReadSingleColumn(returnColumn, tableName, orderBy,null);
+        return ReadSingleColumn(returnColumn, tableName, orderBy, null);
     }
 
     public ArrayList<String> ReadSingleColumn(String returnColumn, String tableName, String orderBy, String limit)
@@ -64,7 +64,7 @@ public class DBHandler
         ArrayList<String> values = new ArrayList<String>()
         {
         };
-        Cursor cursor = database.query(tableName, new String[]{returnColumn}, null, null, null, null, orderBy,limit);
+        Cursor cursor = database.query(tableName, new String[]{returnColumn}, null, null, null, null, orderBy, limit);
         while (cursor.moveToNext())
         {
             values.add(cursor.getString(cursor.getColumnIndex(returnColumn)));
@@ -125,7 +125,7 @@ public class DBHandler
         {
             contentValues.put(columnNames.get(i), values.get(i));
         }
-        database.update(tableName,contentValues,primaryKey + " = " + id,null);
+        database.update(tableName, contentValues, primaryKey + " = " + id, null);
     }
 
     /*
@@ -142,6 +142,7 @@ public class DBHandler
     /**
      * Will be removed when assistant class is created.
      * To be replaced by {@link #AddToTable(String, ArrayList)}
+     *
      * @param name
      * @param phoneNumber
      * @param address
@@ -172,6 +173,7 @@ public class DBHandler
     /**
      * Will be removed when assistant class is created.
      * To be replaced by {@link #DeleteFromTable(String, String, Long)}
+     *
      * @param deleteID
      */
     public void deleteAssistant(int deleteID)
@@ -185,6 +187,7 @@ public class DBHandler
     /**
      * Will be removed when fitness goal class is created.
      * To be replaced by {@link #AddToTable(String, ArrayList)}
+     *
      * @param weight
      */
     public void addWeightFitnessGoal(double weight)
@@ -203,6 +206,7 @@ public class DBHandler
     /**
      * Will be removed when fitness goal class is created.
      * To be replaced by {@link #AddToTable(String, ArrayList)}
+     *
      * @param energy
      */
     public void addEnergyFitnessGoal(int energy)
@@ -213,7 +217,7 @@ public class DBHandler
         contentValues.put("target_energy_level", energy);
         Log.d("addFitnessGoal", "addData: " + energy);
 
-        database.insert("tbl_fitness_goal",null,contentValues);
+        database.insert("tbl_fitness_goal", null, contentValues);
     }
 
     //Add Exercise Fitness Goal
@@ -221,6 +225,7 @@ public class DBHandler
     /**
      * Will be removed when fitness goal class is created.
      * To be replaced by {@link #AddToTable(String, ArrayList)}
+     *
      * @param exerciseType
      * @param exerciseDuration
      */
@@ -234,7 +239,7 @@ public class DBHandler
         contentValues.put("target_exercise_duration", exerciseDuration);
         Log.d("addFitnessGoal", "addData: " + exerciseDuration);
 
-        db.insert("tbl_fitness_goal", null,contentValues);
+        db.insert("tbl_fitness_goal", null, contentValues);
 
     }
 

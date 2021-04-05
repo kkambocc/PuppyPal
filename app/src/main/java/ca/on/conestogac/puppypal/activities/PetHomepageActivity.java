@@ -66,8 +66,8 @@ public class PetHomepageActivity extends AppCompatActivity
 
     public void EditPetButton(View view)
     {
-        Intent intent = new Intent(this,EditPetActivity.class);
-        intent.putExtra(Pet.PRIMARY_KEY,pet.getPetId().toString());
+        Intent intent = new Intent(this, EditPetActivity.class);
+        intent.putExtra(Pet.PRIMARY_KEY, pet.getPetId().toString());
         startActivity(intent);
     }
 }
