@@ -10,23 +10,52 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Pattern;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.MainActivity;
 import ca.on.conestogac.puppypal.R;
 
-public class AddAssistantActivity extends AppCompatActivity
+public class AddAssistantActivity extends AppCompatActivity implements Validator.ValidationListener
 {
-    EditText nameEditText;
-    EditText phoneNumberEditText;
-    EditText addressEditText;
-    EditText titleEditText;
-    EditText generalDescriptionEditText;
-    Intent intent;
-    DBHandler dbHandler;
-    Button addAssistantButton;
-    Button deleteAssistantButton;
+
+    @NotEmpty
+    @Pattern(regex = "^([a-zA-Z]+[ ])*[a-zA-Z]+$")
+    @Length(min = 3, max = 20)
+    private EditText nameEditText;
+
+    @NotEmpty
+    @Length(min = 10, max = 10)
+    private EditText phoneNumberEditText;
+
+    @NotEmpty
+    @Length(min = 3, max = 50)
+    private EditText addressEditText;
+
+    @NotEmpty
+    @Length(min = 3, max = 30)
+    @Pattern(regex = "^([a-zA-Z]+[ ])*[a-zA-Z]+$")
+    private EditText titleEditText;
+
+    @NotEmpty
+    @Length(min = 3, max = 50)
+    @Pattern(regex = "^([a-zA-Z0-9,.]+[ ])*[a-zA-Z0-9,.]+$")
+    private EditText generalDescriptionEditText;
+
+
+    //Intent intent;
+    private DBHandler dbHandler;
+
+    //added this
+    private Integer assistantId;
+    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,23 +63,26 @@ public class AddAssistantActivity extends AppCompatActivity
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assistant);
-        intent = getIntent();
+        //added this
+        assistantId  = getIntent().getIntExtra("id", -1);
+
         dbHandler = new DBHandler(this);
         nameEditText = findViewById(R.id.textAssistantName);
         phoneNumberEditText = findViewById(R.id.textPhoneNumber);
         addressEditText = findViewById(R.id.textAddress);
         titleEditText = findViewById(R.id.textTitle);
         generalDescriptionEditText = findViewById(R.id.textGeneralDescription);
-        addAssistantButton = findViewById(R.id.addAssistantToDatabase);
+        Button addAssistantButton = findViewById(R.id.addAssistantToDatabase);
         //this is unnecessary, text is already set to be this string
         //addAssistantButton.setText(R.string.add_an_assistant);
-        deleteAssistantButton = findViewById(R.id.deleteAssistantFromDatabase);
+        Button deleteAssistantButton = findViewById(R.id.deleteAssistantFromDatabase);
         //also unnecessary
         //deleteAssistantButton.setVisibility(View.INVISIBLE);
 
 
         //added this
-        int assistantId = intent.getIntExtra("id", -1);
+        validator = new Validator(this);
+        validator.setValidationListener(this);
 
 
         //changed intent.getIntExtra("id", -1) to assistantId
@@ -65,7 +97,7 @@ public class AddAssistantActivity extends AppCompatActivity
                 builder.setMessage("Would You like to delete assistant info");
                 builder.setPositiveButton("YES", (dialog, which) -> {
                     System.out.println("Delete method Called");
-                    deleteAssistant(intent.getIntExtra("id", -1));
+                    deleteAssistant(assistantId);
                 });
                 builder.setNegativeButton("NO", (dialog, which) -> {
 
@@ -73,7 +105,7 @@ public class AddAssistantActivity extends AppCompatActivity
                 builder.show();
 
             });
-            System.out.println("Success: Clicked Id is " + intent.getIntExtra("id", -1));
+            System.out.println("Success: Clicked Id is " + assistantId);
 
 
             //added this
@@ -120,10 +152,10 @@ public class AddAssistantActivity extends AppCompatActivity
             //nameEditText.setText(EditAssistantActivity.assistantArrayMap.get(intent.getIntExtra("id",-1)));
         }
         addAssistantButton.setOnClickListener(view -> {
-            if (intent.getIntExtra("id", -1) != -1)
+            if (assistantId != -1)
             {
                 System.out.println("Update Method Called");
-                Add_the_Assistant(true, intent.getIntExtra("id", -1));
+                Add_the_Assistant(true, assistantId);
             }
             else
             {
@@ -135,6 +167,7 @@ public class AddAssistantActivity extends AppCompatActivity
 
     public void Add_the_Assistant(boolean isUpdate, int updateID)
     {
+        /*
         if (!nameValidation(nameEditText.getText().toString()))
         {
             return;
@@ -155,6 +188,11 @@ public class AddAssistantActivity extends AppCompatActivity
         {
             return;
         }
+         */
+
+        //easier validation
+        validator.validate();
+
 
         /*no need to check isUpdate, just pass it
         if (!isUpdate)
@@ -200,6 +238,10 @@ public class AddAssistantActivity extends AppCompatActivity
                 .setNegativeButton("cancel", (dialog, which) -> dialog.dismiss())
                 .create();
     }
+
+    /*
+    Replaced with an easier validator
+
 
     public void alertDialogBuilder(String title, String message)
     {
@@ -328,5 +370,44 @@ public class AddAssistantActivity extends AppCompatActivity
 
         generalDescriptionBoolean = true;
         return generalDescriptionBoolean;
+    }
+
+     */
+
+    @Override
+    public void onValidationSucceeded()
+    {
+        ArrayList<String> assistant = new ArrayList<>();
+        assistant.add(assistantId.toString());
+        assistant.add(nameEditText.getText().toString());
+        assistant.add(phoneNumberEditText.getText().toString());
+        assistant.add(addressEditText.getText().toString());
+        assistant.add(titleEditText.getText().toString());
+        assistant.add(generalDescriptionEditText.getText().toString());
+
+        if (assistantId != -1)
+        {
+            dbHandler.UpdateTable("tbl_assistant", assistant, "assistant_id",assistantId.toString());
+        }
+        else
+        {
+            dbHandler.AddToTable("tbl_assistant", assistant);
+        }
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors)
+    {
+
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+            // Display error messages
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

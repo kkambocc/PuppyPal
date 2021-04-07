@@ -1,11 +1,6 @@
 package ca.on.conestogac.puppypal.tables;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-
-import ca.on.conestogac.puppypal.activities.AddPetActivity;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
@@ -23,10 +18,8 @@ public class Pet
     private int gender;
     private int spayedNeutered;
 
-    Context addPetActivityContext;
-
     //Basic Constructor
-    public Pet(Context addPetActivityContext)
+    public Pet()
     {
         this.petId = 0;
         this.name = "";
@@ -35,7 +28,6 @@ public class Pet
         this.gender = 0;
         this.spayedNeutered = 0;
 
-        this.addPetActivityContext = addPetActivityContext;
     }
 
     //constructing from database provided arraylist
@@ -82,122 +74,4 @@ public class Pet
     public Integer getSpayedNeutered() {return this.spayedNeutered;}
 
     public void setSpayedNeutered(int spayedNeutered) {this.spayedNeutered = spayedNeutered;}
-
-
-    public Boolean breedValidation(String breed)
-    {
-        boolean breedBoolean = false;
-        if (breed.isEmpty())
-        {
-            Toast.makeText(addPetActivityContext, "Breed field is empty !", Toast.LENGTH_SHORT).show();
-            return breedBoolean;
-        }
-        else if (!breed.matches("^[a-zA-Z ]*$"))
-        {
-            Toast.makeText(addPetActivityContext, "Breed should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
-            return breedBoolean;
-        }
-        else if (breed.length() > 20)
-        {
-            Toast.makeText(addPetActivityContext, "Breed should be no more than 20 characters long", Toast.LENGTH_SHORT).show();
-            return breedBoolean;
-        }
-        else
-        {
-            breedBoolean = true;
-        }
-        return breedBoolean;
-    }
-
-    public Boolean weightValidation(String weight)
-    {
-        boolean weightBoolean = false;
-        if (weight.isEmpty())
-        {
-            Toast.makeText(addPetActivityContext, "Weight field is empty !", Toast.LENGTH_SHORT).show();
-            return weightBoolean;
-        }
-        else
-        {
-            if (Integer.parseInt(weight) > 999)
-            {
-                Toast.makeText(addPetActivityContext, "Weight in lbs should be in the range of 3 digits", Toast.LENGTH_SHORT).show();
-                return weightBoolean;
-            }
-        }
-        weightBoolean = true;
-        return weightBoolean;
-    }
-
-    public Boolean ageValidation(String age)
-    {
-        boolean ageBoolean = false;
-        if (age.isEmpty())
-        {
-            Toast.makeText(addPetActivityContext, "Age field is empty !", Toast.LENGTH_SHORT).show();
-            return ageBoolean;
-        }
-        else
-        {
-            if (Integer.parseInt(age) > 99)
-            {
-                Toast.makeText(addPetActivityContext, "Age should be in the range of 2 digits", Toast.LENGTH_SHORT).show();
-                return ageBoolean;
-            }
-        }
-        ageBoolean = true;
-        return ageBoolean;
-    }
-
-    public boolean nameValidation(String name)
-    {
-        boolean nameBoolean = false;
-        if (name.isEmpty())
-        {
-            Toast.makeText(addPetActivityContext, "Name field is empty !", Toast.LENGTH_SHORT).show();
-            return nameBoolean;
-        }
-        else if (!name.matches("^[a-zA-Z]*$"))
-        {
-            Toast.makeText(addPetActivityContext, "Name should only contains alphabetic letters", Toast.LENGTH_SHORT).show();
-            return nameBoolean;
-        }
-        else if (name.length() > 20)
-        {
-            Toast.makeText(addPetActivityContext, "Name should be no more than 20 characters long", Toast.LENGTH_SHORT).show();
-            return nameBoolean;
-        }
-        else
-        {
-            nameBoolean = true;
-        }
-        return nameBoolean;
-    }
-
-    public void validateAndAdd(String name, String age, String weight, String breed, int gender, boolean spayedNeutered)
-    {
-        System.out.println("AT_ValidateAndAdd: " + name + " , " + age + " , " + weight + " , " + breed + " , " + gender + " , " + spayedNeutered);
-        AddPetActivity addPetActivity = new AddPetActivity();
-
-        if (!nameValidation(name))
-        {
-            return;
-        }
-
-        if (!ageValidation(age))
-        {
-            return;
-        }
-
-        if (!weightValidation(weight))
-        {
-            return;
-        }
-
-        if (!breedValidation(breed))
-        {
-            return;
-        }
-        addPetActivity.AddAPet(name, age, weight, breed, gender, spayedNeutered);
-    }
 }

@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
@@ -60,24 +61,24 @@ public class AddRecordActivity extends AppCompatActivity
         tableName = getIntent().getStringExtra("tableName");
         GenerateForm(database.GetColumnNames(tableName));
 
-        String pageTitle = "Add ";
+        String pageTitle = getString(R.string.add);
         switch (tableName)
         {
             case ExerciseRecord.TABLE_NAME:
-                pageTitle += "Exercise";
+                pageTitle += getString(R.string.rb_exercise);
                 break;
             case EnergyRecord.TABLE_NAME:
-                pageTitle += "Energy";
+                pageTitle += getString(R.string.energy_level);
                 break;
             case ExcrementRecord.TABLE_NAME:
                 pageTitle += "Excrement";
                 break;
             case MealRecord.TABLE_NAME:
-                pageTitle += "Meal";
+                pageTitle += getString(R.string.meal);
                 break;
             case WeightRecord.TABLE_NAME:
             default:
-                pageTitle += "Weight";
+                pageTitle += getString(R.string.rb_weight);
                 break;
         }
         TextView title = findViewById(R.id.labelRecordType);
@@ -96,8 +97,8 @@ public class AddRecordActivity extends AppCompatActivity
 
         try
         {
-            long selectedDate = date.parse(((Button) dateView).getText().toString()).getTime();
-            long selectedTime = time.parse(((Button) timeView).getText().toString()).getTime();
+            long selectedDate = Objects.requireNonNull(date.parse(((Button) dateView).getText().toString())).getTime();
+            long selectedTime = Objects.requireNonNull(time.parse(((Button) timeView).getText().toString())).getTime();
             record.add((selectedDate + selectedTime) + "");
         } catch (Exception ex)
         {
