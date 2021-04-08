@@ -26,6 +26,9 @@
     <string name="rb_exercise">Exercise</string>
     <string name="spayed_neutered">Spayed/Neutered</string>
     <string name="add_fitness_goal">Add Fitness Goal</string>
+    <string name="new_fitness_goal">New Fitness Goal</string>
+    <string name="update_fitness_goal">Update Fitness Goal</string>
+    <string name="delete_fitness_goal">Delete Fitness Goal</string>
     <string name="target_weight">Target Weight (lbs): (*)</string>
     <string name="target_energy">Target Energy Level: (*)</string>
     <string name="target_exercise">Target Duration: (*)</string>

@@ -1,5 +1,7 @@
 package ca.on.conestogac.puppypal.activities;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +12,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import ca.on.conestogac.puppypal.DBHandler;
+import ca.on.conestogac.puppypal.MainActivity;
 import ca.on.conestogac.puppypal.R;
 
 public class AddFitnessGoalActivity extends AppCompatActivity
@@ -48,6 +53,9 @@ public class AddFitnessGoalActivity extends AppCompatActivity
     public boolean validWeight;
     public boolean validEnergy;
     public boolean validExercise;
+    public boolean isUpdate;
+
+    private Integer fitnessGoalId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +63,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fitness_goal);
+
+        fitnessGoalId  = getIntent().getIntExtra("id", -1);
 
         radiobuttonSelection = SELECT_RADIO_BUTTON_EXERCISE;
 
@@ -73,14 +83,56 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         editTextTargetExerciseDuration = findViewById(R.id.editTextTargetExerciseDuration);
 
         Button buttonAddFitnessGoal = findViewById(R.id.buttonAddFitnessGoal);
+        Button buttonDeleteFitnessGoal = findViewById(R.id.buttonDeleteFitnessGoal);
 
-        buttonAddFitnessGoal.setOnClickListener(v -> {
+        if (fitnessGoalId != -1)
+        {
+            buttonAddFitnessGoal.setText(R.string.update_fitness_goal);
+            buttonDeleteFitnessGoal.setVisibility(View.VISIBLE);
+            buttonDeleteFitnessGoal.setEnabled(true);
+            buttonDeleteFitnessGoal.setOnClickListener(view -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddFitnessGoalActivity.this);
+                builder.setTitle("Delete Fitness Goal");
+                builder.setMessage("Would You like to delete this fitness goal?");
+                builder.setPositiveButton("YES", (dialog, which) -> {
+                    System.out.println("Delete method Called");
+                    deleteFitnessGoal(fitnessGoalId);
+                });
+                builder.setNegativeButton("NO", (dialog, which) -> {
+
+                });
+                builder.show();
+
+            });
+            System.out.println("Success: Clicked Id is " + fitnessGoalId);
+
+            ArrayList<String> fitnessGoal = dbHandler.ReadSingleEntry(Integer.toString(fitnessGoalId), "tbl_fitness_goal");
+            editTextTargetWeight.setText(fitnessGoal.get(1));
+            editTextTargetEnergy.setText(fitnessGoal.get(2));
+            editTextTargetExerciseType.setText(fitnessGoal.get(3));
+            editTextTargetExerciseDuration.setText(fitnessGoal.get(4));
+        }
+
+        buttonAddFitnessGoal.setOnClickListener(view -> {
             weight = editTextTargetWeight.getText().toString();
             energy = editTextTargetEnergy.getText().toString();
             exerciseType = editTextTargetExerciseType.getText().toString();
             exerciseDuration = editTextTargetExerciseDuration.getText().toString();
 
-            addFitnessGoal();
+            if (fitnessGoalId != -1)
+            {
+                isUpdate = true;
+
+                System.out.println("Update Method Called");
+                addFitnessGoal();
+            }
+            else
+            {
+                isUpdate = false;
+
+                System.out.println("Add Method Called");
+                addFitnessGoal();
+            }
         });
     }
 
@@ -137,36 +189,29 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         switch (radiobuttonSelection)
         {
             case "WEIGHT":
-                //String thisWeight = ((EditText) findViewById(R.id.editTextTargetWeight)).getText().toString();
                 validEnergy = WeightValidation(weight);
 
                 if (validWeight)
                 {
-                    //dbHandler.addWeightFitnessGoal(Double.parseDouble(editTextTargetWeight.getText().toString()));
-                    dbHandler.addWeightFitnessGoal(Double.parseDouble(weight));
+                    dbHandler.addWeightFitnessGoal(Double.parseDouble(weight), isUpdate, fitnessGoalId);
                 }
 
                 break;
             case "ENERGY":
-                //String thisEnergy = ((EditText) findViewById(R.id.editTextTargetEnergy)).getText().toString();
                 validEnergy = EnergyValidation(energy);
 
                 if (validEnergy)
                 {
-                    // needs to be int not string
-                    //dbHandler.addEnergyFitnessGoal(Integer.parseInt(editTextTargetEnergy.getText().toString()));
-                    dbHandler.addEnergyFitnessGoal(Integer.parseInt(energy));
+                    dbHandler.addEnergyFitnessGoal(Integer.parseInt(energy), isUpdate, fitnessGoalId);
                 }
 
                 break;
             case "EXERCISE":
-                //String thisExerciseType = ((EditText) findViewById(R.id.editTextTargetExerciseType)).getText().toString();
-                //String thisExerciseDuration = ((EditText) findViewById(R.id.editTextTargetExerciseDuration)).getText().toString();
                 validEnergy = ExerciseValidation(exerciseType, exerciseDuration);
 
                 if (validExercise)
                 {
-                    dbHandler.addExerciseFitnessGoal(exerciseType, Long.parseLong(exerciseDuration));
+                    dbHandler.addExerciseFitnessGoal(exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
                 }
 
                 break;
@@ -180,6 +225,15 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         //editTextTargetExerciseDuration.setText(null);
 
         //Toast.makeText(this, "Fitness goal has been created", Toast.LENGTH_SHORT).show();
+    }
+
+    public void deleteFitnessGoal(int deleteID)
+    {
+        dbHandler.deleteFitnessGoal(deleteID);
+        Toast.makeText(this, "Fitness goal has been deleted from the database", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public boolean WeightValidation(String _weight)

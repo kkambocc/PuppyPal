@@ -190,7 +190,7 @@ public class DBHandler
      *
      * @param weight
      */
-    public void addWeightFitnessGoal(double weight)
+    public void addWeightFitnessGoal(double weight, boolean isUpdate, int updateID)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -198,7 +198,14 @@ public class DBHandler
         contentValues.put("target_weight", weight);
         Log.d("addFitnessGoal", "addData: " + weight);
 
-        database.insert("tbl_fitness_goal", null, contentValues);
+        if (!isUpdate)
+        {
+            database.insert("tbl_fitness_goal", null, contentValues);
+        }
+        else
+        {
+            database.update("tbl_fitness_goal", contentValues, "fitness_goal_id = " + updateID, null);
+        }
     }
 
     //Add Energy Fitness Goal
@@ -209,7 +216,7 @@ public class DBHandler
      *
      * @param energy
      */
-    public void addEnergyFitnessGoal(int energy)
+    public void addEnergyFitnessGoal(int energy, boolean isUpdate, int updateID)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -217,7 +224,14 @@ public class DBHandler
         contentValues.put("target_energy_level", energy);
         Log.d("addFitnessGoal", "addData: " + energy);
 
-        database.insert("tbl_fitness_goal", null, contentValues);
+        if (!isUpdate)
+        {
+            database.insert("tbl_fitness_goal", null, contentValues);
+        }
+        else
+        {
+            database.update("tbl_fitness_goal", contentValues, "fitness_goal_id = " + updateID, null);
+        }
     }
 
     //Add Exercise Fitness Goal
@@ -229,7 +243,7 @@ public class DBHandler
      * @param exerciseType
      * @param exerciseDuration
      */
-    public void addExerciseFitnessGoal(String exerciseType, long exerciseDuration)
+    public void addExerciseFitnessGoal(String exerciseType, long exerciseDuration, boolean isUpdate, int updateID)
     {
         SQLiteDatabase db = databaseHandler.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -239,8 +253,24 @@ public class DBHandler
         contentValues.put("target_exercise_duration", exerciseDuration);
         Log.d("addFitnessGoal", "addData: " + exerciseDuration);
 
-        db.insert("tbl_fitness_goal", null, contentValues);
+        if (!isUpdate)
+        {
+            db.insert("tbl_fitness_goal", null, contentValues);
+        }
+        else
+        {
+            db.update("tbl_fitness_goal", contentValues, "fitness_goal_id = " + updateID, null);
+        }
+    }
 
+    /**
+     * Will be removed when fitness goal class is created.
+     *
+     */
+    public void deleteFitnessGoal(int deleteID)
+    {
+        SQLiteDatabase database = databaseHandler.getWritableDatabase();
+        database.delete("tbl_fitness_goal", "fitness_goal_id = " + deleteID, null);
     }
 
     //Code to implement database
