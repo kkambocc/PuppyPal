@@ -91,8 +91,8 @@ public class AddFitnessGoalActivity extends AppCompatActivity
             buttonDeleteFitnessGoal.setEnabled(true);
             buttonDeleteFitnessGoal.setOnClickListener(view -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddFitnessGoalActivity.this);
-                builder.setTitle("Delete Fitness Goal");
-                builder.setMessage("Would You like to delete this fitness goal?");
+                builder.setTitle("Delete Alert");
+                builder.setMessage("Would you like to delete this fitness goal?");
                 builder.setPositiveButton("YES", (dialog, which) -> {
                     System.out.println("Delete method Called");
                     deleteFitnessGoal(fitnessGoalId);

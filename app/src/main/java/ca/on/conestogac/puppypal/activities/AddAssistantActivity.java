@@ -94,7 +94,7 @@ public class AddAssistantActivity extends AppCompatActivity implements Validator
             deleteAssistantButton.setOnClickListener(view -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddAssistantActivity.this);
                 builder.setTitle("Delete Alert");
-                builder.setMessage("Would You like to delete assistant info");
+                builder.setMessage("Would you like to delete assistant info?");
                 builder.setPositiveButton("YES", (dialog, which) -> {
                     System.out.println("Delete method Called");
                     deleteAssistant(assistantId);
