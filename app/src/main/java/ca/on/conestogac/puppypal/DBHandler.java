@@ -182,72 +182,20 @@ public class DBHandler
         database.delete("tbl_assistant", "assistant_id = " + deleteID, null);
     }
 
-    //Add Weight Fitness Goal
-
     /**
      * Will be removed when fitness goal class is created.
-     * To be replaced by {@link #AddToTable(String, ArrayList)}
      *
-     * @param weight
      */
-    public void addWeightFitnessGoal(double weight, boolean isUpdate, int updateID)
-    {
-        SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put("target_weight", weight);
-        Log.d("addFitnessGoal", "addData: " + weight);
-
-        if (!isUpdate)
-        {
-            database.insert("tbl_fitness_goal", null, contentValues);
-        }
-        else
-        {
-            database.update("tbl_fitness_goal", contentValues, "fitness_goal_id = " + updateID, null);
-        }
-    }
-
-    //Add Energy Fitness Goal
-
-    /**
-     * Will be removed when fitness goal class is created.
-     * To be replaced by {@link #AddToTable(String, ArrayList)}
-     *
-     * @param energy
-     */
-    public void addEnergyFitnessGoal(int energy, boolean isUpdate, int updateID)
-    {
-        SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put("target_energy_level", energy);
-        Log.d("addFitnessGoal", "addData: " + energy);
-
-        if (!isUpdate)
-        {
-            database.insert("tbl_fitness_goal", null, contentValues);
-        }
-        else
-        {
-            database.update("tbl_fitness_goal", contentValues, "fitness_goal_id = " + updateID, null);
-        }
-    }
-
-    //Add Exercise Fitness Goal
-
-    /**
-     * Will be removed when fitness goal class is created.
-     * To be replaced by {@link #AddToTable(String, ArrayList)}
-     *
-     * @param exerciseType
-     * @param exerciseDuration
-     */
-    public void addExerciseFitnessGoal(String exerciseType, long exerciseDuration, boolean isUpdate, int updateID)
+    //Add or update fitness goal
+    public void addFitnessGoal(double weight, int energy, String exerciseType, long exerciseDuration, boolean isUpdate, int updateID)
     {
         SQLiteDatabase db = databaseHandler.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put("target_weight", weight);
+        Log.d("addFitnessGoal", "addData: " + weight);
+        contentValues.put("target_energy_level", energy);
+        Log.d("addFitnessGoal", "addData: " + energy);
         contentValues.put("target_exercise_type", exerciseType);
         Log.d("addFitnessGoal", "addData: " + exerciseType);
         contentValues.put("target_exercise_duration", exerciseDuration);
@@ -267,6 +215,7 @@ public class DBHandler
      * Will be removed when fitness goal class is created.
      *
      */
+    //Delete fitness goal
     public void deleteFitnessGoal(int deleteID)
     {
         SQLiteDatabase database = databaseHandler.getWritableDatabase();

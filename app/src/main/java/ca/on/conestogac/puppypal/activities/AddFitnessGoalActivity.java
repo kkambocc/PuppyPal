@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 import ca.on.conestogac.puppypal.DBHandler;
-import ca.on.conestogac.puppypal.MainActivity;
 import ca.on.conestogac.puppypal.R;
 
 public class AddFitnessGoalActivity extends AppCompatActivity
@@ -193,7 +192,10 @@ public class AddFitnessGoalActivity extends AppCompatActivity
 
                 if (validWeight)
                 {
-                    dbHandler.addWeightFitnessGoal(Double.parseDouble(weight), isUpdate, fitnessGoalId);
+                    energy = "0";
+                    exerciseType = "";
+                    exerciseDuration = "0";
+                    dbHandler.addFitnessGoal(Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
                 }
 
                 break;
@@ -202,7 +204,10 @@ public class AddFitnessGoalActivity extends AppCompatActivity
 
                 if (validEnergy)
                 {
-                    dbHandler.addEnergyFitnessGoal(Integer.parseInt(energy), isUpdate, fitnessGoalId);
+                    weight = "0";
+                    exerciseType = "";
+                    exerciseDuration = "0";
+                    dbHandler.addFitnessGoal(Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
                 }
 
                 break;
@@ -211,7 +216,9 @@ public class AddFitnessGoalActivity extends AppCompatActivity
 
                 if (validExercise)
                 {
-                    dbHandler.addExerciseFitnessGoal(exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
+                    weight = "0";
+                    energy = "0";
+                    dbHandler.addFitnessGoal(Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
                 }
 
                 break;
@@ -219,19 +226,25 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                 // no-op
         }
 
-        //editTextTargetWeight.setText(null);
-        //editTextTargetEnergy.setText(null);
-        //editTextTargetExerciseType.setText(null);
-        //editTextTargetExerciseDuration.setText(null);
+        if (!isUpdate)
+        {
+            Toast.makeText(this, "Fitness goal has been added", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Fitness goal has been updated", Toast.LENGTH_SHORT).show();
+        }
 
-        //Toast.makeText(this, "Fitness goal has been created", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, FitnessGoalActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void deleteFitnessGoal(int deleteID)
     {
         dbHandler.deleteFitnessGoal(deleteID);
-        Toast.makeText(this, "Fitness goal has been deleted from the database", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
+        Toast.makeText(this, "Fitness goal has been deleted", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, FitnessGoalActivity.class);
         startActivity(intent);
         finish();
     }
@@ -291,23 +304,6 @@ public class AddFitnessGoalActivity extends AppCompatActivity
             Toast.makeText(this, "Target duration field is empty!", Toast.LENGTH_SHORT).show();
             validExercise = false;
         }
-
-        /*
-        if (!validateExerciseDuration.matches("^\\d\\d:\\d\\d$"))
-        {
-            if (validateExerciseDuration.matches("^\\d:\\d\\d$"))
-            {
-                exerciseDuration = "0" + exerciseDuration;
-
-                //editTextTargetExerciseDuration.setText(exerciseDuration);
-            }
-            else
-            {
-                Toast.makeText(this, "Incorrect format of target duration! Use HH:MM", Toast.LENGTH_SHORT).show();
-                validExercise = false;
-            }
-        }
-        */
 
         return validExercise;
     }

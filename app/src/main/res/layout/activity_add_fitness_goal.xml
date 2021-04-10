@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/target_exercise" />
+                    android:text="@string/target_exercise_duration" />
 
                 <EditText
                     android:id="@+id/editTextTargetExerciseDuration"
@@ -137,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Enter number of minutes"
+                    android:hint="@string/target_exercise_duration_hint"
                     android:inputType="number" />
 
             </LinearLayout>
