@@ -74,6 +74,7 @@ public class PetHomepageActivity extends AppCompatActivity
     public void FitnessGoalButton(View v)
     {
         Intent intent = new Intent(this, FitnessGoalActivity.class);
+        intent.putExtra(Pet.PRIMARY_KEY, pet.getPetId().toString());
         startActivity(intent);
     }
 }

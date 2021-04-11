@@ -187,11 +187,13 @@ public class DBHandler
      *
      */
     //Add or update fitness goal
-    public void addFitnessGoal(double weight, int energy, String exerciseType, long exerciseDuration, boolean isUpdate, int updateID)
+    public void addFitnessGoal(int pet_id, double weight, int energy, String exerciseType, long exerciseDuration, boolean isUpdate, int updateID)
     {
         SQLiteDatabase db = databaseHandler.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put(Pet.PRIMARY_KEY, pet_id);
+        Log.d("addFitnessGoal", "addData: " + pet_id);
         contentValues.put("target_weight", weight);
         Log.d("addFitnessGoal", "addData: " + weight);
         contentValues.put("target_energy_level", energy);
@@ -290,10 +292,12 @@ public class DBHandler
 
             db.execSQL("CREATE TABLE IF NOT EXISTS tbl_fitness_goal(" +
                     "fitness_goal_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    Pet.PRIMARY_KEY + " INTEGER, " +
                     "target_weight REAL, " +
                     "target_energy_level INTEGER, " +
                     "target_exercise_type TEXT, " +
-                    "target_exercise_duration REAL)");
+                    "target_exercise_duration REAL, " +
+                    "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
         }
 

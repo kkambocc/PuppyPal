@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.tables.Pet;
 
 public class AddFitnessGoalActivity extends AppCompatActivity
 {
@@ -55,6 +56,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
     public boolean isUpdate;
 
     private Integer fitnessGoalId;
+    private Integer petId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -64,6 +66,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         setContentView(R.layout.activity_add_fitness_goal);
 
         fitnessGoalId  = getIntent().getIntExtra("id", -1);
+        petId = Integer.parseInt(getIntent().getStringExtra(Pet.PRIMARY_KEY));
 
         radiobuttonSelection = SELECT_RADIO_BUTTON_EXERCISE;
 
@@ -106,10 +109,10 @@ public class AddFitnessGoalActivity extends AppCompatActivity
             System.out.println("Success: Clicked Id is " + fitnessGoalId);
 
             ArrayList<String> fitnessGoal = dbHandler.ReadSingleEntry(Integer.toString(fitnessGoalId), "tbl_fitness_goal");
-            editTextTargetWeight.setText(fitnessGoal.get(1));
-            editTextTargetEnergy.setText(fitnessGoal.get(2));
-            editTextTargetExerciseType.setText(fitnessGoal.get(3));
-            editTextTargetExerciseDuration.setText(fitnessGoal.get(4));
+            editTextTargetWeight.setText(fitnessGoal.get(2));
+            editTextTargetEnergy.setText(fitnessGoal.get(3));
+            editTextTargetExerciseType.setText(fitnessGoal.get(4));
+            editTextTargetExerciseDuration.setText(fitnessGoal.get(5));
         }
 
         buttonAddFitnessGoal.setOnClickListener(view -> {
@@ -195,7 +198,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                     energy = "0";
                     exerciseType = "";
                     exerciseDuration = "0";
-                    dbHandler.addFitnessGoal(Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
+                    dbHandler.addFitnessGoal(petId, Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
                 }
 
                 break;
@@ -207,7 +210,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                     weight = "0";
                     exerciseType = "";
                     exerciseDuration = "0";
-                    dbHandler.addFitnessGoal(Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
+                    dbHandler.addFitnessGoal(petId, Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
                 }
 
                 break;
@@ -218,7 +221,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                 {
                     weight = "0";
                     energy = "0";
-                    dbHandler.addFitnessGoal(Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
+                    dbHandler.addFitnessGoal(petId, Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
                 }
 
                 break;
@@ -236,6 +239,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         }
 
         Intent intent = new Intent(this, FitnessGoalActivity.class);
+        intent.putExtra(Pet.PRIMARY_KEY, petId.toString());
         startActivity(intent);
         finish();
     }
@@ -245,6 +249,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         dbHandler.deleteFitnessGoal(deleteID);
         Toast.makeText(this, "Fitness goal has been deleted", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, FitnessGoalActivity.class);
+        intent.putExtra(Pet.PRIMARY_KEY, petId.toString());
         startActivity(intent);
         finish();
     }

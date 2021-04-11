@@ -13,16 +13,21 @@ import java.util.ArrayList;
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.tables.Pet;
 
 public class FitnessGoalActivity extends AppCompatActivity {
     DBHandler dbHandler;
     LinearLayout fitnessGoalList;
+
+    private Integer petId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_PuppyPal);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fitness_goal);
+
+        petId = Integer.parseInt(getIntent().getStringExtra(Pet.PRIMARY_KEY));
 
         updateTheList();
     }
@@ -37,7 +42,9 @@ public class FitnessGoalActivity extends AppCompatActivity {
         for (String id : ids)
         {
             ArrayList<String> fitnessGoal = dbHandler.ReadSingleEntry(id, "tbl_fitness_goal");
-            viewCreator(Integer.parseInt(fitnessGoal.get(0)));
+            if (Integer.parseInt(fitnessGoal.get(1)) == petId) {
+                viewCreator(Integer.parseInt(fitnessGoal.get(0)));
+            }
         }
     }
 
@@ -51,6 +58,7 @@ public class FitnessGoalActivity extends AppCompatActivity {
             System.out.println("ViewID: " + view.getId());
             Intent intent = new Intent(view.getContext(), AddFitnessGoalActivity.class);
             intent.putExtra("id", view.getId());
+            intent.putExtra(Pet.PRIMARY_KEY, petId.toString());
             startActivity(intent);
         });
         fitnessGoalList.addView(listButton);
@@ -59,6 +67,7 @@ public class FitnessGoalActivity extends AppCompatActivity {
     public void AddFitnessGoalButton(View v)
     {
         Intent intent = new Intent(this, AddFitnessGoalActivity.class);
+        intent.putExtra(Pet.PRIMARY_KEY, petId.toString());
         startActivity(intent);
     }
 }
