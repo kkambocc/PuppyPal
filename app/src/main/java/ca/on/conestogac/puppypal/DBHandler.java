@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import ca.on.conestogac.puppypal.activities.App;
 import ca.on.conestogac.puppypal.tables.Assistant;
 import ca.on.conestogac.puppypal.tables.EnergyRecord;
 import ca.on.conestogac.puppypal.tables.ExcrementRecord;
@@ -143,7 +144,7 @@ public class DBHandler
     //Code to implement database
     static class PuppyPalApplication extends SQLiteOpenHelper
     {
-        private static final String DB_NAME = "DB_PuppyPal";
+        private static final String DB_NAME = App.getContext().getString(R.string.db_name);
         private static final int DB_VERSION = 1;
 
 
@@ -208,12 +209,12 @@ public class DBHandler
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + FitnessGoal.TABLE_NAME + "(" +
                     FitnessGoal.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    Pet.PRIMARY_KEY + " INTEGER, " +
-                    FitnessGoal.COLUMN_NAMES[0] + " REAL, " +
-                    FitnessGoal.COLUMN_NAMES[1] + " INTEGER, " +
-                    FitnessGoal.COLUMN_NAMES[2] + " TEXT, " +
-                    FitnessGoal.COLUMN_NAMES[3] + " REAL, " +
-                    "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
+                    FitnessGoal.COLUMN_NAMES[0] + " INTEGER, " +
+                    FitnessGoal.COLUMN_NAMES[1] + " REAL, " +
+                    FitnessGoal.COLUMN_NAMES[2] + " INTEGER, " +
+                    FitnessGoal.COLUMN_NAMES[3] + " TEXT, " +
+                    FitnessGoal.COLUMN_NAMES[4] + " REAL, " +
+                    "FOREIGN KEY (" + FitnessGoal.COLUMN_NAMES[0] + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
         }
 

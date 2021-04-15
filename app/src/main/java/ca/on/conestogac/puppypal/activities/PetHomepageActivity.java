@@ -15,6 +15,7 @@ import ca.on.conestogac.puppypal.R;
 import ca.on.conestogac.puppypal.fragments.PetDataFragment;
 import ca.on.conestogac.puppypal.fragments.ViewPagerAdapter;
 import ca.on.conestogac.puppypal.tables.EnergyRecord;
+import ca.on.conestogac.puppypal.tables.ExcrementRecord;
 import ca.on.conestogac.puppypal.tables.ExerciseRecord;
 import ca.on.conestogac.puppypal.tables.MealRecord;
 import ca.on.conestogac.puppypal.tables.Pet;
@@ -49,6 +50,7 @@ public class PetHomepageActivity extends AppCompatActivity
         PetDataFragment mealFragment = new PetDataFragment(MealRecord.TABLE_NAME, petId);
         PetDataFragment exerciseFragment = new PetDataFragment(ExerciseRecord.TABLE_NAME, petId);
         PetDataFragment energyFragment = new PetDataFragment(EnergyRecord.TABLE_NAME, petId);
+        PetDataFragment excrementFragment = new PetDataFragment(ExcrementRecord.TABLE_NAME, petId);
 
 
         nameText.setText(pet.getName().toUpperCase());
@@ -57,10 +59,11 @@ public class PetHomepageActivity extends AppCompatActivity
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
 
-        viewPagerAdapter.addFragment(weightFragment, "WEIGHT");
-        viewPagerAdapter.addFragment(mealFragment, "MEAL");
-        viewPagerAdapter.addFragment(exerciseFragment, "EXERCISE");
-        viewPagerAdapter.addFragment(energyFragment, "ENERGY");
+        viewPagerAdapter.addFragment(weightFragment, getText(R.string.weight_fragment_title).toString());
+        viewPagerAdapter.addFragment(mealFragment, getText(R.string.meal_fragment_title).toString());
+        viewPagerAdapter.addFragment(exerciseFragment, getText(R.string.exercise_fragment_title).toString());
+        viewPagerAdapter.addFragment(energyFragment, getText(R.string.energy_fragment_title).toString());
+        viewPagerAdapter.addFragment(excrementFragment, getText(R.string.excrement_fragment_title).toString());
         viewPager.setAdapter(viewPagerAdapter);
     }
 

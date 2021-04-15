@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.activities.App;
+
 import static java.lang.Float.parseFloat;
 import static java.lang.Long.parseLong;
 
 public class WeightRecord
 {
-    public static final String TABLE_NAME = "tbl_weight";
-    public static final String PRIMARY_KEY = "weight_id";
-    public static final String[] COLUMN_NAMES = {"date", "weight"};
+    public static final String TABLE_NAME = App.getContext().getString(R.string.weight_table_name);
+    public static final String PRIMARY_KEY = App.getContext().getString(R.string.weight_pk);
+    public static final String[] COLUMN_NAMES = App.getContext().getResources().getStringArray(R.array.weight_columns);
+
     private long weightId;
     private long petId;
     private final Date date;

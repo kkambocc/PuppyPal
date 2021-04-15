@@ -2,9 +2,7 @@ package ca.on.conestogac.puppypal.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +39,6 @@ public class AddRecordActivity extends AppCompatActivity
     private DateFormat date;
     private String tableName;
     private String petId;
-    Intent notificationIntent;
-    CountDownTimer countDownTimer;
 
 
     @Override
@@ -62,25 +58,28 @@ public class AddRecordActivity extends AppCompatActivity
         GenerateForm(database.GetColumnNames(tableName));
 
         String pageTitle = getString(R.string.add);
-        switch (tableName)
+
+        if (tableName.equals(ExerciseRecord.TABLE_NAME))
         {
-            case ExerciseRecord.TABLE_NAME:
-                pageTitle += getString(R.string.rb_exercise);
-                break;
-            case EnergyRecord.TABLE_NAME:
-                pageTitle += getString(R.string.energy_level);
-                break;
-            case ExcrementRecord.TABLE_NAME:
-                pageTitle += "Excrement";
-                break;
-            case MealRecord.TABLE_NAME:
-                pageTitle += getString(R.string.meal);
-                break;
-            case WeightRecord.TABLE_NAME:
-            default:
-                pageTitle += getString(R.string.rb_weight);
-                break;
+            pageTitle += getString(R.string.rb_exercise);
         }
+        else if (tableName.equals(EnergyRecord.TABLE_NAME))
+        {
+            pageTitle += getString(R.string.energy_level);
+        }
+        else if (tableName.equals(ExcrementRecord.TABLE_NAME))
+        {
+            pageTitle += "Excrement";
+        }
+        else if (tableName.equals(MealRecord.TABLE_NAME))
+        {
+            pageTitle += getString(R.string.meal);
+        }
+        else //if (tableName.equals(WeightRecord.TABLE_NAME))
+        {
+            pageTitle += getString(R.string.rb_weight);
+        }
+
         TextView title = findViewById(R.id.labelRecordType);
         title.setText(pageTitle);
 

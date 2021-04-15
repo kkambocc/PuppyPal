@@ -2,11 +2,15 @@ package ca.on.conestogac.puppypal.tables;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.activities.App;
+
 public class ExcrementRecord
 {
-    public static final String TABLE_NAME = "tbl_excrement";
-    public static final String PRIMARY_KEY = "excrement_id";
-    public static final String[] COLUMN_NAMES = {"date", "abnormalities"};
+    public static final String TABLE_NAME = App.getContext().getString(R.string.excrement_table_name);
+    public static final String PRIMARY_KEY = App.getContext().getString(R.string.excrement_pk);
+    public static final String[] COLUMN_NAMES = App.getContext().getResources().getStringArray(R.array.excrement_columns);
+
     private long excrementId;
     private long petId;
     private Date date;

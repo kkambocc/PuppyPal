@@ -2,14 +2,16 @@ package ca.on.conestogac.puppypal.tables;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.activities.App;
+
 import static java.lang.Long.parseLong;
 
 public class EnergyRecord
 {
-    public static final String TABLE_NAME = "tbl_energy";
-    public static final String PRIMARY_KEY = "energy_level_id";
-    public static final String[] COLUMN_NAMES = {"date", "energy_level"};
-
+    public static final String TABLE_NAME = App.getContext().getString(R.string.energy_table_name);
+    public static final String PRIMARY_KEY = App.getContext().getString(R.string.energy_pk);
+    public static final String[] COLUMN_NAMES = App.getContext().getResources().getStringArray(R.array.energy_columns);
 
     private long energyId;
     private long petId;

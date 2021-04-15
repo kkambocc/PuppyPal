@@ -16,7 +16,6 @@
     <string name="update_assistant">Update the Assistant</string>
     <string name="rb_weight">Weight</string>
     <string name="rb_energy">Energy</string>
-    <string name="weight">Weight:</string>
     <string name="breed">Breed:</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
@@ -37,7 +36,100 @@
     <string name="hintForWeight">Enter in Pounds (lbs)</string>
     <string name="add">Add </string>
     <string name="time">Time</string>
-    <string name="energy_level">Energy Level</string>
     <string name="change_pet_details">Change Pet Details</string>
+
+    <!--Graph Labels-->
+        <string name="date">Date</string>
+        <string name="amount">Date</string>
+        <string name="duration">Date</string>
+        <string name="energy_level">Energy Level</string>
+        <string name="weight">Weight (lbs)</string>
+
+    <!--Fragment Titles-->
+        <string name="pet_fragment_title">Pets</string>
+        <string name="assistant_fragment_title">Assistants</string>
+        <string name="weight_fragment_title">WEIGHT</string>
+        <string name="meal_fragment_title">MEAL</string>
+        <string name="exercise_fragment_title">EXERCISE</string>
+        <string name="energy_fragment_title">ENERGY</string>
+        <string name="excrement_fragment_title">EXCREMENT</string>
+
+    <!--Database Strings-->
+        <string name="db_name">DB_PuppyPal</string>
+
+        <!--Assistant-->
+            <string name="assistant_table_name">tbl_assistant</string>
+            <string name="assistant_table_pk">assistant_id</string>
+            <string-array name="assistant_columns">
+                <item>name</item>
+                <item>phone_number</item>
+                <item>address</item>
+                <item>title</item>
+                <item>general_description</item>
+            </string-array>
+
+        <!--Energy-->
+            <string name="energy_table_name">tbl_energy</string>
+            <string name="energy_pk">energy_level_id</string>
+            <string-array name="energy_columns">
+                <item>date</item>
+                <item>energy_level</item>
+            </string-array>
+
+        <!--Excrement-->
+            <string name="excrement_table_name">tbl_excrement</string>
+            <string name="excrement_pk">excrement_id</string>
+            <string-array name="excrement_columns">
+                <item>date</item>
+                <item>abnormalities</item>
+            </string-array>
+
+        <!--Exercise-->
+            <string name="exercise_table_name">tbl_exercise</string>
+            <string name="exercise_pk">exercise_id</string>
+            <string-array name="exercise_columns">
+                <item>date</item>
+                <item>type</item>
+                <item>duration</item>
+            </string-array>
+
+        <!--Fitness-->
+            <string name="fitness_table_name">tbl_fitness_goal</string>
+            <string name="fitness_pk">fitness_goal_id</string>
+            <string-array name="fitness_columns">
+                <item>pet_id</item>
+                <item>target_weight</item>
+                <item>target_energy_level</item>
+                <item>target_exercise_type</item>
+                <item>target_exercise_duration</item>
+            </string-array>
+
+        <!--Meal-->
+            <string name="meal_table_name">tbl_meal</string>
+            <string name="meal_pk">meal_id</string>
+            <string-array name="meal_columns">
+                <item>date</item>
+                <item>amount</item>
+            </string-array>
+
+        <!--Pet-->
+            <string name="pet_table_name">tbl_pet</string>
+            <string name="pet_pk">pet_id</string>
+            <string-array name="pet_columns">
+                <item>name</item>
+                <item>age</item>
+                <item>breed</item>
+                <item>gender</item>
+                <item>spayed_neutered</item>
+            </string-array>
+
+        <!--Weight-->
+            <string name="weight_table_name">tbl_weight</string>
+            <string name="weight_pk">weight_id</string>
+            <string-array name="weight_columns">
+                <item>date</item>
+                <item>weight</item>
+            </string-array>
+    <!--End of Database Strings-->
 
 </resources>

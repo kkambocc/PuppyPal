@@ -2,14 +2,17 @@ package ca.on.conestogac.puppypal.tables;
 
 import java.util.ArrayList;
 
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.activities.App;
+
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
 public class FitnessGoal
 {
-    public static final String TABLE_NAME = "tbl_fitness_goal";
-    public static final String PRIMARY_KEY = "fitness_goal_id";
-    public static final String[] COLUMN_NAMES = {"target_weight", "target_energy_level", "target_exercise_type", "target_exercise_duration"};
+    public static final String TABLE_NAME = App.getContext().getString(R.string.fitness_table_name);
+    public static final String PRIMARY_KEY = App.getContext().getString(R.string.fitness_pk);
+    public static final String[] COLUMN_NAMES = App.getContext().getResources().getStringArray(R.array.fitness_columns);
 
     private final long fitnessGoalId;
     private final long petId;

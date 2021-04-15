@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
 
-        viewPagerAdapter.addFragment(petListFragment, "Pets");
-        viewPagerAdapter.addFragment(assistantListFragment, "Assistants");
+        viewPagerAdapter.addFragment(petListFragment, getString(R.string.pet_fragment_title));
+        viewPagerAdapter.addFragment(assistantListFragment, getString(R.string.assistant_fragment_title));
         viewPager.setAdapter(viewPagerAdapter);
     }
 

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
 import ca.on.conestogac.puppypal.activities.AddAssistantActivity;
+import ca.on.conestogac.puppypal.tables.Assistant;
 
 public class AssistantListFragment extends Fragment
 {
@@ -49,11 +50,11 @@ public class AssistantListFragment extends Fragment
         assistantList = view.findViewById(R.id.assistantList);
         dbHandler = new DBHandler(view.getContext());
 
-        ArrayList<String> ids = dbHandler.ReadSingleColumn("assistant_id", "tbl_assistant");
+        ArrayList<String> ids = dbHandler.ReadSingleColumn(Assistant.PRIMARY_KEY, Assistant.TABLE_NAME);
 
         for (String id : ids)
         {
-            ArrayList<String> assistant = dbHandler.ReadSingleEntry(id, "tbl_assistant");
+            ArrayList<String> assistant = dbHandler.ReadSingleEntry(id, Assistant.TABLE_NAME);
             viewCreator(Integer.parseInt(assistant.get(0)), assistant.get(1));
         }
     }

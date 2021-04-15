@@ -109,17 +109,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
                 android:background="#FFFFFF"
                 android:inputType="number"
                 android:maxLength="3" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="lbs"
-                android:textColor="#1C1A1A" />
 
         </LinearLayout>
 
