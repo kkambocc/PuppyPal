@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">PuppyPal</string>
+    <string name="delete">Delete</string>
     <string name="edit_a_pet">Edit a Pet</string>
     <string name="add_a_pet">Add a Pet</string>
     <string name="add_record">Add Record</string>
@@ -37,22 +38,25 @@
     <string name="add">Add </string>
     <string name="time">Time</string>
     <string name="change_pet_details">Change Pet Details</string>
+    <string name="excrement">Excrement</string>
+    <string name="added_previously">Added Previously:</string>
 
     <!--Graph Labels-->
         <string name="date">Date</string>
-        <string name="amount">Date</string>
-        <string name="duration">Date</string>
+        <string name="amount">Amount</string>
+        <string name="duration">Duration (mins)</string>
         <string name="energy_level">Energy Level</string>
         <string name="weight">Weight (lbs)</string>
+        <string name="abnormalities">Abnormalities</string>
 
     <!--Fragment Titles-->
         <string name="pet_fragment_title">Pets</string>
         <string name="assistant_fragment_title">Assistants</string>
-        <string name="weight_fragment_title">WEIGHT</string>
-        <string name="meal_fragment_title">MEAL</string>
-        <string name="exercise_fragment_title">EXERCISE</string>
-        <string name="energy_fragment_title">ENERGY</string>
-        <string name="excrement_fragment_title">EXCREMENT</string>
+        <string name="weight_fragment_title">Weight</string>
+        <string name="meal_fragment_title">Meal</string>
+        <string name="exercise_fragment_title">Exercise</string>
+        <string name="energy_fragment_title">Energy</string>
+        <string name="excrement_fragment_title">Excrement</string>
 
     <!--Database Strings-->
         <string name="db_name">DB_PuppyPal</string>
@@ -97,7 +101,6 @@
             <string name="fitness_table_name">tbl_fitness_goal</string>
             <string name="fitness_pk">fitness_goal_id</string>
             <string-array name="fitness_columns">
-                <item>pet_id</item>
                 <item>target_weight</item>
                 <item>target_energy_level</item>
                 <item>target_exercise_type</item>

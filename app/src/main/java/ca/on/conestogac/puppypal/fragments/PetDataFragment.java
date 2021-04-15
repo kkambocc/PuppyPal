@@ -1,13 +1,16 @@
 package ca.on.conestogac.puppypal.fragments;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jjoe64.graphview.GraphView;
@@ -20,7 +23,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.Date;
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
@@ -35,7 +38,7 @@ import ca.on.conestogac.puppypal.tables.WeightRecord;
 public class PetDataFragment extends Fragment
 {
     private GraphView graph;
-    private RecyclerView recyclerView;
+    private LinearLayout recordLog;
     private DBHandler database;
     private String graphTableName;
     private String petId;
@@ -55,7 +58,7 @@ public class PetDataFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
         View view = inflater.inflate(R.layout.fragment_pet_data, container, false);
 
         FloatingActionButton button = view.findViewById(R.id.goToAddRecord);
@@ -68,17 +71,19 @@ public class PetDataFragment extends Fragment
 
         database = new DBHandler(container.getContext());
         graph = view.findViewById(R.id.graph);
-        recyclerView = view.findViewById(R.id.recordLog);
+        recordLog = view.findViewById(R.id.recordLog);
+        ArrayList<String> ids;
+        Viewport viewport = graph.getViewport();
+        GridLabelRenderer renderer = graph.getGridLabelRenderer();
 
         //graphing
         if (this.graphTableName.equals(ExcrementRecord.TABLE_NAME))
         {
             graph.setVisibility(View.GONE);
+            ids = database.ReadSingleColumn(ExcrementRecord.PRIMARY_KEY, ExcrementRecord.TABLE_NAME, ExcrementRecord.COLUMN_NAMES[0] + " DESC");
         }
         else
         {
-            Viewport viewport = graph.getViewport();
-            GridLabelRenderer renderer = graph.getGridLabelRenderer();
 
             renderer.setGridStyle(GridLabelRenderer.GridStyle.BOTH);
             renderer.setLabelFormatter(new DateAsXAxisLabelFormatter(view.getContext(), dateFormat)
@@ -109,21 +114,25 @@ public class PetDataFragment extends Fragment
             {
                 DisplayGraph(MealRecord.PRIMARY_KEY, MealRecord.TABLE_NAME);
                 renderer.setVerticalAxisTitle(getString(R.string.amount));
+                ids = database.ReadSingleColumn(MealRecord.PRIMARY_KEY, MealRecord.TABLE_NAME, MealRecord.COLUMN_NAMES[0] + " DESC");
             }
             else if (this.graphTableName.equals(ExerciseRecord.TABLE_NAME))
             {
                 DisplayGraph(ExerciseRecord.PRIMARY_KEY, ExerciseRecord.TABLE_NAME);
                 renderer.setVerticalAxisTitle(getString(R.string.duration));
+                ids = database.ReadSingleColumn(ExerciseRecord.PRIMARY_KEY, ExerciseRecord.TABLE_NAME, ExerciseRecord.COLUMN_NAMES[0] + " DESC");
             }
             else if (this.graphTableName.equals(EnergyRecord.TABLE_NAME))
             {
                 DisplayGraph(EnergyRecord.PRIMARY_KEY, EnergyRecord.TABLE_NAME);
                 renderer.setVerticalAxisTitle(getString(R.string.energy_level));
+                ids = database.ReadSingleColumn(EnergyRecord.PRIMARY_KEY, EnergyRecord.TABLE_NAME, EnergyRecord.COLUMN_NAMES[0] + " DESC");
             }
             else //if (this.graphTableName.equals(WeightRecord.TABLE_NAME))
             {
                 DisplayGraph(WeightRecord.PRIMARY_KEY, WeightRecord.TABLE_NAME);
                 renderer.setVerticalAxisTitle(getString(R.string.weight));
+                ids = database.ReadSingleColumn(WeightRecord.PRIMARY_KEY, WeightRecord.TABLE_NAME, WeightRecord.COLUMN_NAMES[0] + " DESC");
             }
 
             viewport.setScrollable(true);
@@ -133,8 +142,55 @@ public class PetDataFragment extends Fragment
             viewport.scrollToEnd();
         }
 
-        //record log
 
+
+        //record log
+        ConstraintLayout row = (ConstraintLayout) inflater.inflate(R.layout.record_layout,null);
+        TextView date = (TextView) row.getChildAt(0);
+        TextView content = (TextView) row.getChildAt(2);
+        date.setText(R.string.date);
+        date.setTypeface(null, Typeface.BOLD);
+
+        if (this.graphTableName.equals(ExcrementRecord.TABLE_NAME))
+        {
+            content.setText(R.string.abnormalities);
+        }
+        else
+        {
+            content.setText(renderer.getVerticalAxisTitle());
+        }
+        content.setTypeface(null,Typeface.BOLD);
+        recordLog.addView(row);
+        dateFormat = new SimpleDateFormat("MMM d, yy h:mm a");
+
+        for (String id : ids)
+        {
+            ArrayList<String> record = database.ReadSingleEntry(id,graphTableName);
+            if (record.get(1).equals(petId))
+            {
+                row = (ConstraintLayout) inflater.inflate(R.layout.record_layout, null);
+                date = (TextView) row.getChildAt(0);
+                content = (TextView) row.getChildAt(2);
+
+                date.setText(dateFormat.format(new Date(Long.parseLong(record.get(2)))));
+                content.setText(record.get(3));
+                //if exercise record......
+
+                row.setClickable(true);
+                row.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(view.getContext(),AddRecordActivity.class);
+                        intent.putExtra("recordId",Long.parseLong(id));
+                        intent.putExtra("tableName",graphTableName);
+                        startActivity(intent);
+                    }
+                });
+                recordLog.addView(row);
+            }
+        }
 
         return view;
     }

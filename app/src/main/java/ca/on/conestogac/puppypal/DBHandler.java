@@ -49,6 +49,17 @@ public class DBHandler
     Read
      */
 
+    //return a single column from a single record
+    public String ReadSingleValue(String returnColumn, String tableName, String primaryKeyName, String primaryKey)
+    {
+        SQLiteDatabase database = databaseHandler.getReadableDatabase();
+        Cursor cursor = database.query(tableName,new String[]{returnColumn},primaryKeyName + " = ?", new String[]{primaryKey},null,null,null,"1");
+        cursor.moveToFirst();
+        String result = cursor.getString(cursor.getColumnIndex(returnColumn));
+        cursor.close();
+        return result;
+    }
+
     //return a single column
     public ArrayList<String> ReadSingleColumn(String returnColumn, String tableName)
     {
@@ -173,7 +184,7 @@ public class DBHandler
             db.execSQL("CREATE TABLE IF NOT EXISTS " + ExcrementRecord.TABLE_NAME + "(" +
                     ExcrementRecord.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Pet.PRIMARY_KEY + " INTEGER, " +
-                    ExcrementRecord.COLUMN_NAMES[0] + "date TEXT, " +
+                    ExcrementRecord.COLUMN_NAMES[0] + " TEXT, " +
                     ExcrementRecord.COLUMN_NAMES[1] + " TEXT, " +
                     "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
@@ -209,12 +220,12 @@ public class DBHandler
 
             db.execSQL("CREATE TABLE IF NOT EXISTS " + FitnessGoal.TABLE_NAME + "(" +
                     FitnessGoal.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    FitnessGoal.COLUMN_NAMES[0] + " INTEGER, " +
-                    FitnessGoal.COLUMN_NAMES[1] + " REAL, " +
-                    FitnessGoal.COLUMN_NAMES[2] + " INTEGER, " +
-                    FitnessGoal.COLUMN_NAMES[3] + " TEXT, " +
-                    FitnessGoal.COLUMN_NAMES[4] + " REAL, " +
-                    "FOREIGN KEY (" + FitnessGoal.COLUMN_NAMES[0] + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
+                    Pet.PRIMARY_KEY + " INTEGER, " +
+                    FitnessGoal.COLUMN_NAMES[0] + " REAL, " +
+                    FitnessGoal.COLUMN_NAMES[1] + " INTEGER, " +
+                    FitnessGoal.COLUMN_NAMES[2] + " TEXT, " +
+                    FitnessGoal.COLUMN_NAMES[3] + " REAL, " +
+                    "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
         }
 

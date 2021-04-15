@@ -127,6 +127,7 @@ public class EditPetActivity extends AppCompatActivity
         database.DeleteFromTable(MealRecord.TABLE_NAME, Pet.PRIMARY_KEY, pet.getPetId());
         database.DeleteFromTable(ExerciseRecord.TABLE_NAME, Pet.PRIMARY_KEY, pet.getPetId());
         finish();
+        finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
