@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">PuppyPal</string>
     <string name="delete">Delete</string>
+    <string name="save">Save</string>
     <string name="edit_a_pet">Edit a Pet</string>
     <string name="add_a_pet">Add a Pet</string>
     <string name="add_record">Add Record</string>
@@ -35,7 +36,7 @@
     <string name="target_exercise_duration_hint">Enter number of minutes</string>
     <string name="target_exercise_type">Exercise Type: (*)</string>
     <string name="hintForWeight">Enter in Pounds (lbs)</string>
-    <string name="add">Add </string>
+    <string name="add">Add</string>
     <string name="time">Time</string>
     <string name="change_pet_details">Change Pet Details</string>
     <string name="excrement">Excrement</string>

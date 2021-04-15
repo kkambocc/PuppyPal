@@ -89,7 +89,7 @@ public class AddRecordActivity extends AppCompatActivity
 
         if (recordId == -1)
         {
-            pageTitle = getString(R.string.add) + pageTitle;
+            pageTitle = getString(R.string.add) + " " + pageTitle;
             GenerateForm(database.GetColumnNames(tableName),false);
         }
         else

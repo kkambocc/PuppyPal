@@ -161,7 +161,7 @@ public class PetDataFragment extends Fragment
         }
         content.setTypeface(null,Typeface.BOLD);
         recordLog.addView(row);
-        dateFormat = new SimpleDateFormat("MMM d, yy h:mm a");
+        dateFormat = new SimpleDateFormat("MMM d, H:mm");
 
         for (String id : ids)
         {
@@ -173,8 +173,17 @@ public class PetDataFragment extends Fragment
                 content = (TextView) row.getChildAt(2);
 
                 date.setText(dateFormat.format(new Date(Long.parseLong(record.get(2)))));
-                content.setText(record.get(3));
-                //if exercise record......
+
+                if (graphTableName.equals(ExerciseRecord.TABLE_NAME))
+                {
+                    TextView type = (TextView) row.getChildAt(1);
+                    type.setText(record.get(3));
+                    content.setText(record.get(4));
+                }
+                else
+                {
+                    content.setText(record.get(3));
+                }
 
                 row.setClickable(true);
                 row.setOnClickListener(new View.OnClickListener()
