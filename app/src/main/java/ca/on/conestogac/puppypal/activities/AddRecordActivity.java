@@ -2,9 +2,7 @@ package ca.on.conestogac.puppypal.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import ca.on.conestogac.puppypal.DBHandler;
@@ -41,8 +40,8 @@ public class AddRecordActivity extends AppCompatActivity
     private DateFormat date;
     private String tableName;
     private String petId;
-    Intent notificationIntent;
-    CountDownTimer countDownTimer;
+    private String primaryKeyName;
+    private Long recordId;
 
 
     @Override
@@ -58,29 +57,52 @@ public class AddRecordActivity extends AppCompatActivity
         date = android.text.format.DateFormat.getDateFormat(getApplicationContext());
         petId = getIntent().getStringExtra(Pet.PRIMARY_KEY);
 
+        recordId = getIntent().getLongExtra("recordId", -1);
         tableName = getIntent().getStringExtra("tableName");
-        GenerateForm(database.GetColumnNames(tableName));
+        String pageTitle;
 
-        String pageTitle = getString(R.string.add);
-        switch (tableName)
+        if (tableName.equals(ExerciseRecord.TABLE_NAME))
         {
-            case ExerciseRecord.TABLE_NAME:
-                pageTitle += getString(R.string.rb_exercise);
-                break;
-            case EnergyRecord.TABLE_NAME:
-                pageTitle += getString(R.string.energy_level);
-                break;
-            case ExcrementRecord.TABLE_NAME:
-                pageTitle += "Excrement";
-                break;
-            case MealRecord.TABLE_NAME:
-                pageTitle += getString(R.string.meal);
-                break;
-            case WeightRecord.TABLE_NAME:
-            default:
-                pageTitle += getString(R.string.rb_weight);
-                break;
+            pageTitle = getString(R.string.rb_exercise);
+            primaryKeyName = ExerciseRecord.PRIMARY_KEY;
         }
+        else if (tableName.equals(EnergyRecord.TABLE_NAME))
+        {
+            pageTitle = getString(R.string.energy_level);
+            primaryKeyName = EnergyRecord.PRIMARY_KEY;
+        }
+        else if (tableName.equals(ExcrementRecord.TABLE_NAME))
+        {
+            pageTitle = getString(R.string.excrement);
+            primaryKeyName = ExcrementRecord.PRIMARY_KEY;
+        }
+        else if (tableName.equals(MealRecord.TABLE_NAME))
+        {
+            pageTitle = getString(R.string.meal);
+            primaryKeyName = MealRecord.PRIMARY_KEY;
+        }
+        else //if (tableName.equals(WeightRecord.TABLE_NAME))
+        {
+            pageTitle = getString(R.string.rb_weight);
+            primaryKeyName = WeightRecord.PRIMARY_KEY;
+        }
+
+        if (recordId == -1)
+        {
+            pageTitle = getString(R.string.add) + " " + pageTitle;
+            GenerateForm(database.GetColumnNames(tableName),false);
+        }
+        else
+        {
+            Button button = findViewById(R.id.saveRecordToDatabase);
+            button.setText(R.string.delete);
+            button.setOnClickListener(v -> {
+                database.DeleteFromTable(tableName,primaryKeyName,recordId);
+                finish();
+            });
+            GenerateForm(database.GetColumnNames(tableName),true);
+        }
+
         TextView title = findViewById(R.id.labelRecordType);
         title.setText(pageTitle);
 
@@ -122,7 +144,7 @@ public class AddRecordActivity extends AppCompatActivity
         finish();
     }
 
-    private void GenerateForm(ArrayList<String> columnNames)
+    private void GenerateForm(ArrayList<String> columnNames, boolean review)
     {
         form.removeAllViews();
 
@@ -134,21 +156,39 @@ public class AddRecordActivity extends AppCompatActivity
                 TextView label = new TextView(this);
                 View view = new EditText(this);
                 label.setText(column.toUpperCase());
+
+                if (review)
+                {
+                    ((EditText) view).setText(database.ReadSingleValue(column, tableName, primaryKeyName, recordId.toString()));
+                    view.setEnabled(false);
+                }
+
                 if (column.equals(WeightRecord.COLUMN_NAMES[0])) //date
                 {
                     calendar = Calendar.getInstance();
 
+                    if (review)
+                    {
+                        calendar.setTime(new Date(Long.parseLong(database.ReadSingleValue(column, tableName, primaryKeyName, recordId.toString()))));
+                    }
+
                     Button viewTime = new Button(this);
                     TextView labelTime = new TextView(this);
-                    labelTime.setText(R.string.time);
-                    viewTime.setOnClickListener(this::ChangeTime);
+                    labelTime.setText(getText(R.string.time).toString().toUpperCase());
+                    if (!review)
+                    {
+                        viewTime.setOnClickListener(this::ChangeTime);
+                    }
                     viewTime.setId(R.id.viewTime);
                     viewTime.setText(time.format(calendar.getTime()));
                     viewTime.setTextAppearance(R.style.TextAppearance_AppCompat_Large);
                     AddRow(labelTime, viewTime);
 
                     view = new Button(this);
-                    view.setOnClickListener(this::ChangeDate);
+                    if (!review)
+                    {
+                        view.setOnClickListener(this::ChangeDate);
+                    }
 
                     view.setId(R.id.viewDate);
                     ((Button) view).setText(date.format(calendar.getTime()));
@@ -164,6 +204,11 @@ public class AddRecordActivity extends AppCompatActivity
                     view = new SeekBar(this, null, 0, R.style.Widget_AppCompat_SeekBar_Discrete);
                     ((SeekBar) view).setMax(10);
                 }
+                else if (column.equals(ExerciseRecord.COLUMN_NAMES[2]))
+                {
+                    label.setText(getText(R.string.duration).toString().toUpperCase());
+                }
+
                 AddRow(label, view);
             }
         }

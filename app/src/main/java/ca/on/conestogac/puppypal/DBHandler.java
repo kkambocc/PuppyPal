@@ -5,14 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import ca.on.conestogac.puppypal.activities.App;
+import ca.on.conestogac.puppypal.tables.Assistant;
 import ca.on.conestogac.puppypal.tables.EnergyRecord;
 import ca.on.conestogac.puppypal.tables.ExcrementRecord;
 import ca.on.conestogac.puppypal.tables.ExerciseRecord;
+import ca.on.conestogac.puppypal.tables.FitnessGoal;
 import ca.on.conestogac.puppypal.tables.MealRecord;
 import ca.on.conestogac.puppypal.tables.Pet;
 import ca.on.conestogac.puppypal.tables.WeightRecord;
@@ -46,6 +48,17 @@ public class DBHandler
     /*
     Read
      */
+
+    //return a single column from a single record
+    public String ReadSingleValue(String returnColumn, String tableName, String primaryKeyName, String primaryKey)
+    {
+        SQLiteDatabase database = databaseHandler.getReadableDatabase();
+        Cursor cursor = database.query(tableName,new String[]{returnColumn},primaryKeyName + " = ?", new String[]{primaryKey},null,null,null,"1");
+        cursor.moveToFirst();
+        String result = cursor.getString(cursor.getColumnIndex(returnColumn));
+        cursor.close();
+        return result;
+    }
 
     //return a single column
     public ArrayList<String> ReadSingleColumn(String returnColumn, String tableName)
@@ -139,95 +152,10 @@ public class DBHandler
         database.delete(tableName, whereClause, new String[]{id.toString()});
     }
 
-    /**
-     * Will be removed when assistant class is created.
-     * To be replaced by {@link #AddToTable(String, ArrayList)}
-     *
-     * @param name
-     * @param phoneNumber
-     * @param address
-     * @param title
-     * @param generalDescription
-     * @param isUpdate
-     * @param updateID
-     */
-    public void addAssistantToDB(String name, String phoneNumber, String address, String title, String generalDescription, boolean isUpdate, int updateID)
-    {
-        SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        ContentValues assistantContentValues = new ContentValues();
-        assistantContentValues.put("name", name);
-        assistantContentValues.put("phone_number", phoneNumber);
-        assistantContentValues.put("address", address);
-        assistantContentValues.put("title", title);
-        assistantContentValues.put("general_description", generalDescription);
-        if (!isUpdate)
-        {
-            database.insertOrThrow("tbl_assistant", null, assistantContentValues);
-        }
-        else
-        {
-            database.update("tbl_assistant", assistantContentValues, "assistant_id = " + updateID, null);
-        }
-    }
-
-    /**
-     * Will be removed when assistant class is created.
-     * To be replaced by {@link #DeleteFromTable(String, String, Long)}
-     *
-     * @param deleteID
-     */
-    public void deleteAssistant(int deleteID)
-    {
-        SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        database.delete("tbl_assistant", "assistant_id = " + deleteID, null);
-    }
-
-    /**
-     * Will be removed when fitness goal class is created.
-     *
-     */
-    //Add or update fitness goal
-    public void addFitnessGoal(int pet_id, double weight, int energy, String exerciseType, long exerciseDuration, boolean isUpdate, int updateID)
-    {
-        SQLiteDatabase db = databaseHandler.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(Pet.PRIMARY_KEY, pet_id);
-        Log.d("addFitnessGoal", "addData: " + pet_id);
-        contentValues.put("target_weight", weight);
-        Log.d("addFitnessGoal", "addData: " + weight);
-        contentValues.put("target_energy_level", energy);
-        Log.d("addFitnessGoal", "addData: " + energy);
-        contentValues.put("target_exercise_type", exerciseType);
-        Log.d("addFitnessGoal", "addData: " + exerciseType);
-        contentValues.put("target_exercise_duration", exerciseDuration);
-        Log.d("addFitnessGoal", "addData: " + exerciseDuration);
-
-        if (!isUpdate)
-        {
-            db.insert("tbl_fitness_goal", null, contentValues);
-        }
-        else
-        {
-            db.update("tbl_fitness_goal", contentValues, "fitness_goal_id = " + updateID, null);
-        }
-    }
-
-    /**
-     * Will be removed when fitness goal class is created.
-     *
-     */
-    //Delete fitness goal
-    public void deleteFitnessGoal(int deleteID)
-    {
-        SQLiteDatabase database = databaseHandler.getWritableDatabase();
-        database.delete("tbl_fitness_goal", "fitness_goal_id = " + deleteID, null);
-    }
-
     //Code to implement database
     static class PuppyPalApplication extends SQLiteOpenHelper
     {
-        private static final String DB_NAME = "DB_PuppyPal";
+        private static final String DB_NAME = App.getContext().getString(R.string.db_name);
         private static final int DB_VERSION = 1;
 
 
@@ -256,7 +184,7 @@ public class DBHandler
             db.execSQL("CREATE TABLE IF NOT EXISTS " + ExcrementRecord.TABLE_NAME + "(" +
                     ExcrementRecord.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Pet.PRIMARY_KEY + " INTEGER, " +
-                    ExcrementRecord.COLUMN_NAMES[0] + "date TEXT, " +
+                    ExcrementRecord.COLUMN_NAMES[0] + " TEXT, " +
                     ExcrementRecord.COLUMN_NAMES[1] + " TEXT, " +
                     "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
@@ -282,21 +210,21 @@ public class DBHandler
                     WeightRecord.COLUMN_NAMES[1] + " REAL, " +
                     "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
-            db.execSQL("CREATE TABLE IF NOT EXISTS tbl_assistant(" +
-                    "assistant_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "name TEXT, " +
-                    "phone_number TEXT, " +
-                    "address TEXT, " +
-                    "title TEXT, " +
-                    "general_description TEXT)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + Assistant.TABLE_NAME + "(" +
+                    Assistant.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    Assistant.COLUMN_NAMES[0] + " TEXT, " +
+                    Assistant.COLUMN_NAMES[1] + " TEXT, " +
+                    Assistant.COLUMN_NAMES[2] + " TEXT, " +
+                    Assistant.COLUMN_NAMES[3] + " TEXT, " +
+                    Assistant.COLUMN_NAMES[4] + " TEXT)");
 
-            db.execSQL("CREATE TABLE IF NOT EXISTS tbl_fitness_goal(" +
-                    "fitness_goal_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + FitnessGoal.TABLE_NAME + "(" +
+                    FitnessGoal.PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Pet.PRIMARY_KEY + " INTEGER, " +
-                    "target_weight REAL, " +
-                    "target_energy_level INTEGER, " +
-                    "target_exercise_type TEXT, " +
-                    "target_exercise_duration REAL, " +
+                    FitnessGoal.COLUMN_NAMES[0] + " REAL, " +
+                    FitnessGoal.COLUMN_NAMES[1] + " INTEGER, " +
+                    FitnessGoal.COLUMN_NAMES[2] + " TEXT, " +
+                    FitnessGoal.COLUMN_NAMES[3] + " REAL, " +
                     "FOREIGN KEY (" + Pet.PRIMARY_KEY + ") REFERENCES " + Pet.TABLE_NAME + " (" + Pet.PRIMARY_KEY + "))");
 
         }

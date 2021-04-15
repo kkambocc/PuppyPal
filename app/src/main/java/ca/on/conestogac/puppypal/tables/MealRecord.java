@@ -3,14 +3,17 @@ package ca.on.conestogac.puppypal.tables;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.activities.App;
+
 import static java.lang.Float.parseFloat;
 import static java.lang.Long.parseLong;
 
 public class MealRecord
 {
-    public static final String TABLE_NAME = "tbl_meal";
-    public static final String PRIMARY_KEY = "meal_id";
-    public static final String[] COLUMN_NAMES = {"date", "amount"};
+    public static final String TABLE_NAME = App.getContext().getString(R.string.meal_table_name);
+    public static final String PRIMARY_KEY = App.getContext().getString(R.string.meal_pk);
+    public static final String[] COLUMN_NAMES = App.getContext().getResources().getStringArray(R.array.meal_columns);
 
     private final long mealId;
     private final long petId;

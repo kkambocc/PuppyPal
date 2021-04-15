@@ -2,20 +2,24 @@ package ca.on.conestogac.puppypal.tables;
 
 import java.util.ArrayList;
 
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.activities.App;
+
 import static java.lang.Long.parseLong;
 
 public class Assistant
 {
-    public static final String TABLE_NAME = "tbl_assistant";
-    public static final String PRIMARY_KEY = "assistant_id";
-    public static final String[] COLUMN_NAMES = {"name", "phone_number", "address", "title", "general_description"};
+
+    public static final String TABLE_NAME = App.getContext().getString(R.string.assistant_table_name);
+    public static final String PRIMARY_KEY = App.getContext().getString(R.string.assistant_table_pk);
+    public static final String[] COLUMN_NAMES = App.getContext().getResources().getStringArray(R.array.assistant_columns);
 
     private final long assistantId;
-    private String name;
-    private String phoneNumber;
-    private String address;
-    private String title;
-    private String generalDescription;
+    private final String name;
+    private final String phoneNumber;
+    private final String address;
+    private final String title;
+    private final String generalDescription;
 
     //Basic Constructor
     public Assistant()

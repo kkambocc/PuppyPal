@@ -3,13 +3,17 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.activities.App;
+
 import static java.lang.Long.parseLong;
 
 public class ExerciseRecord
 {
-    public static final String TABLE_NAME = "tbl_exercise";
-    public static final String PRIMARY_KEY = "exercise_id";
-    public static final String[] COLUMN_NAMES = {"date", "type", "duration"};
+    public static final String TABLE_NAME = App.getContext().getString(R.string.exercise_table_name);
+    public static final String PRIMARY_KEY = App.getContext().getString(R.string.exercise_pk);
+    public static final String[] COLUMN_NAMES = App.getContext().getResources().getStringArray(R.array.exercise_columns);
+    
     private long exerciseId;
     private long petId;
     private Date date;

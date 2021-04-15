@@ -2,14 +2,17 @@ package ca.on.conestogac.puppypal.tables;
 
 import java.util.ArrayList;
 
+import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.activities.App;
+
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
 public class Pet
 {
-    public static final String TABLE_NAME = "tbl_pet";
-    public static final String PRIMARY_KEY = "pet_id";
-    public static final String[] COLUMN_NAMES = {"name", "age", "breed", "gender", "spayed_neutered"};
+    public static final String TABLE_NAME = App.getContext().getString(R.string.pet_table_name);
+    public static final String PRIMARY_KEY = App.getContext().getString(R.string.pet_pk);
+    public static final String[] COLUMN_NAMES = App.getContext().getResources().getStringArray(R.array.pet_columns);
 
     private final long petId;
     private String name;

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import ca.on.conestogac.puppypal.DBHandler;
 import ca.on.conestogac.puppypal.R;
+import ca.on.conestogac.puppypal.tables.FitnessGoal;
 import ca.on.conestogac.puppypal.tables.Pet;
 
 public class AddFitnessGoalActivity extends AppCompatActivity
@@ -188,6 +189,14 @@ public class AddFitnessGoalActivity extends AppCompatActivity
 
     public void addFitnessGoal()
     {
+        ArrayList<String> data = new ArrayList<>();
+        data.add(0,"0");
+        data.add(1,petId.toString());
+        data.add(2,weight);
+        data.add(3,energy);
+        data.add(4,exerciseType);
+        data.add(5,exerciseDuration);
+
         switch (radiobuttonSelection)
         {
             case "WEIGHT":
@@ -198,7 +207,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                     energy = "0";
                     exerciseType = "";
                     exerciseDuration = "0";
-                    dbHandler.addFitnessGoal(petId, Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
+                    dbHandler.AddToTable(FitnessGoal.TABLE_NAME,data);
                 }
 
                 break;
@@ -210,7 +219,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                     weight = "0";
                     exerciseType = "";
                     exerciseDuration = "0";
-                    dbHandler.addFitnessGoal(petId, Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
+                    dbHandler.AddToTable(FitnessGoal.TABLE_NAME,data);
                 }
 
                 break;
@@ -221,7 +230,7 @@ public class AddFitnessGoalActivity extends AppCompatActivity
                 {
                     weight = "0";
                     energy = "0";
-                    dbHandler.addFitnessGoal(petId, Double.parseDouble(weight), Integer.parseInt(energy), exerciseType, Long.parseLong(exerciseDuration), isUpdate, fitnessGoalId);
+                    dbHandler.AddToTable(FitnessGoal.TABLE_NAME,data);
                 }
 
                 break;
@@ -244,9 +253,10 @@ public class AddFitnessGoalActivity extends AppCompatActivity
         finish();
     }
 
-    public void deleteFitnessGoal(int deleteID)
+    public void deleteFitnessGoal(Integer deleteID)
     {
-        dbHandler.deleteFitnessGoal(deleteID);
+        dbHandler.DeleteFromTable(FitnessGoal.TABLE_NAME,FitnessGoal.PRIMARY_KEY,Long.parseLong(deleteID.toString()));
+
         Toast.makeText(this, "Fitness goal has been deleted", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, FitnessGoalActivity.class);
         intent.putExtra(Pet.PRIMARY_KEY, petId.toString());
