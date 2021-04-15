@@ -198,7 +198,7 @@ public class AddAssistantActivity extends AppCompatActivity implements Validator
         if (!isUpdate)
         {
          */
-            dbHandler.addAssistantToDB(nameEditText.getText().toString(), phoneNumberEditText.getText().toString(), addressEditText.getText().toString(), titleEditText.getText().toString(), generalDescriptionEditText.getText().toString(), isUpdate, updateID);
+            //dbHandler.addAssistantToDB(nameEditText.getText().toString(), phoneNumberEditText.getText().toString(), addressEditText.getText().toString(), titleEditText.getText().toString(), generalDescriptionEditText.getText().toString(), isUpdate, updateID);
         /*
         }
         else
